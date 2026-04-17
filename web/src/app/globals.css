@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f4f6;
+  color: #18181b;
+}
+
+.field {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid #d4d4d8;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.field:focus {
+  border-color: #fb2c36;
+  box-shadow: 0 0 0 2px rgba(251, 44, 54, 0.15);
+}
+
+.btn-primary {
+  border: 0;
+  border-radius: 0.75rem;
+  background: linear-gradient(90deg, #ff2d2d 0%, #ef4444 100%);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.liquid-glass {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.38));
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  box-shadow:
+    0 14px 34px rgba(15, 23, 42, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(26px) saturate(150%);
+  -webkit-backdrop-filter: blur(26px) saturate(150%);
+}
+
+.liquid-glass-dark {
+  background: linear-gradient(145deg, rgba(24, 24, 27, 0.62), rgba(24, 24, 27, 0.44));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+}
