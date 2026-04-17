@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  name            String
+  memoryOptions   String?
+  products        Product[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  categoryId    String
+  category      Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name          String
+  color         String?
+  description   String?
+  basePrice     Int
+  memoryPrices  Json?
+  imageUrl      String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+enum LeadType {
+  tradein
+  assessment
+  order
+}
+
+model Lead {
+  id                String   @id @default(cuid())
+  type              LeadType
+  phone             String
+  deviceFrom        String?
+  deviceTo          String?
+  targetDevice      String?
+  payload           Json?
+  createdAt         DateTime @default(now())
+}
+
+model BuybackConfig {
+  id         String   @id @default("main")
+  models     String
+  memories   String
+  simTypes   String
+  conditions String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
