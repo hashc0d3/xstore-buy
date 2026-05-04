@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "../prisma/prisma.service";
@@ -6,6 +6,8 @@ import { CreateLeadDto } from "./dto/create-lead.dto";
 
 @Injectable()
 export class LeadsService {
+  private readonly logger = new Logger(LeadsService.name);
+
   constructor(
     private readonly prisma: PrismaService,
     private readonly config: ConfigService
@@ -28,9 +30,19 @@ export class LeadsService {
   }
 
   private async sendToTelegram(dto: CreateLeadDto): Promise<void> {
-    const token = this.config.get<string>("TELEGRAM_BOT_TOKEN");
-    const chatId = this.config.get<string>("TELEGRAM_CHAT_ID");
-    if (!token || !chatId) return;
+    const token = this.config.get<string>("TELEGRAM_BOT_TOKEN")?.trim();
+    let chatIdRaw = this.config.get<string>("TELEGRAM_CHAT_ID")?.trim();
+    if (!token || !chatIdRaw) {
+      this.logger.warn("Telegram: пропуск — не заданы TELEGRAM_BOT_TOKEN или TELEGRAM_CHAT_ID в .env");
+      return;
+    }
+    if (
+      (chatIdRaw.startsWith('"') && chatIdRaw.endsWith('"')) ||
+      (chatIdRaw.startsWith("'") && chatIdRaw.endsWith("'"))
+    ) {
+      chatIdRaw = chatIdRaw.slice(1, -1);
+    }
+    const chatId: number | string = /^-?\d+$/.test(chatIdRaw) ? Number(chatIdRaw) : chatIdRaw;
 
     const lines = [
       "Новая заявка X:STORE",
@@ -67,7 +79,7 @@ export class LeadsService {
       dto.expectedPrice ? `Ожидаемая цена: ${dto.expectedPrice}` : ""
     ].filter(Boolean);
 
-    await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -75,5 +87,12 @@ export class LeadsService {
         text: lines.join("\n")
       })
     });
+
+    const data = (await res.json()) as { ok?: boolean; description?: string; error_code?: number };
+    if (!data.ok) {
+      this.logger.warn(
+        `Telegram sendMessage: ${data.description ?? res.statusText} (error_code=${data.error_code ?? "?"})`
+      );
+    }
   }
 }

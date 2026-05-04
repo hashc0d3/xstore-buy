@@ -6,7 +6,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { createLead, fetchStoreData } from "@/lib/api";
 import { Category, Product, StoreData, defaultStoreData, toRub } from "@/lib/store";
 
-type ModalType = "tradein" | "reviews" | "order" | "product" | null;
+const IPHONE_LIKE_SLUGS = new Set(["iphone", "iphone-used"]);
+
+function isIphoneLikeSlug(slug: string | undefined): boolean {
+  return Boolean(slug && IPHONE_LIKE_SLUGS.has(slug));
+}
+
+type ModalType = "tradein" | "reviews" | "order" | "product" | "preorder" | null;
 type CartItem = {
   key: string;
   productId: string;
@@ -43,6 +49,7 @@ function Modal({
   iconSrc,
   iconAlt,
   hideBadge,
+  noScroll,
   onClose
 }: {
   title: string;
@@ -51,12 +58,15 @@ function Modal({
   iconSrc?: string;
   iconAlt?: string;
   hideBadge?: boolean;
+  noScroll?: boolean;
   onClose: () => void;
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-3 min-[640px]:p-4" onClick={onClose}>
       <div
-        className="relative max-h-[92vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-5 shadow-2xl min-[640px]:p-6"
+        className={`relative w-full rounded-3xl bg-white shadow-2xl ${
+          noScroll ? "max-h-[96vh] overflow-visible p-4 min-[640px]:p-5" : "max-h-[92vh] overflow-y-auto p-5 min-[640px]:p-6"
+        } ${noScroll ? "max-w-3xl" : "max-w-md"}`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -76,18 +86,19 @@ function Modal({
             ) : (
               <div className="mb-4 h-8 w-8 rounded-full bg-zinc-100" />
             )}
-        <h3 className="mb-2 text-xl font-semibold text-zinc-900 min-[640px]:text-2xl">{title}</h3>
-        <p className="mb-5 text-sm leading-6 text-zinc-500">{subtitle}</p>
+        <h3 className={`${noScroll ? "mb-1 text-xl min-[640px]:text-2xl" : "mb-2 text-lg min-[640px]:text-2xl"} font-semibold text-zinc-900`}>{title}</h3>
+        <p className={`${noScroll ? "mb-3 text-xs leading-5 min-[640px]:text-sm" : "mb-5 text-sm leading-6"} text-zinc-500`}>{subtitle}</p>
         {children}
       </div>
     </div>
   );
 }
 
-function CategoryCard({ category }: { category: Category }) {
+function CategoryCard({ category, onPodZakaz }: { category: Category; onPodZakaz?: () => void }) {
   const isDark = category.slug === "custom";
   const imageCandidatesBySlug: Record<string, string[]> = {
     iphone: ["/iphone.png", "/iphone.jpg", "/iphone.webp", "/image.png"],
+    "iphone-used": ["/iphone.png", "/iphone.jpg", "/iphone.webp", "/image.png"],
     macbook: ["/macbook.png", "/macbook.jpg", "/macbook.webp"],
     "apple-watch": ["/applewatch.png", "/watch.png", "/watch.jpg", "/watch.webp"],
     ipad: ["/ipad.png", "/ipad.jpg", "/ipad.webp"],
@@ -99,6 +110,7 @@ function CategoryCard({ category }: { category: Category }) {
   const imageSrc = candidates[imageIdx];
   const imagePlacementBySlug: Record<string, string> = {
     iphone: "right-[-8%] top-1/2 h-[96%] -translate-y-1/2",
+    "iphone-used": "right-[-8%] top-1/2 h-[96%] -translate-y-1/2",
     macbook: "right-[-6%] top-1/2 h-[90%] -translate-y-1/2",
     "apple-watch": "right-[-4%] top-1/2 h-[86%] -translate-y-1/2",
     ipad: "right-[-4%] top-1/2 h-[96%] -translate-y-1/2",
@@ -107,19 +119,18 @@ function CategoryCard({ category }: { category: Category }) {
   };
   const imagePlacement = imagePlacementBySlug[category.slug] ?? "right-[-4%] top-1/2 h-[90%] -translate-y-1/2";
 
-  return (
-    <Link
-      href={`/catalog/${category.slug}`}
-      className={`group relative h-[150px] overflow-hidden rounded-2xl border border-zinc-200 p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md min-[640px]:h-[176px] min-[640px]:rounded-3xl min-[640px]:p-4 ${
-        isDark ? "bg-zinc-900" : "bg-[#f6f6f7]"
-      }`}
-    >
+  const cardClass = `group relative h-[74px] min-w-0 overflow-hidden rounded-xl border border-zinc-200 p-1.5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md min-[480px]:h-[88px] min-[640px]:h-[108px] min-[960px]:h-[132px] min-[960px]:rounded-2xl min-[960px]:p-3 ${
+    isDark ? "bg-zinc-900" : "bg-[#f6f6f7]"
+  }`;
+
+  const inner = (
+    <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/icon/catalog.svg"
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute left-3 top-3 h-3.5 w-3.5 min-[640px]:left-4 min-[640px]:top-4"
+        className="pointer-events-none absolute left-1.5 top-1.5 h-2.5 w-2.5 min-[640px]:h-3 min-[640px]:w-3 min-[960px]:left-3 min-[960px]:top-3 min-[960px]:h-3.5 min-[960px]:w-3.5"
       />
       {imageSrc ? (
         <>
@@ -135,9 +146,23 @@ function CategoryCard({ category }: { category: Category }) {
           {!isDark ? <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-black/[0.02]" /> : null}
         </>
       ) : null}
-      <h3 className={`absolute bottom-3 left-3 text-xl font-semibold min-[640px]:bottom-4 min-[640px]:left-4 min-[640px]:text-3xl ${isDark ? "text-white" : "text-zinc-800"}`}>
+      <h3 className={`absolute bottom-1.5 left-1.5 max-w-[82%] text-[11px] font-bold leading-none min-[480px]:text-xs min-[640px]:text-sm min-[900px]:text-base min-[960px]:bottom-3 min-[960px]:left-3 min-[1440px]:text-xl ${isDark ? "text-white" : "text-zinc-800"}`}>
         {category.name}
       </h3>
+    </>
+  );
+
+  if (category.slug === "custom" && onPodZakaz) {
+    return (
+      <button type="button" onClick={onPodZakaz} className={`${cardClass} block w-full cursor-pointer text-left`}>
+        {inner}
+      </button>
+    );
+  }
+
+  return (
+    <Link href={`/catalog/${category.slug}`} className={cardClass}>
+      {inner}
     </Link>
   );
 }
@@ -155,17 +180,18 @@ function ProductCard({
   onAddToCart: (selection: { color?: string; memory?: string; simType?: string; price: number; imageUrl: string }) => void;
   onOpenDetails: (selection: { color?: string; memory?: string; simType?: string }) => void;
 }) {
-  const isIphoneCategory = category?.slug === "iphone";
-  const variants = product.variants ?? [];
+  const isIphoneCategory = isIphoneLikeSlug(category?.slug);
+  const variants = useMemo(() => product.variants ?? [], [product.variants]);
   const hasVariants = variants.length > 0;
-  const colorOptions = hasVariants
-    ? Array.from(new Set(variants.map((item) => item.color).filter((item): item is string => Boolean(item))))
-    : product.color
-      ? [product.color]
-      : [];
-  const [nameBrand, ...nameRest] = product.name.split(" ");
-  const modelName = nameRest.join(" ");
-
+  const colorOptions = useMemo(
+    () =>
+      hasVariants
+        ? Array.from(new Set(variants.map((item) => item.color).filter((item): item is string => Boolean(item))))
+        : product.color
+          ? [product.color]
+          : [],
+    [hasVariants, product.color, variants]
+  );
   const [selectedColor, setSelectedColor] = useState<string>(() => {
     if (colorOptions.length === 0) return "";
     if (product.color && colorOptions.includes(product.color)) return product.color;
@@ -198,21 +224,6 @@ function ProductCard({
     ? Array.from(new Set(simScopedVariants.map((item) => item.simType).filter((item): item is string => Boolean(item))))
     : [];
 
-  useEffect(() => {
-    if (!colorOptions.length || colorOptions.includes(selectedColor)) return;
-    setSelectedColor(colorOptions[0] ?? "");
-  }, [colorOptions, selectedColor]);
-
-  useEffect(() => {
-    if (!memoryOptions.length || memoryOptions.includes(selectedMemory)) return;
-    setSelectedMemory(memoryOptions[0] ?? "");
-  }, [memoryOptions, selectedMemory]);
-
-  useEffect(() => {
-    if (!simOptions.length || simOptions.includes(selectedSim)) return;
-    setSelectedSim(simOptions[0] ?? "");
-  }, [simOptions, selectedSim]);
-
   const activeVariant = useMemo(() => {
     if (!hasVariants) return null;
     if (!isIphoneCategory) {
@@ -237,15 +248,6 @@ function ProductCard({
   const shownPrice = activeVariant?.price ?? product.basePrice;
   const currentImage = activeVariant?.imageUrl ?? product.imageUrl;
 
-  useEffect(() => {
-    if (!hasVariants || !activeVariant) return;
-    if (activeVariant.color && selectedColor !== activeVariant.color) setSelectedColor(activeVariant.color);
-    if (isIphoneCategory) {
-      if (activeVariant.memory && selectedMemory !== activeVariant.memory) setSelectedMemory(activeVariant.memory);
-      if (activeVariant.simType && selectedSim !== activeVariant.simType) setSelectedSim(activeVariant.simType);
-    }
-  }, [activeVariant, hasVariants, isIphoneCategory, selectedColor, selectedMemory, selectedSim]);
-
   const colorLabel = product.color ?? "";
   const normalizedColor = (selectedColor || colorLabel).toLowerCase();
   const colorDotClass = normalizedColor.includes("orange")
@@ -261,19 +263,6 @@ function ProductCard({
             : normalizedColor.includes("gold") || normalizedColor.includes("starlight")
               ? "bg-amber-400"
               : "bg-zinc-500";
-  const [cardImage, setCardImage] = useState(currentImage);
-  const [isImageVisible, setIsImageVisible] = useState(true);
-
-  useEffect(() => {
-    if (cardImage === currentImage) return;
-    setIsImageVisible(false);
-    const timer = window.setTimeout(() => {
-      setCardImage(currentImage);
-      setIsImageVisible(true);
-    }, 140);
-    return () => window.clearTimeout(timer);
-  }, [cardImage, currentImage]);
-
   return (
     <article
       className="flex h-full w-full cursor-pointer flex-col rounded-xl border border-zinc-200 bg-[#f9f9fa] p-1.5 shadow-[0_4px_12px_rgba(24,24,27,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_8px_18px_rgba(24,24,27,0.1)] min-[640px]:max-w-[260px] min-[640px]:justify-self-start min-[640px]:rounded-2xl min-[640px]:p-2 min-[960px]:max-w-none min-[960px]:justify-self-stretch"
@@ -301,17 +290,14 @@ function ProductCard({
       <div className="overflow-hidden rounded-xl bg-white min-[640px]:rounded-2xl">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={cardImage}
+          src={currentImage}
           alt={product.name}
-          className={`h-[7.5rem] w-full object-contain p-1 transition-opacity duration-300 min-[640px]:h-[8.5rem] ${
-            isImageVisible ? "opacity-100" : "opacity-0"
-          }`}
+          className="h-[7.5rem] w-full object-contain p-1 transition-opacity duration-300 min-[640px]:h-[8.5rem]"
         />
       </div>
       <div className="flex flex-1 flex-col gap-1.5 p-2 min-[640px]:p-2.5">
-        <p className="mt-1 text-[12px] leading-none text-zinc-400 min-[640px]:text-[13px]">{nameBrand}</p>
-        <h4 className="line-clamp-1 text-lg font-bold leading-tight text-zinc-900 min-[640px]:text-xl">
-          {modelName || product.name}
+        <h4 className="mt-1 line-clamp-1 text-base font-bold leading-tight text-zinc-900 min-[480px]:text-lg min-[960px]:text-xl">
+          {product.name}
         </h4>
         {colorOptions.length > 0 ? (
           <div className="space-y-1">
@@ -327,6 +313,19 @@ function ProductCard({
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedColor(color);
+                    if (hasVariants && isIphoneCategory) {
+                      const scoped = variants.filter((item) => item.color === color);
+                      const fallback =
+                        scoped.find(
+                          (item) =>
+                            (!selectedMemory || item.memory === selectedMemory) &&
+                            (!selectedSim || item.simType === selectedSim)
+                        ) ??
+                        scoped.find((item) => !selectedMemory || item.memory === selectedMemory) ??
+                        scoped[0];
+                      setSelectedMemory(fallback?.memory ?? "");
+                      setSelectedSim(fallback?.simType ?? "");
+                    }
                   }}
                 >
                   {color}
@@ -357,6 +356,10 @@ function ProductCard({
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedMemory(option);
+                    const fallback =
+                      colorScopedVariants.find((item) => item.memory === option && (!selectedSim || item.simType === selectedSim)) ??
+                      colorScopedVariants.find((item) => item.memory === option);
+                    setSelectedSim(fallback?.simType ?? "");
                   }}
                 >
                   {option}
@@ -379,6 +382,10 @@ function ProductCard({
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedSim(option);
+                    const fallback =
+                      colorScopedVariants.find((item) => item.simType === option && (!selectedMemory || item.memory === selectedMemory)) ??
+                      colorScopedVariants.find((item) => item.simType === option);
+                    setSelectedMemory(fallback?.memory ?? "");
                   }}
                 >
                   {option}
@@ -388,7 +395,7 @@ function ProductCard({
           </div>
         ) : null}
         <div className="mt-auto space-y-2">
-          <p className="text-lg font-bold text-zinc-900 min-[640px]:text-xl">от {toRub(shownPrice)}</p>
+          <p className="text-base font-bold text-zinc-900 min-[480px]:text-lg min-[960px]:text-xl">от {toRub(shownPrice)}</p>
           <button
             type="button"
             onClick={(e) => {
@@ -541,6 +548,18 @@ export default function Storefront() {
     return map;
   }, [storeData.categories]);
 
+  const displayCategories = useMemo(() => {
+    const order = ["iphone", "iphone-used", "macbook", "apple-watch", "ipad", "airpods", "custom"];
+    const rank = (slug: string) => {
+      const idx = order.indexOf(slug);
+      return idx === -1 ? 800 : idx;
+    };
+    return [...storeData.categories].sort((a, b) => {
+      const d = rank(a.slug) - rank(b.slug);
+      return d !== 0 ? d : a.slug.localeCompare(b.slug);
+    });
+  }, [storeData.categories]);
+
   const filteredProducts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     if (!query) return visibleProducts;
@@ -638,6 +657,8 @@ export default function Storefront() {
     color?: string;
     memory?: string;
     simType?: string;
+    customerName?: string;
+    telegram?: string;
   }) => {
     if (!payload.phone.trim()) return;
     try {
@@ -767,6 +788,58 @@ export default function Storefront() {
       );
     }
 
+    if (activeModal === "preorder") {
+      return (
+        <Modal
+          title="Под заказ"
+          subtitle="Заполните форму — менеджер уточнит наличие, сроки и стоимость"
+          hideBadge
+          onClose={() => setActiveModal(null)}
+        >
+          <form
+            className="space-y-3"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.currentTarget;
+              const customerName = (form.elements.namedItem("customerName") as HTMLInputElement | null)?.value ?? "";
+              const phone = (form.elements.namedItem("phone") as HTMLInputElement | null)?.value ?? "";
+              const telegram = (form.elements.namedItem("telegram") as HTMLInputElement | null)?.value ?? "";
+              const targetDevice = (form.elements.namedItem("targetDevice") as HTMLInputElement | null)?.value ?? "";
+              if (!customerName.trim() || !phone.trim() || !targetDevice.trim()) return;
+              void submitLead({
+                type: "order",
+                phone,
+                customerName: customerName.trim(),
+                telegram: telegram.trim() || undefined,
+                targetDevice: targetDevice.trim(),
+                productName: "Под заказ"
+              });
+            }}
+          >
+            <input name="customerName" className="field" placeholder="ФИО" required />
+            <input
+              name="phone"
+              className="field"
+              placeholder="+7 (999) 123-45-67"
+              inputMode="tel"
+              maxLength={18}
+              required
+              onChange={(e) => onPhoneInput(e.target.value, (next) => (e.target.value = next))}
+            />
+            <input name="telegram" className="field" placeholder="Telegram (не обязательно)" />
+            <input name="targetDevice" className="field" placeholder="Желаемый товар" required />
+            <button
+              type="submit"
+              className="btn-primary flex w-full items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-70"
+              disabled={sendingLead}
+            >
+              {sendingLead ? "Отправка..." : "Отправить"}
+            </button>
+          </form>
+        </Modal>
+      );
+    }
+
     if (activeModal === "order") {
       return (
         <Modal
@@ -839,7 +912,7 @@ export default function Storefront() {
 
     if (activeModal === "product" && selectedProduct) {
       const selectedCategory = categoriesBySlug[selectedProduct.categorySlug];
-      const isIphoneCategory = selectedCategory?.slug === "iphone";
+      const isIphoneCategory = isIphoneLikeSlug(selectedCategory?.slug);
       const productVariants = selectedProduct.variants ?? [];
       const hasVariants = productVariants.length > 0;
       const colorOptions = hasVariants
@@ -888,6 +961,7 @@ export default function Storefront() {
           title={selectedProduct.name}
           subtitle={(activeVariant?.color ?? selectedProduct.color) ? `Цвет: ${activeVariant?.color ?? selectedProduct.color}` : "Оригинальная техника Apple"}
           hideBadge
+          noScroll
           onClose={() => {
             setActiveModal(null);
             setSelectedProduct(null);
@@ -896,106 +970,124 @@ export default function Storefront() {
             setSelectedProductSim("");
           }}
         >
-          <div className="space-y-4">
-            <div className="overflow-hidden rounded-2xl bg-zinc-50 p-2">
+          <div className="space-y-2 min-[640px]:grid min-[640px]:grid-cols-[minmax(220px,0.95fr)_minmax(260px,1.05fr)] min-[640px]:gap-4 min-[640px]:space-y-0">
+            <div className="overflow-hidden rounded-xl bg-zinc-50 p-1.5 min-[640px]:h-full">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={shownModalImage} alt={selectedProduct.name} className="h-44 w-full object-contain min-[640px]:h-52" />
+              <img src={shownModalImage} alt={selectedProduct.name} className="h-28 w-full object-contain min-[480px]:h-32 min-[640px]:h-full min-[640px]:min-h-[280px]" />
             </div>
-            <p className="text-sm leading-6 text-zinc-600">
-              {selectedProduct.description ??
-                "Подробное описание для этого товара скоро появится. Вы можете оставить заявку, и менеджер уточнит все характеристики."}
-            </p>
-            <div className="rounded-xl bg-zinc-50 p-3 text-sm text-zinc-600">
-              <p>Категория: {selectedCategory?.name ?? "—"}</p>
-              {colorOptions.length ? (
-                <div className="mt-2 space-y-1">
-                  <p className="text-xs text-zinc-500">Выберите цвет</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {colorOptions.map((option) => (
-                      <button
-                        key={option}
-                        type="button"
-                        className={`rounded-md px-2 py-1 text-[11px] font-semibold transition min-[640px]:text-xs ${
-                          selectedProductColor === option
-                            ? "bg-zinc-900 text-white"
-                            : "bg-white text-zinc-700 hover:bg-zinc-100"
-                        }`}
-                        onClick={() => {
-                          setSelectedProductColor(option);
-                          setSelectedProductMemory("");
-                          setSelectedProductSim("");
-                        }}
-                      >
-                        {option}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
+            <div className="space-y-2 min-[640px]:space-y-3">
+              <p className="line-clamp-2 text-xs leading-5 text-zinc-600 min-[640px]:text-sm">
+                {selectedProduct.description ??
+                  "Подробное описание для этого товара скоро появится. Вы можете оставить заявку, и менеджер уточнит все характеристики."}
+              </p>
               {isIphoneCategory ? (
-                memoryOptions.length ? (
-                  <div className="mt-2 space-y-1">
-                    <p className="text-xs text-zinc-500">Выберите объем</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {memoryOptions.map((option) => (
+                <p className="rounded-xl border border-amber-200/90 bg-amber-50 px-2.5 py-1.5 text-[11px] font-medium leading-snug text-amber-950 min-[640px]:text-xs">
+                  Имееться недостаток товара: невозможно установить и использовать RuStore.
+                </p>
+              ) : null}
+              <div className="rounded-xl bg-zinc-50 p-2 text-xs text-zinc-600 min-[640px]:text-sm">
+                <p>Категория: {selectedCategory?.name ?? "—"}</p>
+                {colorOptions.length ? (
+                  <div className="mt-1 space-y-1">
+                    <p className="text-xs text-zinc-500">Выберите цвет</p>
+                    <div className="flex flex-wrap gap-1">
+                      {colorOptions.map((option) => (
                         <button
                           key={option}
                           type="button"
-                          className={`rounded-md px-2 py-1 text-[11px] font-semibold transition min-[640px]:text-xs ${
-                            selectedProductMemory === option
-                              ? "bg-zinc-900 text-white"
-                              : "bg-white text-zinc-700 hover:bg-zinc-100"
+                          className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold transition min-[640px]:text-xs ${
+                            selectedProductColor === option ? "bg-zinc-900 text-white" : "bg-white text-zinc-700 hover:bg-zinc-100"
                           }`}
-                          onClick={() => setSelectedProductMemory(option)}
+                          onClick={() => {
+                            setSelectedProductColor(option);
+                            setSelectedProductMemory("");
+                            setSelectedProductSim("");
+                          }}
                         >
                           {option}
                         </button>
                       ))}
                     </div>
                   </div>
-                ) : (
-                  <p className="mt-1">Объем: не указан</p>
-                )
-              ) : null}
-              {simOptions.length ? (
-                <div className="mt-2 space-y-1">
-                  <p className="text-xs text-zinc-500">Выберите тип SIM</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {simOptions.map((option) => (
-                      <button
-                        key={option}
-                        type="button"
-                        className={`rounded-md px-2 py-1 text-[11px] font-semibold transition min-[640px]:text-xs ${
-                          selectedProductSim === option
-                            ? "bg-zinc-900 text-white"
-                            : "bg-white text-zinc-700 hover:bg-zinc-100"
-                        }`}
-                        onClick={() => setSelectedProductSim(option)}
-                      >
-                        {option}
-                      </button>
-                    ))}
+                ) : null}
+                {isIphoneCategory ? (
+                  memoryOptions.length ? (
+                    <div className="mt-1 space-y-1">
+                      <p className="text-xs text-zinc-500">Выберите объем</p>
+                      <div className="flex flex-wrap gap-1">
+                        {memoryOptions.map((option) => (
+                          <button
+                            key={option}
+                            type="button"
+                            className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold transition min-[640px]:text-xs ${
+                              selectedProductMemory === option ? "bg-zinc-900 text-white" : "bg-white text-zinc-700 hover:bg-zinc-100"
+                            }`}
+                            onClick={() => setSelectedProductMemory(option)}
+                          >
+                            {option}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="mt-1">Объем: не указан</p>
+                  )
+                ) : null}
+                {simOptions.length ? (
+                  <div className="mt-1 space-y-1">
+                    <p className="text-xs text-zinc-500">Выберите тип SIM</p>
+                    <div className="flex flex-wrap gap-1">
+                      {simOptions.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold transition min-[640px]:text-xs ${
+                            selectedProductSim === option ? "bg-zinc-900 text-white" : "bg-white text-zinc-700 hover:bg-zinc-100"
+                          }`}
+                          onClick={() => setSelectedProductSim(option)}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ) : null}
-              <p className="mt-2 font-semibold text-zinc-900">Цена: от {toRub(shownModalPrice)}</p>
+                ) : null}
+                <p className="mt-1 font-semibold text-zinc-900">Цена: от {toRub(shownModalPrice)}</p>
+              </div>
+              <div className="grid grid-cols-1 gap-2 min-[640px]:grid-cols-2">
+                <button
+                  type="button"
+                  className="btn-primary w-full py-2 text-sm"
+                  onClick={() => {
+                    setOrderSelection({
+                      productName: selectedProduct.name,
+                      color: (activeVariant?.color ?? selectedProductColor) || undefined,
+                      memory: (activeVariant?.memory ?? selectedProductMemory) || undefined,
+                      simType: (activeVariant?.simType ?? selectedProductSim) || undefined
+                    });
+                    setSelectedProduct(null);
+                    setActiveModal("order");
+                  }}
+                >
+                  Заказать
+                </button>
+                <button
+                  type="button"
+                  className="w-full rounded-xl border border-zinc-200 bg-white py-2 text-sm font-semibold text-zinc-800 transition hover:border-zinc-900 hover:bg-zinc-900 hover:text-white"
+                  onClick={() =>
+                    addToCart(selectedProduct, {
+                      color: (activeVariant?.color ?? selectedProductColor) || undefined,
+                      memory: (activeVariant?.memory ?? selectedProductMemory) || undefined,
+                      simType: (activeVariant?.simType ?? selectedProductSim) || undefined,
+                      price: shownModalPrice,
+                      imageUrl: shownModalImage
+                    })
+                  }
+                >
+                  В корзину
+                </button>
+              </div>
             </div>
-            <button
-              type="button"
-              className="btn-primary w-full"
-              onClick={() => {
-                setOrderSelection({
-                  productName: selectedProduct.name,
-                  color: (activeVariant?.color ?? selectedProductColor) || undefined,
-                  memory: (activeVariant?.memory ?? selectedProductMemory) || undefined,
-                  simType: (activeVariant?.simType ?? selectedProductSim) || undefined
-                });
-                setSelectedProduct(null);
-                setActiveModal("order");
-              }}
-            >
-              Заказать устройство
-            </button>
           </div>
         </Modal>
       );
@@ -1004,6 +1096,7 @@ export default function Storefront() {
     return null;
   }, [
     activeModal,
+    addToCart,
     categoriesBySlug,
     onPhoneInput,
     orderSelection,
@@ -1038,21 +1131,23 @@ export default function Storefront() {
 
       <header className="sticky top-0 z-40">
         <div
-          className={`mx-auto flex w-full max-w-[1920px] items-center justify-between gap-3 px-4 py-4 min-[640px]:px-6 min-[640px]:py-5 min-[960px]:px-8 min-[960px]:py-6 min-[1440px]:px-12 min-[1920px]:px-16 ${
-            shouldSplitHeader ? "" : "border-b border-white/50 liquid-glass"
+          className={`mx-auto flex w-full max-w-[1920px] items-center justify-between gap-3 px-4 transition-all duration-300 min-[640px]:px-6 min-[960px]:px-8 min-[1440px]:px-12 min-[1920px]:px-16 ${
+            shouldSplitHeader
+              ? "mt-3 rounded-full border border-white/70 bg-white/88 py-2 shadow-[0_16px_40px_rgba(24,24,27,0.12)] backdrop-blur-2xl"
+              : "border-b border-white/50 liquid-glass py-4 min-[640px]:py-5 min-[960px]:py-6"
           }`}
         >
           <Link
             href="/"
-            className={`inline-flex items-center text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl min-[1920px]:text-5xl ${
-              shouldSplitHeader ? "rounded-full border border-white/70 bg-white/90 px-5 py-2 shadow-sm min-[640px]:px-6 min-[640px]:py-2.5" : ""
+            className={`inline-flex shrink-0 items-center font-bold tracking-tight text-zinc-950 transition-all duration-300 ${
+              shouldSplitHeader ? "text-xl min-[1200px]:text-2xl min-[1440px]:text-3xl" : "text-2xl min-[640px]:text-3xl min-[1440px]:text-4xl min-[1920px]:text-5xl"
             }`}
           >
             <span className="text-red-500">X</span> : STORE
           </Link>
           <nav
-            className={`hidden items-center gap-5 text-zinc-700 min-[960px]:flex min-[1440px]:gap-8 min-[1920px]:text-lg ${
-              shouldSplitHeader ? "rounded-full border border-white/70 bg-white/90 px-6 py-3 shadow-sm" : ""
+            className={`hidden h-10 items-center gap-5 rounded-full px-4 text-sm font-medium text-zinc-700 transition-all duration-300 min-[960px]:flex min-[1440px]:gap-7 min-[1920px]:text-base ${
+              shouldSplitHeader ? "bg-zinc-100/70" : ""
             }`}
           >
             <Link className="inline-flex items-center gap-2 hover:text-red-500" href="/catalog">
@@ -1075,7 +1170,7 @@ export default function Storefront() {
           </nav>
           <button
             type="button"
-            className={`inline-flex items-center gap-2 rounded-[1.2rem] border border-zinc-300 bg-[#f2ecec] px-3 py-2 text-xl font-semibold leading-none text-[#3f2430] shadow-sm min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:py-2.5 min-[640px]:text-2xl min-[960px]:hidden ${
+            className={`inline-flex items-center gap-2 rounded-[1.2rem] border border-zinc-300 bg-[#f2ecec] px-3 py-2 text-lg font-semibold leading-none text-[#3f2430] shadow-sm transition-all duration-300 min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:py-2.5 min-[640px]:text-xl min-[960px]:hidden ${
               shouldSplitHeader ? "ring-1 ring-white/60" : ""
             }`}
             onClick={() => setMobileMenuOpen(true)}
@@ -1084,25 +1179,12 @@ export default function Storefront() {
             <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5 w-5 min-[640px]:h-5.5 min-[640px]:w-5.5" />
             Меню
           </button>
-          <Link
-            href="/cart"
-            className={`inline-flex items-center gap-2 rounded-[1.2rem] border border-zinc-300 bg-white px-3 py-2 text-sm font-semibold text-zinc-800 shadow-sm min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:py-2.5 min-[960px]:hidden ${
-              shouldSplitHeader ? "ring-1 ring-white/60" : ""
-            }`}
-          >
-            Корзина
-            <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-zinc-900 px-1.5 py-0.5 text-[11px] text-white">
-              {cartCount}
-            </span>
-          </Link>
           <div
-            className={`hidden items-center gap-2 min-[960px]:flex ${
-              shouldSplitHeader ? "rounded-full border border-white/70 bg-white/90 px-4 py-2 shadow-sm" : ""
-            }`}
+            className={`hidden h-10 items-center gap-2 transition-all duration-300 min-[960px]:flex`}
           >
             <Link
               href="/cart"
-              className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-semibold text-zinc-800 transition hover:border-zinc-300 hover:bg-white"
+              className="inline-flex h-10 items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-3 text-xs font-semibold min-[1200px]:text-sm text-zinc-800 transition hover:border-zinc-300 hover:bg-white"
             >
               Корзина
               <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-zinc-900 px-1.5 py-0.5 text-[10px] text-white">
@@ -1113,7 +1195,7 @@ export default function Storefront() {
               href="https://vk.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icon/vk.svg" alt="VK" className="h-4.5 w-4.5" />
@@ -1122,12 +1204,12 @@ export default function Storefront() {
               href="https://t.me"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icon/telegram.svg" alt="Telegram" className="h-4.5 w-4.5" />
             </a>
-            <div className="text-right text-sm font-medium text-zinc-700 min-[1920px]:text-base">
+            <div className="text-right text-[11px] font-medium leading-tight text-zinc-700 min-[1200px]:text-xs min-[1440px]:text-sm">
               <p>+7 (923) 696-93-77</p>
               <p>+7 (923) 686-93-77</p>
             </div>
@@ -1200,24 +1282,28 @@ export default function Storefront() {
           <section className="mb-6 grid grid-cols-1 gap-3 min-[640px]:mb-8 min-[640px]:gap-4 min-[960px]:grid-cols-5 min-[960px]:gap-5">
             <article className="relative flex min-h-[360px] flex-col overflow-hidden rounded-3xl bg-[#121317] liquid-glass-dark p-5 text-white min-[640px]:min-h-[420px] min-[640px]:p-7 min-[960px]:col-span-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/img3.png" alt="Магазин оригинальной техники" className="absolute inset-0 h-full w-full object-cover" />
+              <img
+                src="/img2.png"
+                alt="Выкуп техники"
+                className="absolute inset-0 h-full w-full object-cover object-[78%_center] min-[640px]:object-[80%_center]"
+              />
               <div className="pointer-events-none absolute inset-0 bg-black/45" />
               <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-400">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/icon1.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
-                Гарантия 12 месяцев
+                <img src="/icon/icon3.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                Оценка за 10 минут
               </p>
               <h1 className="relative z-10 mt-4 max-w-xl text-3xl font-bold leading-tight min-[640px]:text-4xl min-[1440px]:text-5xl">
-                Магазин оригинальной техники
+                Выкуп техники
               </h1>
               <p className="relative z-10 mt-3 max-w-xl text-sm text-zinc-300 min-[640px]:text-base">
-                Широкий ассортимент и экспертный подбор устройств под ваши задачи и бюджет.
+                Честная оценка и быстрый ответ менеджера.
               </p>
               <Link
-                href="/catalog"
+                href="/assessment"
                 className="relative z-10 mt-auto inline-flex min-h-12 min-w-40 items-center justify-center self-start rounded-2xl bg-red-500 px-10 py-3.5 text-base font-semibold text-white transition hover:bg-red-600 min-[640px]:min-h-16 min-[640px]:min-w-52 min-[640px]:px-14 min-[640px]:py-4 min-[640px]:text-xl"
               >
-                Каталог
+                Получить оценку
               </Link>
               <div className="pointer-events-none absolute -bottom-20 -right-16 h-56 w-56 rounded-full bg-red-500/25 blur-3xl" />
             </article>
@@ -1251,25 +1337,25 @@ export default function Storefront() {
               </button>
 
               <Link
-                href="/assessment"
+                href="/catalog"
                 className="group relative block overflow-hidden rounded-3xl border border-white/70 liquid-glass p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg min-[640px]:p-6"
               >
                 <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/icon/icon3.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
-                  Оценка за 10 минут
+                  <img src="/icon/icon1.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                  Гарантия 12 месяцев
                 </p>
                 <h3 className="relative z-10 mt-3 max-w-[18rem] text-2xl font-bold leading-tight text-zinc-900 min-[640px]:text-3xl">
-                  Выкупим ваше устройство
+                  Магазин оригинальной техники
                 </h3>
-                <p className="relative z-10 mt-3 max-w-[16rem] text-sm text-zinc-500 min-[640px]:text-base">
-                  Честная оценка и быстрый ответ менеджера.
-                </p>
+                <span className="relative z-10 mt-4 inline-block text-sm font-semibold text-red-500 group-hover:text-red-600">
+                  Каталог
+                </span>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/img2.png"
-                  alt="Оценка устройства"
-                  className="pointer-events-none absolute -right-5 top-1/2 h-[118%] w-auto -translate-y-1/2 object-contain opacity-95 min-[640px]:-right-7"
+                  src="/img3.png"
+                  alt="Магазин оригинальной техники"
+                  className="pointer-events-none absolute -right-5 top-1/2 h-[118%] w-auto max-w-[min(11rem,38%)] -translate-y-1/2 object-contain object-right opacity-95 min-[400px]:max-w-[40%] min-[480px]:max-w-[10.5rem] min-[640px]:-right-6 min-[640px]:max-w-[12rem] min-[960px]:max-w-[13rem]"
                 />
               </Link>
             </div>
@@ -1288,11 +1374,15 @@ export default function Storefront() {
 
         <section
           className={`${
-            isHomePage ? "rounded-3xl border border-white/60 liquid-glass p-4 min-[640px]:p-6" : ""
-          } grid grid-cols-2 gap-3 min-[640px]:grid-cols-3 min-[640px]:gap-4 min-[960px]:grid-cols-4 min-[1440px]:grid-cols-6 min-[1920px]:gap-5`}
+            isHomePage ? "rounded-2xl border border-white/60 liquid-glass p-2 min-[640px]:p-3" : ""
+          } grid grid-cols-4 gap-1.5 min-[480px]:gap-2 min-[640px]:gap-2.5 min-[900px]:grid-cols-7 min-[960px]:gap-3 min-[1440px]:gap-4`}
         >
-          {storeData.categories.map((category) => (
-            <CategoryCard key={category.id} category={category} />
+          {displayCategories.map((category) => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              onPodZakaz={category.slug === "custom" ? () => setActiveModal("preorder") : undefined}
+            />
           ))}
         </section>
 
@@ -1485,7 +1575,7 @@ export default function Storefront() {
                     onAddToCart={(selection) => addToCart(product, selection)}
                     onOpenDetails={(selection) => {
                       const variants = product.variants ?? [];
-                      const isIphoneCategory = product.categorySlug === "iphone";
+                      const isIphoneCategory = isIphoneLikeSlug(product.categorySlug);
                       if (variants.length) {
                         setSelectedProductColor(selection.color ?? variants[0]?.color ?? "");
                         if (isIphoneCategory) {
@@ -1629,35 +1719,35 @@ export default function Storefront() {
         }`}
       >
         <div
-          className={`h-full w-[86%] max-w-sm overflow-y-auto bg-white px-5 py-6 transition-transform duration-300 ease-out min-[640px]:w-[82%] min-[640px]:px-7 min-[640px]:py-7 ${
+          className={`h-full w-[86%] max-w-sm overflow-y-auto bg-white px-5 py-5 transition-transform duration-300 ease-out min-[640px]:w-[82%] min-[640px]:px-7 min-[640px]:py-7 ${
             mobileMenuOpen ? "translate-x-0" : "-translate-x-6"
           }`}
         >
-            <div className="mb-8 flex items-center justify-between">
+            <div className="mb-6 flex items-center justify-between min-[640px]:mb-8">
               <Link
                 href="/"
-                className="text-4xl font-bold tracking-tight text-zinc-950 min-[640px]:text-5xl"
+                className="text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="text-red-500">X</span> : STORE
               </Link>
               <button
                 type="button"
-                className="text-4xl font-light text-zinc-400"
+                className="text-3xl font-light text-zinc-400 min-[640px]:text-4xl"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 ×
               </button>
             </div>
 
-            <div className="space-y-5 text-[1.8rem] font-semibold leading-none text-zinc-900 min-[640px]:space-y-6 min-[640px]:text-[2rem]">
+            <div className="space-y-4 text-[1.35rem] font-semibold leading-none text-zinc-900 min-[390px]:text-[1.5rem] min-[640px]:space-y-5 min-[640px]:text-[1.7rem]">
               <Link
                 className="flex items-center gap-3 text-red-500"
                 href="/catalog"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-7 w-7" />
+                <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
                 <span className="text-zinc-900">Каталог</span>
               </Link>
               <button
@@ -1688,7 +1778,7 @@ export default function Storefront() {
               </a>
             </div>
 
-            <div className="mt-8 space-y-2 text-lg text-zinc-600 min-[640px]:mt-10 min-[640px]:text-xl">
+            <div className="mt-6 space-y-2 text-sm text-zinc-600 min-[390px]:text-base min-[640px]:mt-8 min-[640px]:text-lg">
               <Link href="/info#delivery" className="block" onClick={() => setMobileMenuOpen(false)}>
                 Доставка и оплата
               </Link>
@@ -1700,40 +1790,53 @@ export default function Storefront() {
               </Link>
             </div>
 
-            <div className="mt-8 space-y-1 text-[1.9rem] font-semibold leading-tight text-zinc-900 min-[640px]:mt-10 min-[640px]:text-[2rem]">
+            <div className="mt-6 space-y-1 text-[1.25rem] font-semibold leading-tight text-zinc-900 min-[390px]:text-[1.4rem] min-[640px]:mt-8 min-[640px]:text-[1.6rem]">
               <p>+7 (923) 696-93-77</p>
               <p>+7 (923) 686-93-77</p>
             </div>
 
-            <div className="mt-7 min-[640px]:mt-8">
-              <p className="text-[1.9rem] font-semibold leading-tight text-red-500 min-[640px]:text-[2rem]">Омск, ул. Гагарина 3</p>
-              <p className="mt-1 text-[1.9rem] font-semibold leading-tight text-red-500 min-[640px]:text-[2rem]">11:00 - 20:00</p>
+            <div className="mt-5 min-[640px]:mt-7">
+              <p className="text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">Омск, ул. Гагарина 3</p>
+              <p className="mt-1 text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">11:00 - 20:00</p>
             </div>
 
-            <div className="mt-8 flex gap-4">
+            <div className="mt-6 flex gap-3 min-[640px]:mt-8 min-[640px]:gap-4">
               <a
                 href="https://vk.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 min-[640px]:h-14 min-[640px]:w-14"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/vk.svg" alt="VK" className="h-7 w-7" />
+                <img src="/icon/vk.svg" alt="VK" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
               </a>
               <a
                 href="https://t.me"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 min-[640px]:h-14 min-[640px]:w-14"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/telegram.svg" alt="Telegram" className="h-7 w-7" />
+                <img src="/icon/telegram.svg" alt="Telegram" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
               </a>
             </div>
         </div>
       </div>
 
       {modal}
+
+      <Link
+        href="/cart"
+        className="fixed bottom-5 right-4 z-[35] flex h-14 w-14 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 text-white shadow-[0_8px_24px_rgba(0,0,0,0.28)] transition hover:bg-zinc-800 min-[960px]:hidden"
+        aria-label="Корзина"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6">
+          <path d="M6 7h15l-1.5 9h-12z" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M6 7 5 3H2" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="9.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
+          <circle cx="17.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
+        </svg>
+      </Link>
 
       {leadNotice ? (
         <div className="pointer-events-none fixed right-4 top-4 z-[60] w-[calc(100%-2rem)] max-w-sm min-[640px]:right-6 min-[640px]:top-6">
@@ -1762,3 +1865,11 @@ export default function Storefront() {
     </div>
   );
 }
+
+
+
+
+
+
+
+

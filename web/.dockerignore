@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+build
+coverage
+.turbo
+.pnp.*
+.yarn
+*.log
+.env
+.env.*
+.vercel
+.DS_Store
+Thumbs.db

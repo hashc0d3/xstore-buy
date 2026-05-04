@@ -43,6 +43,7 @@ export const STORE_KEY = "xstore-data-v1";
 export const defaultStoreData: StoreData = {
   categories: [
     { id: "c1", slug: "iphone", name: "iPhone", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
+    { id: "c7", slug: "iphone-used", name: "iPhone Б/У", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
     { id: "c2", slug: "macbook", name: "MacBook", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
     { id: "c3", slug: "apple-watch", name: "Apple Watch" },
     { id: "c4", slug: "ipad", name: "iPad", memoryOptions: ["128 ГБ", "256 ГБ", "512 ГБ"] },
@@ -77,6 +78,21 @@ export const defaultStoreData: StoreData = {
         "256 ГБ": 91990,
         "512 ГБ": 102990,
         "1 ТБ": 117990
+      },
+      imageUrl: "https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=600&q=80"
+    },
+    {
+      id: "p7",
+      categorySlug: "iphone-used",
+      name: "iPhone 14 Pro",
+      color: "Deep Purple",
+      description:
+        "Б/У устройство после диагностики: аккумулятор, дисплей и камеры проверены. Подходит для повседневных задач и экономии бюджета.",
+      basePrice: 72990,
+      memoryPrices: {
+        "256 ГБ": 72990,
+        "512 ГБ": 84990,
+        "1 ТБ": 96990
       },
       imageUrl: "https://images.unsplash.com/photo-1678685888221-cda773a3dcdb?w=600&q=80"
     },
