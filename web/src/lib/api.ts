@@ -1,6 +1,12 @@
 import { BuybackConfig, Product, StoreData, defaultStoreData } from "@/lib/store";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
+const VEGAN_DEFAULT_API = process.env.NODE_ENV === "production" ? "/api" : "http://localhost:4000/api";
+const fromEnv = process.env.NEXT_PUBLIC_API_URL?.trim();
+// Репозиторий vegan: в dev не используем localhost:4001 — это API второго проекта; $env в PowerShell сильнее .env.local.
+const API_URL =
+  process.env.NODE_ENV === "development" && fromEnv?.includes("localhost:4001")
+    ? VEGAN_DEFAULT_API
+    : fromEnv || VEGAN_DEFAULT_API;
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_URL}${path}`, {

@@ -1,0 +1,29 @@
+services:
+  api:
+    build:
+      context: ./api
+    environment:
+      PORT: "4000"
+      DATABASE_URL: "file:/data/dev.db"
+      CORS_ORIGIN: "http://155.117.46.144:8080"
+    volumes:
+      - api-data:/data
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./web
+      args:
+        NEXT_PUBLIC_API_URL: "/api"
+    environment:
+      PORT: "3000"
+      HOSTNAME: "0.0.0.0"
+      API_INTERNAL_URL: "http://api:4000"
+    ports:
+      - "8080:3000"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  api-data:

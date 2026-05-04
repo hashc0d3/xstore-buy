@@ -8,6 +8,15 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com"
       }
     ]
+  },
+  async rewrites() {
+    const apiUrl = process.env.API_INTERNAL_URL ?? "http://localhost:4000";
+    return [
+      {
+        source: "/api/:path*",
+        destination: `${apiUrl}/api/:path*`
+      }
+    ];
   }
 };
 

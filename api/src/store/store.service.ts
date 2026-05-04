@@ -45,6 +45,7 @@ export class StoreService {
     if (count === 0) {
       const categories = [
         { slug: "iphone", name: "iPhone", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
+        { slug: "iphone-used", name: "iPhone Б/У", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
         { slug: "macbook", name: "MacBook", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
         { slug: "apple-watch", name: "Apple Watch", memoryOptions: [] },
         { slug: "ipad", name: "iPad", memoryOptions: ["128 ГБ", "256 ГБ", "512 ГБ"] },
@@ -63,6 +64,17 @@ export class StoreService {
       }
     }
 
+    const iphoneUsed = await this.prisma.category.findUnique({ where: { slug: "iphone-used" } });
+    if (!iphoneUsed) {
+      await this.prisma.category.create({
+        data: {
+          slug: "iphone-used",
+          name: "iPhone Б/У",
+          memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"].join("|")
+        }
+      });
+    }
+
     await this.prisma.buybackConfig.upsert({
       where: { id: "main" },
       create: {
@@ -77,9 +89,10 @@ export class StoreService {
   }
 
   async getStoreData() {
-    const categories = await this.prisma.category.findMany({
+    const rawCategories = await this.prisma.category.findMany({
       orderBy: { createdAt: "asc" }
     });
+    const categories = this.sortCategoriesForStore(rawCategories);
     const products = await this.prisma.product.findMany({
       include: { category: true },
       orderBy: { createdAt: "desc" }
@@ -326,5 +339,17 @@ export class StoreService {
       .trim()
       .replace(/[^a-z0-9а-яё]+/gi, "-")
       .replace(/^-+|-+$/g, "");
+  }
+
+  private sortCategoriesForStore<T extends { slug: string }>(items: T[]): T[] {
+    const order = ["iphone", "iphone-used", "macbook", "apple-watch", "ipad", "airpods", "custom"];
+    const rank = (slug: string) => {
+      const idx = order.indexOf(slug);
+      return idx === -1 ? 800 : idx;
+    };
+    return [...items].sort((a, b) => {
+      const d = rank(a.slug) - rank(b.slug);
+      return d !== 0 ? d : a.slug.localeCompare(b.slug);
+    });
   }
 }

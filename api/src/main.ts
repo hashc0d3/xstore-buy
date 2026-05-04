@@ -9,7 +9,11 @@ async function bootstrap() {
   app.use(json({ limit: "20mb" }));
   app.use(urlencoded({ extended: true, limit: "20mb" }));
   app.enableCors({
-    origin: process.env.CORS_ORIGIN?.split(",").map((item) => item.trim()) ?? ["http://localhost:3000"],
+    origin:
+      process.env.CORS_ORIGIN?.split(",").map((item) => item.trim()) ?? [
+        "http://localhost:3000",
+        "http://localhost:3001"
+      ],
     credentials: true
   });
   app.setGlobalPrefix("api");
