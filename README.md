@@ -13,7 +13,15 @@ Docker-deploy for the main storefront.
 docker compose up -d --build
 ```
 
-Caddy listens on ports `80` and `443`, proxies traffic to the Next.js container, and issues the SSL certificate automatically.
+The web container is published on `127.0.0.1:8080`. Use nginx on the host as the public reverse proxy and issue SSL with certbot:
+
+```bash
+sudo cp nginx/xstore55.ru.conf /etc/nginx/sites-available/xstore55.ru
+sudo ln -sf /etc/nginx/sites-available/xstore55.ru /etc/nginx/sites-enabled/xstore55.ru
+sudo nginx -t
+sudo systemctl reload nginx
+sudo certbot --nginx -d xstore55.ru
+```
 
 ## Update
 

@@ -1,4 +1,0 @@
-xstore55.ru {
-	encode zstd gzip
-	reverse_proxy web:3000
-}
