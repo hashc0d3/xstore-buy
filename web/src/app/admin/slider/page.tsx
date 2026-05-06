@@ -130,8 +130,12 @@ export default function AdminSliderPage() {
       const saved = await upsertSliderPhotos(payload);
       setPhotos(saved.map((item, index) => ({ ...item, position: index })));
       setStatus("Слайдер сохранен.");
-    } catch {
-      setStatus("Не удалось сохранить слайдер. Проверьте API и размер фото.");
+    } catch (error) {
+      setStatus(
+        error instanceof Error
+          ? `Не удалось сохранить слайдер: ${error.message}`
+          : "Не удалось сохранить слайдер. Проверьте API и размер фото."
+      );
     } finally {
       setIsSaving(false);
     }

@@ -112,9 +112,7 @@ export class StoreService {
       include: { category: true },
       orderBy: { createdAt: "desc" }
     });
-    const buyback = await this.prisma.buybackConfig.findUnique({
-      where: { id: "main" }
-    });
+    const buyback = await this.getBuybackConfigRecordSafe();
     const sliderPhotos = await this.getSliderPhotosSafe();
 
     return {
@@ -126,9 +124,7 @@ export class StoreService {
   }
 
   async getBuybackConfig(): Promise<BuybackConfigPayload> {
-    const buyback = await this.prisma.buybackConfig.findUnique({
-      where: { id: "main" }
-    });
+    const buyback = await this.getBuybackConfigRecordSafe();
     return this.toBuybackConfig(buyback);
   }
 
@@ -278,6 +274,16 @@ export class StoreService {
       simTypes: this.fromPipeSeparated(item.simTypes),
       conditions: this.fromPipeSeparated(item.conditions)
     };
+  }
+
+  private async getBuybackConfigRecordSafe(): Promise<{ models: string; memories: string; simTypes: string; conditions: string } | null> {
+    try {
+      return await this.prisma.buybackConfig.findUnique({
+        where: { id: "main" }
+      });
+    } catch {
+      return null;
+    }
   }
 
   private async getSliderPhotos(): Promise<StoreSliderPhoto[]> {
