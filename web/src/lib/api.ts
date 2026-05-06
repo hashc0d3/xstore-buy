@@ -19,7 +19,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   });
 
   if (!res.ok) {
-    throw new Error(`API error ${res.status}`);
+    throw new Error(`API error ${res.status}: ${res.statusText}`);
   }
 
   return (await res.json()) as T;

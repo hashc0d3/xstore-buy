@@ -50,7 +50,11 @@ export class StoreService {
   constructor(private readonly prisma: PrismaService) {}
 
   async ensureSeedData() {
-    await this.ensureSliderPhotoTable();
+    try {
+      await this.ensureSliderPhotoTable();
+    } catch {
+      // The store must remain available even if the optional gallery table needs manual migration.
+    }
 
     const count = await this.prisma.category.count();
     if (count === 0) {
@@ -100,8 +104,6 @@ export class StoreService {
   }
 
   async getStoreData() {
-    await this.ensureSliderPhotoTable();
-
     const rawCategories = await this.prisma.category.findMany({
       orderBy: { createdAt: "asc" }
     });
@@ -113,7 +115,7 @@ export class StoreService {
     const buyback = await this.prisma.buybackConfig.findUnique({
       where: { id: "main" }
     });
-    const sliderPhotos = await this.getSliderPhotos();
+    const sliderPhotos = await this.getSliderPhotosSafe();
 
     return {
       categories: categories.map((item) => this.toCategory(item)),
@@ -289,8 +291,16 @@ export class StoreService {
     return rows.map((item) => this.toSliderPhoto(item));
   }
 
+  private async getSliderPhotosSafe(): Promise<StoreSliderPhoto[]> {
+    try {
+      return await this.getSliderPhotos();
+    } catch {
+      return [];
+    }
+  }
+
   private async ensureSliderPhotoTable(): Promise<void> {
-    await this.prisma.$executeRaw`
+    await this.prisma.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS "SliderPhoto" (
         "id" TEXT NOT NULL PRIMARY KEY,
         "title" TEXT,
@@ -299,7 +309,7 @@ export class StoreService {
         "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         "updatedAt" DATETIME NOT NULL
       )
-    `;
+    `);
   }
 
   private toSliderPhoto(item: { id: string; title: string | null; imageUrl: string; position: number }): StoreSliderPhoto {
