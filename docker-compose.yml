@@ -15,6 +15,7 @@ services:
       context: ./web
       args:
         NEXT_PUBLIC_API_URL: "/api"
+        API_INTERNAL_URL: "http://api:4000"
     environment:
       PORT: "3000"
       HOSTNAME: "0.0.0.0"
