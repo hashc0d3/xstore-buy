@@ -1,4 +1,4 @@
-import { BuybackConfig, Product, StoreData, defaultStoreData } from "@/lib/store";
+import { BuybackConfig, Product, SliderPhoto, StoreData, defaultStoreData } from "@/lib/store";
 
 const VEGAN_DEFAULT_API = process.env.NODE_ENV === "production" ? "/api" : "http://localhost:4000/api";
 const fromEnv = process.env.NEXT_PUBLIC_API_URL?.trim();
@@ -127,6 +127,13 @@ export async function upsertBuybackConfig(input: BuybackConfig): Promise<void> {
   await request("/store/buyback", {
     method: "POST",
     body: JSON.stringify(input)
+  });
+}
+
+export async function upsertSliderPhotos(input: SliderPhoto[]): Promise<SliderPhoto[]> {
+  return request<SliderPhoto[]>("/store/slider", {
+    method: "POST",
+    body: JSON.stringify({ photos: input })
   });
 }
 

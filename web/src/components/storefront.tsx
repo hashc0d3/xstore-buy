@@ -444,6 +444,7 @@ export default function Storefront() {
   const [selectedProductMemory, setSelectedProductMemory] = useState("");
   const [selectedProductColor, setSelectedProductColor] = useState("");
   const [selectedProductSim, setSelectedProductSim] = useState("");
+  const [reviewSlideIndex, setReviewSlideIndex] = useState(0);
   const [orderSelection, setOrderSelection] = useState<{
     productName?: string;
     color?: string;
@@ -480,6 +481,18 @@ export default function Storefront() {
   useEffect(() => {
     void fetchStoreData().then((remote) => setStoreData(remote));
   }, []);
+
+  const reviewPhotos = useMemo(() => {
+    return (storeData.sliderPhotos ?? []).filter((photo) => photo.imageUrl);
+  }, [storeData.sliderPhotos]);
+
+  useEffect(() => {
+    if (!reviewPhotos.length) {
+      setReviewSlideIndex(0);
+      return;
+    }
+    setReviewSlideIndex((index) => Math.min(index, reviewPhotos.length - 1));
+  }, [reviewPhotos.length]);
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
@@ -578,6 +591,22 @@ export default function Storefront() {
       return haystack.includes(query);
     });
   }, [categoriesBySlug, searchQuery, visibleProducts]);
+
+  const visibleReviewPhotos = useMemo(() => {
+    if (!reviewPhotos.length) return [];
+    const total = reviewPhotos.length;
+    const slots = Math.min(5, total);
+    const offset = Math.floor(slots / 2);
+
+    return Array.from({ length: slots }, (_, slot) => {
+      const index = (reviewSlideIndex - offset + slot + total) % total;
+      return {
+        photo: reviewPhotos[index],
+        index,
+        isCenter: slot === offset
+      };
+    });
+  }, [reviewPhotos, reviewSlideIndex]);
 
   const cartCount = useMemo(() => {
     return cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -1575,6 +1604,69 @@ export default function Storefront() {
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-transparent" />
             </a>
+
+            {reviewPhotos.length ? (
+              <div className="mt-4 overflow-hidden rounded-3xl border border-white/60 liquid-glass p-3 min-[640px]:mt-5 min-[640px]:p-4">
+                <div className="mb-3 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                  <span />
+                  <h4 className="text-center text-xl font-bold text-zinc-900 min-[640px]:text-2xl">Довольные клиенты</h4>
+                  <p className="shrink-0 text-sm font-semibold text-zinc-500">
+                    {reviewSlideIndex + 1} / {reviewPhotos.length}
+                  </p>
+                </div>
+
+                <div className="relative rounded-2xl border border-white/70 bg-gradient-to-br from-white/85 via-red-50/55 to-zinc-100/85 px-11 py-5 shadow-inner">
+                  <div className="block min-[640px]:grid min-[640px]:grid-cols-5 min-[640px]:items-center min-[640px]:gap-3">
+                    {visibleReviewPhotos.map(({ photo, index, isCenter }) => (
+                      <button
+                        key={`${photo.id}-${index}`}
+                        type="button"
+                        className={`group relative overflow-hidden rounded-2xl transition-all duration-300 ${
+                          isCenter
+                            ? "block h-64 w-full shadow-[0_18px_36px_rgba(0,0,0,0.22)] ring-2 ring-red-500 min-[640px]:h-80 min-[640px]:scale-105"
+                            : "hidden opacity-70 hover:opacity-95 min-[640px]:block min-[640px]:h-56"
+                        }`}
+                        onClick={() => setReviewSlideIndex(index)}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={photo.imageUrl} alt={photo.title ?? "Фото X:STORE"} className="h-full w-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="absolute left-3 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-xl font-semibold text-zinc-950 shadow-lg transition hover:bg-white"
+                    aria-label="Предыдущее фото"
+                    onClick={() => setReviewSlideIndex((index) => (index === 0 ? reviewPhotos.length - 1 : index - 1))}
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-xl font-semibold text-zinc-950 shadow-lg transition hover:bg-white"
+                    aria-label="Следующее фото"
+                    onClick={() => setReviewSlideIndex((index) => (index + 1) % reviewPhotos.length)}
+                  >
+                    ›
+                  </button>
+                </div>
+
+                <div className="mt-3 flex justify-center gap-1.5">
+                  {reviewPhotos.map((photo, index) => (
+                    <button
+                      key={photo.id}
+                      type="button"
+                      className={`h-2 rounded-full transition-all ${
+                        reviewSlideIndex === index ? "w-7 bg-red-500" : "w-2 bg-zinc-300 hover:bg-zinc-400"
+                      }`}
+                      aria-label={`Показать фото ${index + 1}`}
+                      onClick={() => setReviewSlideIndex(index)}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </section>
         ) : null}
 

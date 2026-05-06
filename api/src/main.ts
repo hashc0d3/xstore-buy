@@ -6,8 +6,8 @@ import { StoreService } from "./store/store.service";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(json({ limit: "20mb" }));
-  app.use(urlencoded({ extended: true, limit: "20mb" }));
+  app.use(json({ limit: "80mb" }));
+  app.use(urlencoded({ extended: true, limit: "80mb" }));
   app.enableCors({
     origin:
       process.env.CORS_ORIGIN?.split(",").map((item) => item.trim()) ?? [

@@ -412,6 +412,9 @@ export default function AdminPage() {
             <p className="text-sm text-zinc-500">Категории и товары витрины</p>
           </div>
           <div className="flex items-center gap-2">
+            <Link href="/admin/slider" className="rounded-xl border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700">
+              Слайдер
+            </Link>
             <Link href="/admin/buyback" className="rounded-xl border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700">
               Выкуп
             </Link>
