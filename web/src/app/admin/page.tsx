@@ -13,7 +13,11 @@ function createSlug(value: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-const IPHONE_CATEGORY_SLUG = "iphone";
+const IPHONE_LIKE_SLUGS = new Set(["iphone", "iphone-used"]);
+
+function isIphoneLikeCategory(slug: string): boolean {
+  return IPHONE_LIKE_SLUGS.has(slug);
+}
 
 export default function AdminPage() {
   const [data, setData] = useState<StoreData>(defaultStoreData);
@@ -38,7 +42,7 @@ export default function AdminPage() {
 
   const categories = data.categories;
   const products = data.products;
-  const isIphoneCategory = productCategory === IPHONE_CATEGORY_SLUG;
+  const isIphoneCategory = isIphoneLikeCategory(productCategory);
 
   const productsByCategory = useMemo(() => {
     return categories.map((cat) => ({
@@ -676,7 +680,7 @@ export default function AdminPage() {
                 ))}
               </div>
               <p className="text-xs text-zinc-500">
-                Для iPhone: создайте цвета, загрузите фото, добавьте наборы памяти и SIM. Для остальных категорий: только цвет, фото и цена варианта.
+                Для iPhone и iPhone Б/У: создайте цвета, загрузите фото, добавьте наборы памяти и SIM. Для остальных категорий: только цвет, фото и цена варианта.
               </p>
               {productFormError ? <p className="text-sm font-medium text-red-600">{productFormError}</p> : null}
               <div className="flex items-center gap-2">

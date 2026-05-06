@@ -215,78 +215,92 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
+  const [footerMenuOpen, setFooterMenuOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const footerLinks = [
+    { href: "/catalog", label: "Каталог" },
+    { href: "/assessment", label: "Выкуп" },
+    { href: "/cart", label: "Корзина" },
+    { href: "/info#delivery", label: "Доставка и оплата" },
+    { href: "/info#return", label: "Возврат и обмен" },
+    { href: "/info#warranty", label: "Гарантия и проверка" }
+  ];
+
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 240);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <footer className="mt-14 bg-[#111217] text-zinc-300">
-      <div className="mx-auto grid w-full max-w-[1920px] grid-cols-1 gap-8 px-4 py-12 min-[640px]:grid-cols-2 min-[640px]:px-6 min-[640px]:py-14 min-[960px]:grid-cols-4 min-[960px]:px-8 min-[960px]:py-16 min-[1440px]:px-12 min-[1920px]:px-16">
-        <div>
-          <div className="mb-6 text-3xl font-bold text-white min-[640px]:mb-8 min-[640px]:text-4xl">
-            <span className="text-red-500">X</span> : STORE
-          </div>
-          <p className="text-sm text-zinc-500">ИП ИНН</p>
-          <div className="mt-8 space-y-2 text-sm text-zinc-500 min-[640px]:mt-14">
-            <Link href="/policy" className="block hover:text-zinc-300">
-              Политика конфиденциальности
-            </Link>
-            <Link href="/offer" className="block hover:text-zinc-300">
-              Публичная оферта
-            </Link>
-          </div>
+    <footer className="mt-14 bg-[#111112] text-zinc-300">
+      <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-10 text-center min-[640px]:max-w-xl min-[960px]:max-w-5xl min-[960px]:py-14">
+        <Link href="/" className="mb-8 inline-flex items-center text-2xl font-bold tracking-tight text-white min-[640px]:text-3xl">
+          <span className="text-red-500">X</span> : STORE
+        </Link>
+
+        <div className="w-full max-w-lg">
+          <button
+            type="button"
+            className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-transparent px-4 py-3 text-left text-sm font-medium text-zinc-100 transition hover:border-white/20"
+            aria-expanded={footerMenuOpen}
+            onClick={() => setFooterMenuOpen((open) => !open)}
+          >
+            Меню
+            <span className="inline-flex h-5 w-5 items-center justify-center" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4">
+                <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          </button>
+          {footerMenuOpen ? (
+            <div className="mt-3 space-y-1 text-left">
+              {footerLinks.map((item) => (
+                <Link key={item.href} href={item.href} className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          ) : null}
         </div>
 
-        <div>
-          <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Навигация</h4>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/catalog" className="transition hover:text-zinc-100">
-                Каталог
-              </Link>
-            </li>
-            <li>
-              <Link href="/assessment" className="transition hover:text-zinc-100">
-                Выкуп
-              </Link>
-            </li>
-            <li>
-              <Link href="/cart" className="transition hover:text-zinc-100">
-                Корзина
-              </Link>
-            </li>
-            <li>
-              <Link href="/info" className="transition hover:text-zinc-100">
-                Информация
-              </Link>
-            </li>
-          </ul>
+        <div className="mt-10 flex w-full max-w-lg flex-wrap items-center justify-center gap-4">
+          <a href="tel:+79236969377" className="inline-flex h-12 items-center gap-2 rounded-xl border border-white/10 px-4 text-sm font-semibold text-zinc-100">
+            <span aria-hidden="true">☎</span>
+            +7 (923) 696-93-77
+          </a>
+          <a href="https://vk.com" target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="VK">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icon/vk.svg" alt="" className="h-5 w-5" />
+          </a>
+          <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="Telegram">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icon/telegram.svg" alt="" className="h-5 w-5" />
+          </a>
         </div>
 
-        <div>
-          <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Покупателям</h4>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/info#delivery" className="transition hover:text-zinc-100">
-                Доставка и оплата
-              </Link>
-            </li>
-            <li>
-              <Link href="/info#return" className="transition hover:text-zinc-100">
-                Возврат и обмен
-              </Link>
-            </li>
-            <li>
-              <Link href="/info#warranty" className="transition hover:text-zinc-100">
-                Гарантия и проверка
-              </Link>
-            </li>
-          </ul>
+        <div className="mt-4 flex w-full max-w-lg items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-sm text-zinc-300">
+          <span aria-hidden="true">⌖</span>
+          Омск, ул. Гагарина 3
         </div>
 
-        <div>
-          <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Контакты</h4>
-          <p className="mb-2 text-xl font-semibold text-white">Омск, ул. Гагарина 3</p>
-          <p className="mb-6 text-red-500">11:00 - 20:00</p>
-          <p className="text-lg">+7 (923) 696-93-77</p>
-          <p className="mb-5 text-lg">+7 (923) 686-93-77</p>
-        </div>
+        <p className="mt-10 text-sm text-zinc-500">© 2026 Все права защищены.</p>
+        <Link href="/policy" className="mt-2 text-xs font-semibold uppercase tracking-wide text-zinc-500 hover:text-zinc-300">
+          Политика конфиденциальности
+        </Link>
+
+        {showScrollTop ? (
+          <button
+            type="button"
+            className="fixed bottom-5 right-5 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-red-500 text-xl font-semibold leading-none text-white shadow-[0_10px_28px_rgba(239,68,68,0.32)] transition hover:bg-red-600"
+            aria-label="Наверх"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            ↑
+          </button>
+        ) : null}
       </div>
     </footer>
   );
