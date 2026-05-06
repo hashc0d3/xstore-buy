@@ -1168,17 +1168,53 @@ export default function Storefront() {
               Статьи
             </a>
           </nav>
-          <button
-            type="button"
-            className={`inline-flex items-center gap-2 rounded-[1.2rem] border border-zinc-300 bg-[#f2ecec] px-3 py-2 text-lg font-semibold leading-none text-[#3f2430] shadow-sm transition-all duration-300 min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:py-2.5 min-[640px]:text-xl min-[960px]:hidden ${
-              shouldSplitHeader ? "ring-1 ring-white/60" : ""
-            }`}
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5 w-5 min-[640px]:h-5.5 min-[640px]:w-5.5" />
-            Меню
-          </button>
+          <div className="flex shrink-0 items-center gap-2 min-[960px]:hidden">
+            <Link
+              href="/cart"
+              className={`relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-900 shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:w-12 ${
+                shouldSplitHeader ? "ring-1 ring-white/60" : ""
+              }`}
+              aria-label="Корзина"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5.5 w-5.5">
+                <path d="M6 7h15l-1.5 9h-12z" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M6 7 5 3H2" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="9.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
+                <circle cx="17.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
+              </svg>
+              <span className="absolute -right-1 -top-1 inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                {cartCount}
+              </span>
+            </Link>
+            <button
+              type="button"
+              className={`inline-flex h-11 items-center gap-2 rounded-[1.2rem] border border-zinc-300 bg-[#f2ecec] px-3 text-sm font-semibold leading-none text-[#3f2430] shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:text-base ${
+                shouldSplitHeader ? "ring-1 ring-white/60" : ""
+              }`}
+              aria-label={mobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen((open) => !open)}
+            >
+              <span className="relative h-4 w-5">
+                <span
+                  className={`absolute left-0 top-0 h-0.5 w-5 rounded-full bg-current transition ${
+                    mobileMenuOpen ? "translate-y-[7px] rotate-45" : ""
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-[7px] h-0.5 w-5 rounded-full bg-current transition ${
+                    mobileMenuOpen ? "opacity-0" : ""
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-[14px] h-0.5 w-5 rounded-full bg-current transition ${
+                    mobileMenuOpen ? "-translate-y-[7px] -rotate-45" : ""
+                  }`}
+                />
+              </span>
+              Меню
+            </button>
+          </div>
           <div
             className={`hidden h-10 items-center gap-2 transition-all duration-300 min-[960px]:flex`}
           >
@@ -1729,10 +1765,12 @@ export default function Storefront() {
               </Link>
               <button
                 type="button"
-                className="text-3xl font-light text-zinc-400 min-[640px]:text-4xl"
+                className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-900"
+                aria-label="Закрыть меню"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                ×
+                <span className="absolute h-0.5 w-5 rotate-45 rounded-full bg-current" />
+                <span className="absolute h-0.5 w-5 -rotate-45 rounded-full bg-current" />
               </button>
             </div>
 
@@ -1820,19 +1858,6 @@ export default function Storefront() {
       </div>
 
       {modal}
-
-      <Link
-        href="/cart"
-        className="fixed bottom-5 right-4 z-[35] flex h-14 w-14 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 text-white shadow-[0_8px_24px_rgba(0,0,0,0.28)] transition hover:bg-zinc-800 min-[960px]:hidden"
-        aria-label="Корзина"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6">
-          <path d="M6 7h15l-1.5 9h-12z" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M6 7 5 3H2" strokeLinecap="round" strokeLinejoin="round" />
-          <circle cx="9.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
-          <circle cx="17.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
-        </svg>
-      </Link>
 
       {leadNotice ? (
         <div className="pointer-events-none fixed right-4 top-4 z-[60] w-[calc(100%-2rem)] max-w-sm min-[640px]:right-6 min-[640px]:top-6">
