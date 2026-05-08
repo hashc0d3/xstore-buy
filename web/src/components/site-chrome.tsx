@@ -65,21 +65,34 @@ export function SiteHeader() {
   return (
     <>
       <div className="hidden border-b border-white/5 bg-[#111112] min-[960px]:block">
-        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between px-8 py-3 text-sm text-zinc-400 min-[1440px]:px-12 min-[1920px]:px-16">
-          <div className="flex gap-5">
+        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between gap-6 px-8 py-3 text-[13px] font-medium tracking-[0.01em] text-zinc-400 min-[1440px]:px-12 min-[1920px]:px-16">
+          <div className="flex items-center gap-4">
             <Link href="/info#delivery" className="transition hover:text-white">
               Доставка и оплата
             </Link>
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-white/20" />
             <Link href="/info#return" className="transition hover:text-white">
               Возврат и обмен
             </Link>
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-white/20" />
             <Link href="/info#warranty" className="transition hover:text-white">
               Гарантия и проверка
             </Link>
           </div>
-          <div className="flex gap-5 text-red-400">
-            <span>Г.Москва 2 Ямская 2с1</span>
-            <span>12:00 - 20:00</span>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/10 px-3 py-1 text-red-300 ring-1 ring-inset ring-red-500/20">
+              <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
+                <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+              </svg>
+              Г.Москва 2 Ямская 2с1
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-emerald-300 ring-1 ring-inset ring-emerald-500/20">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              Сейчас открыто · 12:00–20:00
+            </span>
           </div>
         </div>
       </div>
@@ -90,11 +103,19 @@ export function SiteHeader() {
             SOTIK<span className="text-red-500">77</span>
           </Link>
 
-          <nav className="hidden items-center gap-5 text-zinc-300 min-[960px]:flex min-[1440px]:gap-8 min-[1920px]:text-lg">
+          <nav className="hidden h-11 items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] px-1.5 text-sm font-medium text-zinc-300 backdrop-blur-xl min-[960px]:flex min-[1920px]:text-base">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
-                <Link key={item.href} href={item.href} className={isActive ? "text-red-400" : "transition hover:text-white"}>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
+                    isActive
+                      ? "bg-red-500/15 text-red-300 ring-1 ring-inset ring-red-500/30"
+                      : "hover:bg-white/10 hover:text-white"
+                  }`}
+                >
                   {item.label}
                 </Link>
               );

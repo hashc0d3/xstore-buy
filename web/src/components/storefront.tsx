@@ -1138,21 +1138,34 @@ export default function Storefront() {
   return (
     <div className="min-h-screen bg-[#f4f4f6] text-zinc-900">
       <div className="hidden border-b border-white/5 bg-[#111112] min-[960px]:block">
-        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between px-8 py-3 text-sm text-zinc-400 min-[1440px]:px-12 min-[1920px]:px-16">
-          <div className="flex gap-5">
+        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between gap-6 px-8 py-3 text-[13px] font-medium tracking-[0.01em] text-zinc-400 min-[1440px]:px-12 min-[1920px]:px-16">
+          <div className="flex items-center gap-4">
             <Link href="/info#delivery" className="transition hover:text-white">
               Доставка и оплата
             </Link>
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-white/20" />
             <Link href="/info#return" className="transition hover:text-white">
               Возврат и обмен
             </Link>
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-white/20" />
             <Link href="/info#warranty" className="transition hover:text-white">
               Гарантия и проверка
             </Link>
           </div>
-          <div className="flex gap-5 text-red-400">
-            <span>Г.Москва 2 Ямская 2с1</span>
-            <span>12:00 - 20:00</span>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/10 px-3 py-1 text-red-300 ring-1 ring-inset ring-red-500/20">
+              <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
+                <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+              </svg>
+              Г.Москва 2 Ямская 2с1
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-emerald-300 ring-1 ring-inset ring-emerald-500/20">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              Сейчас открыто · 12:00–20:00
+            </span>
           </div>
         </div>
       </div>
@@ -1174,25 +1187,40 @@ export default function Storefront() {
             SOTIK<span className="text-red-500">77</span>
           </Link>
           <nav
-            className={`hidden h-10 items-center gap-5 rounded-full px-4 text-sm font-medium text-zinc-300 transition-all duration-300 min-[960px]:flex min-[1440px]:gap-7 min-[1920px]:text-base ${
-              shouldSplitHeader ? "bg-white/5" : ""
-            }`}
+            className="hidden h-11 items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] px-1.5 text-sm font-medium text-zinc-300 backdrop-blur-xl transition-all duration-300 min-[960px]:flex min-[1920px]:text-base"
           >
-            <Link className="inline-flex items-center gap-2 transition hover:text-white" href="/catalog">
+            <Link
+              className="inline-flex h-9 items-center gap-2 rounded-full px-3 transition hover:bg-white/10 hover:text-white min-[1440px]:px-4"
+              href="/catalog"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-4 w-4 invert" />
               Каталог
             </Link>
-            <button className="transition hover:text-white" type="button" onClick={() => setActiveModal("tradein")}>
+            <button
+              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white/10 hover:text-white min-[1440px]:px-4"
+              type="button"
+              onClick={() => setActiveModal("tradein")}
+            >
               Trade-in
             </button>
-            <Link className="transition hover:text-white" href="/assessment">
+            <Link
+              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white/10 hover:text-white min-[1440px]:px-4"
+              href="/assessment"
+            >
               Выкуп
             </Link>
-            <button className="transition hover:text-white" type="button" onClick={() => setActiveModal("reviews")}>
+            <button
+              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white/10 hover:text-white min-[1440px]:px-4"
+              type="button"
+              onClick={() => setActiveModal("reviews")}
+            >
               Отзывы
             </button>
-            <a className="transition hover:text-white" href="#">
+            <a
+              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white/10 hover:text-white min-[1440px]:px-4"
+              href="#"
+            >
               Статьи
             </a>
           </nav>
@@ -1243,15 +1271,28 @@ export default function Storefront() {
               Меню
             </button>
           </div>
-          <div
-            className={`hidden h-10 items-center gap-2 transition-all duration-300 min-[960px]:flex`}
-          >
+          <div className="hidden h-11 items-center gap-2 transition-all duration-300 min-[960px]:flex">
             <Link
               href="/cart"
-              className="inline-flex h-10 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 text-xs font-semibold min-[1200px]:text-sm text-zinc-100 transition hover:border-white/20 hover:bg-white/10"
+              className="group relative inline-flex h-10 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 text-xs font-semibold text-zinc-100 transition hover:border-white/20 hover:bg-white/10 min-[1200px]:text-sm"
+              aria-label="Корзина"
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                aria-hidden="true"
+                className="h-4 w-4"
+              >
+                <path d="M6 7h15l-1.5 9h-12z" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M6 7 5 3H2" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="9.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
+                <circle cx="17.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
+              </svg>
               Корзина
-              <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] text-white">
+              <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white shadow-[0_4px_12px_rgba(239,68,68,0.45)]">
                 {cartCount}
               </span>
             </Link>
@@ -1259,16 +1300,26 @@ export default function Storefront() {
               href="https://t.me/yaroslav_g77"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:border-white/20 hover:bg-white/10"
+              aria-label="Telegram"
+              className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-zinc-100 transition hover:-translate-y-0.5 hover:border-[#229ED9]/60 hover:bg-[#229ED9]/15 hover:shadow-[0_8px_24px_rgba(34,158,217,0.35)]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icon/telegram.svg" alt="Telegram" className="h-4.5 w-4.5 invert" />
+              <img src="/icon/telegram.svg" alt="" aria-hidden="true" className="h-4.5 w-4.5 invert" />
             </a>
-            <div className="text-right text-[11px] font-medium leading-tight text-zinc-200 min-[1200px]:text-xs min-[1440px]:text-sm">
-              <p>+7 (923) 696-96-82</p>
-              <p className="text-zinc-400">Время работы: 12:00 - 20:00</p>
-              <p className="text-zinc-400">Выкуп техники: круглосуточно</p>
-            </div>
+            <a
+              href="tel:+79236969682"
+              className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-zinc-100 transition hover:border-white/20 hover:bg-white/10 min-[1200px]:inline-flex"
+            >
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-red-500/15 text-red-400">
+                <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
+                  <path d="M5.5 3a1.5 1.5 0 0 1 1.42 1.02l.7 2.07a1.5 1.5 0 0 1-.4 1.59l-1.04.97a11 11 0 0 0 4.17 4.17l.97-1.04a1.5 1.5 0 0 1 1.59-.4l2.07.7A1.5 1.5 0 0 1 17 13.5V16a1.5 1.5 0 0 1-1.5 1.5C8.6 17.5 2.5 11.4 2.5 4.5A1.5 1.5 0 0 1 4 3h1.5Z" />
+                </svg>
+              </span>
+              <span className="flex flex-col text-left leading-tight">
+                <span className="text-[13px] font-semibold tracking-[0.01em] text-white">+7 (923) 696-96-82</span>
+                <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-zinc-400">Выкуп · круглосуточно</span>
+              </span>
+            </a>
           </div>
         </div>
       </header>
