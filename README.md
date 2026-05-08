@@ -15,6 +15,8 @@ docker compose up -d --build
 
 The app exposes only local port `127.0.0.1:8083` (change with `WEB_PORT` env var) and is expected to run behind system `nginx`.
 
+This does not require changing the `betatool` application itself. Only the shared nginx gateway config must include the `sotik77.ru` vhost.
+
 Example `nginx` vhost:
 
 ```nginx
@@ -52,6 +54,8 @@ server {
     }
 }
 ```
+
+The same config is available in `deploy/nginx/sotik77.conf`.
 
 ## Update
 
