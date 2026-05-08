@@ -4,7 +4,7 @@ Docker-deploy for the main storefront.
 
 ## Production URL
 
-- Web: `https://sotik77.ru`
+- Web: `https://xstore55.ru`
 - API: proxied internally through `/api`
 
 ## Deploy
@@ -13,49 +13,15 @@ Docker-deploy for the main storefront.
 docker compose up -d --build
 ```
 
-The app exposes only local port `127.0.0.1:8083` (change with `WEB_PORT` env var) and is expected to run behind system `nginx`.
+The web container is published on `127.0.0.1:8080`. Use nginx on the host as the public reverse proxy and issue SSL with certbot:
 
-This does not require changing the `betatool` application itself. Only the shared nginx gateway config must include the `sotik77.ru` vhost.
-
-Example `nginx` vhost:
-
-```nginx
-server {
-    listen 80;
-    server_name sotik77.ru www.sotik77.ru;
-    return 301 https://sotik77.ru$request_uri;
-}
-
-server {
-    listen 443 ssl http2;
-    server_name www.sotik77.ru;
-    return 301 https://sotik77.ru$request_uri;
-
-    ssl_certificate /etc/letsencrypt/live/sotik77.ru/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/sotik77.ru/privkey.pem;
-}
-
-server {
-    listen 443 ssl http2;
-    server_name sotik77.ru;
-
-    ssl_certificate /etc/letsencrypt/live/sotik77.ru/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/sotik77.ru/privkey.pem;
-
-    location / {
-        proxy_pass http://127.0.0.1:8083;
-        proxy_http_version 1.1;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-    }
-}
+```bash
+sudo cp nginx/xstore55.ru.conf /etc/nginx/sites-available/xstore55.ru
+sudo ln -sf /etc/nginx/sites-available/xstore55.ru /etc/nginx/sites-enabled/xstore55.ru
+sudo nginx -t
+sudo systemctl reload nginx
+sudo certbot --nginx -d xstore55.ru
 ```
-
-The same config is available in `deploy/nginx/sotik77.conf`.
 
 ## Update
 

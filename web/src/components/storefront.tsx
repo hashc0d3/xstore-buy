@@ -436,12 +436,15 @@ export default function Storefront() {
   const pathname = usePathname();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [footerMenuOpen, setFooterMenuOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [isHeaderFloating, setIsHeaderFloating] = useState(false);
   const [isDesktopHeader, setIsDesktopHeader] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedProductMemory, setSelectedProductMemory] = useState("");
   const [selectedProductColor, setSelectedProductColor] = useState("");
   const [selectedProductSim, setSelectedProductSim] = useState("");
+  const [reviewSlideIndex, setReviewSlideIndex] = useState(0);
   const [orderSelection, setOrderSelection] = useState<{
     productName?: string;
     color?: string;
@@ -479,6 +482,18 @@ export default function Storefront() {
     void fetchStoreData().then((remote) => setStoreData(remote));
   }, []);
 
+  const reviewPhotos = useMemo(() => {
+    return (storeData.sliderPhotos ?? []).filter((photo) => photo.imageUrl);
+  }, [storeData.sliderPhotos]);
+
+  useEffect(() => {
+    if (!reviewPhotos.length) {
+      setReviewSlideIndex(0);
+      return;
+    }
+    setReviewSlideIndex((index) => Math.min(index, reviewPhotos.length - 1));
+  }, [reviewPhotos.length]);
+
   useEffect(() => {
     if (!mobileMenuOpen) return;
     const prevOverflow = document.body.style.overflow;
@@ -491,6 +506,7 @@ export default function Storefront() {
   useEffect(() => {
     const onScroll = () => {
       setIsHeaderFloating(window.scrollY > 10);
+      setShowScrollTop(window.scrollY > 240);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -575,6 +591,22 @@ export default function Storefront() {
       return haystack.includes(query);
     });
   }, [categoriesBySlug, searchQuery, visibleProducts]);
+
+  const visibleReviewPhotos = useMemo(() => {
+    if (!reviewPhotos.length) return [];
+    const total = reviewPhotos.length;
+    const slots = Math.min(5, total);
+    const offset = Math.floor(slots / 2);
+
+    return Array.from({ length: slots }, (_, slot) => {
+      const index = (reviewSlideIndex - offset + slot + total) % total;
+      return {
+        photo: reviewPhotos[index],
+        index,
+        isCenter: slot === offset
+      };
+    });
+  }, [reviewPhotos, reviewSlideIndex]);
 
   const cartCount = useMemo(() => {
     return cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -1123,8 +1155,8 @@ export default function Storefront() {
             </Link>
           </div>
           <div className="flex gap-5 text-red-500">
-            <span>Омск, ул. Гагарина 3</span>
-            <span>11:00 - 20:00</span>
+            <span>Г.Москва 2 Ямская 2с1</span>
+            <span>12:00 - 20:00</span>
           </div>
         </div>
       </div>
@@ -1143,7 +1175,7 @@ export default function Storefront() {
               shouldSplitHeader ? "text-xl min-[1200px]:text-2xl min-[1440px]:text-3xl" : "text-2xl min-[640px]:text-3xl min-[1440px]:text-4xl min-[1920px]:text-5xl"
             }`}
           >
-            <span className="text-red-500">X</span> : STORE
+            Sotik77
           </Link>
           <nav
             className={`hidden h-10 items-center gap-5 rounded-full px-4 text-sm font-medium text-zinc-700 transition-all duration-300 min-[960px]:flex min-[1440px]:gap-7 min-[1920px]:text-base ${
@@ -1228,16 +1260,7 @@ export default function Storefront() {
               </span>
             </Link>
             <a
-              href="https://vk.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icon/vk.svg" alt="VK" className="h-4.5 w-4.5" />
-            </a>
-            <a
-              href="https://t.me"
+              href="https://t.me/yaroslav_g77"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white"
@@ -1246,8 +1269,9 @@ export default function Storefront() {
               <img src="/icon/telegram.svg" alt="Telegram" className="h-4.5 w-4.5" />
             </a>
             <div className="text-right text-[11px] font-medium leading-tight text-zinc-700 min-[1200px]:text-xs min-[1440px]:text-sm">
-              <p>+7 (923) 696-93-77</p>
-              <p>+7 (923) 686-93-77</p>
+              <p>+7 (923) 696-96-82</p>
+              <p className="text-zinc-500">Время работы: 12:00 - 20:00</p>
+              <p className="text-zinc-500">Выкуп техники: круглосуточно</p>
             </div>
           </div>
         </div>
@@ -1291,7 +1315,7 @@ export default function Storefront() {
                 <h2 className="text-2xl font-semibold text-zinc-900 min-[640px]:text-3xl">Доставка и оплата</h2>
                 <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-600 min-[640px]:text-base">
                   Оформите заявку на сайте или по телефону. Менеджер подтвердит наличие, согласует итоговую стоимость,
-                  способы доставки по Омску и в другие регионы, а также удобный формат оплаты.
+                  способы доставки по Москве и в другие регионы, а также удобный формат оплаты.
                 </p>
               </article>
               <article id="return" className="rounded-3xl border border-white/70 liquid-glass p-5 min-[640px]:p-7">
@@ -1401,6 +1425,20 @@ export default function Storefront() {
           <p className="mb-4 text-xs text-zinc-400 min-[640px]:mb-5 min-[640px]:text-sm">{breadcrumbs}</p>
         )}
 
+        <section
+          className={`${
+            isHomePage ? "rounded-2xl border border-white/60 liquid-glass p-2 min-[640px]:p-3" : ""
+          } grid grid-cols-4 gap-1.5 min-[480px]:gap-2 min-[640px]:gap-2.5 min-[900px]:grid-cols-7 min-[960px]:gap-3 min-[1440px]:gap-4`}
+        >
+          {displayCategories.map((category) => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              onPodZakaz={category.slug === "custom" ? () => setActiveModal("preorder") : undefined}
+            />
+          ))}
+        </section>
+
         {isHomePage ? (
           <section className="mt-6 min-[640px]:mt-8">
             <button
@@ -1480,7 +1518,7 @@ export default function Storefront() {
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-transparent" />
                 <div className="relative z-10">
                   <p className="mb-10 inline-flex rounded-xl border border-red-300/40 bg-black/30 px-3 py-1 text-xs font-semibold text-red-300">
-                    Омск, ул. Гагарина 3
+                    Г.Москва 2 Ямская 2с1
                   </p>
                   <h4 className="text-xl font-semibold min-[640px]:text-2xl">Самовывоз и доставка</h4>
                   <p className="mt-2 max-w-sm text-sm text-zinc-300 min-[640px]:text-base">
@@ -1555,22 +1593,71 @@ export default function Storefront() {
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-transparent" />
             </a>
+
+            {reviewPhotos.length ? (
+              <div className="mt-4 overflow-hidden rounded-3xl border border-white/60 liquid-glass p-3 min-[640px]:mt-5 min-[640px]:p-4">
+                <div className="mb-3 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                  <span />
+                  <h4 className="text-center text-xl font-bold text-zinc-900 min-[640px]:text-2xl">Довольные клиенты</h4>
+                  <p className="shrink-0 text-sm font-semibold text-zinc-500">
+                    {reviewSlideIndex + 1} / {reviewPhotos.length}
+                  </p>
+                </div>
+
+                <div className="relative rounded-2xl border border-white/70 bg-gradient-to-br from-white/85 via-red-50/55 to-zinc-100/85 px-11 py-5 shadow-inner">
+                  <div className="block min-[640px]:grid min-[640px]:grid-cols-5 min-[640px]:items-center min-[640px]:gap-3">
+                    {visibleReviewPhotos.map(({ photo, index, isCenter }) => (
+                      <button
+                        key={`${photo.id}-${index}`}
+                        type="button"
+                        className={`group relative overflow-hidden rounded-2xl transition-all duration-300 ${
+                          isCenter
+                            ? "block h-64 w-full shadow-[0_18px_36px_rgba(0,0,0,0.22)] ring-2 ring-red-500 min-[640px]:h-80 min-[640px]:scale-105"
+                            : "hidden opacity-70 hover:opacity-95 min-[640px]:block min-[640px]:h-56"
+                        }`}
+                        onClick={() => setReviewSlideIndex(index)}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={photo.imageUrl} alt={photo.title ?? "Фото Sotik77"} className="h-full w-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="absolute left-3 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-xl font-semibold text-zinc-950 shadow-lg transition hover:bg-white"
+                    aria-label="Предыдущее фото"
+                    onClick={() => setReviewSlideIndex((index) => (index === 0 ? reviewPhotos.length - 1 : index - 1))}
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-xl font-semibold text-zinc-950 shadow-lg transition hover:bg-white"
+                    aria-label="Следующее фото"
+                    onClick={() => setReviewSlideIndex((index) => (index + 1) % reviewPhotos.length)}
+                  >
+                    ›
+                  </button>
+                </div>
+
+                <div className="mt-3 flex justify-center gap-1.5">
+                  {reviewPhotos.map((photo, index) => (
+                    <button
+                      key={photo.id}
+                      type="button"
+                      className={`h-2 rounded-full transition-all ${
+                        reviewSlideIndex === index ? "w-7 bg-red-500" : "w-2 bg-zinc-300 hover:bg-zinc-400"
+                      }`}
+                      aria-label={`Показать фото ${index + 1}`}
+                      onClick={() => setReviewSlideIndex(index)}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </section>
         ) : null}
-
-        <section
-          className={`${
-            isHomePage ? "mt-8 rounded-2xl border border-white/60 liquid-glass p-2 min-[640px]:mt-10 min-[640px]:p-3" : ""
-          } grid grid-cols-4 gap-1.5 min-[480px]:gap-2 min-[640px]:gap-2.5 min-[900px]:grid-cols-7 min-[960px]:gap-3 min-[1440px]:gap-4`}
-        >
-          {displayCategories.map((category) => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              onPodZakaz={category.slug === "custom" ? () => setActiveModal("preorder") : undefined}
-            />
-          ))}
-        </section>
 
         {!isHomePage ? (
           <section className="mt-8 min-[640px]:mt-10">
@@ -1636,109 +1723,98 @@ export default function Storefront() {
         ) : null}
       </main>
 
-      <footer className="mt-14 bg-[#111217] text-zinc-300">
-        <div className="mx-auto grid w-full max-w-[1920px] grid-cols-1 gap-8 px-4 py-12 min-[640px]:grid-cols-2 min-[640px]:px-6 min-[640px]:py-14 min-[960px]:grid-cols-4 min-[960px]:px-8 min-[960px]:py-16 min-[1440px]:px-12 min-[1920px]:px-16">
-          <div>
-            <div className="mb-6 text-3xl font-bold text-white min-[640px]:mb-8 min-[640px]:text-4xl">
-              <span className="text-red-500">X</span> : STORE
-            </div>
-            <p className="text-sm text-zinc-500">ИП ИНН</p>
-            <div className="mt-8 space-y-2 text-sm text-zinc-500 min-[640px]:mt-14">
-              <Link href="/policy" className="block hover:text-zinc-300">
-                Политика конфиденциальности
-              </Link>
-              <Link href="/offer" className="block hover:text-zinc-300">
-                Публичная оферта
-              </Link>
-            </div>
+      <footer className="mt-14 bg-[#111112] text-zinc-300">
+        <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-10 text-center min-[640px]:max-w-xl min-[960px]:max-w-5xl min-[960px]:py-14">
+          <Link href="/" className="mb-8 inline-flex items-center text-2xl font-bold tracking-tight text-white min-[640px]:text-3xl">
+            Sotik77
+          </Link>
+
+          <div className="w-full max-w-lg">
+            <button
+              type="button"
+              className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-transparent px-4 py-3 text-left text-sm font-medium text-zinc-100 transition hover:border-white/20"
+              aria-expanded={footerMenuOpen}
+              onClick={() => setFooterMenuOpen((open) => !open)}
+            >
+              Меню
+              <span className="inline-flex h-5 w-5 items-center justify-center" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4">
+                  <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+            </button>
+            {footerMenuOpen ? (
+              <div className="mt-3 space-y-1 text-left">
+                <Link href="/catalog" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Каталог
+                </Link>
+                <button
+                  type="button"
+                  className="block w-full rounded-lg px-4 py-2 text-left text-sm text-zinc-300 hover:bg-white/5 hover:text-white"
+                  onClick={() => setActiveModal("tradein")}
+                >
+                  Trade-in
+                </button>
+                <Link href="/assessment" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Выкуп
+                </Link>
+                <a href="https://2gis.ru" target="_blank" rel="noopener noreferrer" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Отзывы
+                </a>
+                <Link href="/info#delivery" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Доставка и оплата
+                </Link>
+                <Link href="/info#return" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Возврат и обмен
+                </Link>
+                <Link href="/info#warranty" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Гарантия и проверка
+                </Link>
+              </div>
+            ) : null}
           </div>
 
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Каталог</h4>
-            <ul className="space-y-2 text-sm">
-              {storeData.categories.map((item) => (
-                <li key={item.id}>
-                  <Link href={`/catalog/${item.slug}`} className="transition hover:text-zinc-100">
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          <div className="mt-10 flex w-full max-w-lg flex-wrap items-center justify-center gap-4">
+            <a href="tel:+79236969682" className="inline-flex h-12 items-center gap-2 rounded-xl border border-white/10 px-4 text-sm font-semibold text-zinc-100">
+              <span aria-hidden="true">☎</span>
+              +7 (923) 696-96-82
+            </a>
+            <a
+              href="https://t.me/yaroslav_g77"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10"
+              aria-label="Telegram"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icon/telegram.svg" alt="" className="h-5 w-5" />
+            </a>
           </div>
 
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Меню</h4>
-            <ul className="space-y-2 text-sm">
-              {quickLinks.map((item) => (
-                <li key={item}>
-                  {item === "Доставка и оплата" ? (
-                    <Link href="/info#delivery" className="transition hover:text-zinc-100">
-                      {item}
-                    </Link>
-                  ) : item === "Возврат и обмен" ? (
-                    <Link href="/info#return" className="transition hover:text-zinc-100">
-                      {item}
-                    </Link>
-                  ) : item === "Гарантия и проверка" ? (
-                    <Link href="/info#warranty" className="transition hover:text-zinc-100">
-                      {item}
-                    </Link>
-                  ) : item === "Каталог" ? (
-                    <Link href="/catalog" className="transition hover:text-zinc-100">
-                      {item}
-                    </Link>
-                  ) : item === "Trade-in" ? (
-                    <button type="button" className="transition hover:text-zinc-100" onClick={() => setActiveModal("tradein")}>
-                      {item}
-                    </button>
-                  ) : item === "Выкуп" ? (
-                    <Link href="/assessment" className="transition hover:text-zinc-100">
-                      {item}
-                    </Link>
-                  ) : item === "Отзывы" ? (
-                    <a
-                      href="https://2gis.ru"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="transition hover:text-zinc-100"
-                    >
-                      {item}
-                    </a>
-                  ) : (
-                    <span>{item}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
+          <div className="mt-4 flex w-full max-w-lg flex-col items-center justify-center gap-1 rounded-xl border border-white/10 px-4 py-3 text-sm text-zinc-300">
+            <span className="inline-flex items-center gap-2">
+              <span aria-hidden="true">⌖</span>
+              Г.Москва 2 Ямская 2с1
+            </span>
+            <span className="text-zinc-400">Время работы: 12:00 - 20:00</span>
+            <span className="text-zinc-400">Выкуп техники: круглосуточно</span>
           </div>
 
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Контакты</h4>
-            <p className="mb-2 text-xl font-semibold text-white">Омск, ул. Гагарина 3</p>
-            <p className="mb-6 text-red-500">11:00 - 20:00</p>
-            <p className="text-lg">+7 (923) 696-93-77</p>
-            <p className="mb-5 text-lg">+7 (923) 686-93-77</p>
-            <div className="flex gap-3">
-              <a
-                href="https://vk.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-800 transition hover:bg-zinc-700"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/vk.svg" alt="VK" className="h-4.5 w-4.5" />
-              </a>
-              <a
-                href="https://t.me"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-800 transition hover:bg-zinc-700"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/telegram.svg" alt="Telegram" className="h-4.5 w-4.5" />
-              </a>
-            </div>
-          </div>
+          <p className="mt-10 text-sm text-zinc-500">© 2026 Все права защищены.</p>
+          <Link href="/policy" className="mt-2 text-xs font-semibold uppercase tracking-wide text-zinc-500 hover:text-zinc-300">
+            Политика конфиденциальности
+          </Link>
+
+          {showScrollTop ? (
+            <button
+              type="button"
+              className="fixed bottom-5 right-5 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-red-500 text-xl font-semibold leading-none text-white shadow-[0_10px_28px_rgba(239,68,68,0.32)] transition hover:bg-red-600"
+              aria-label="Наверх"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              ↑
+            </button>
+          ) : null}
         </div>
       </footer>
 
@@ -1758,7 +1834,7 @@ export default function Storefront() {
                 className="text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <span className="text-red-500">X</span> : STORE
+                Sotik77
               </Link>
               <button
                 type="button"
@@ -1822,27 +1898,18 @@ export default function Storefront() {
             </div>
 
             <div className="mt-6 space-y-1 text-[1.25rem] font-semibold leading-tight text-zinc-900 min-[390px]:text-[1.4rem] min-[640px]:mt-8 min-[640px]:text-[1.6rem]">
-              <p>+7 (923) 696-93-77</p>
-              <p>+7 (923) 686-93-77</p>
+              <p>+7 (923) 696-96-82</p>
             </div>
 
             <div className="mt-5 min-[640px]:mt-7">
-              <p className="text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">Омск, ул. Гагарина 3</p>
-              <p className="mt-1 text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">11:00 - 20:00</p>
+              <p className="text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">Г.Москва 2 Ямская 2с1</p>
+              <p className="mt-1 text-sm font-semibold leading-tight text-zinc-700 min-[640px]:text-base">Время работы: 12:00 - 20:00</p>
+              <p className="mt-1 text-sm font-semibold leading-tight text-zinc-700 min-[640px]:text-base">Выкуп техники: круглосуточно</p>
             </div>
 
             <div className="mt-6 flex gap-3 min-[640px]:mt-8 min-[640px]:gap-4">
               <a
-                href="https://vk.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 min-[640px]:h-14 min-[640px]:w-14"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/vk.svg" alt="VK" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
-              </a>
-              <a
-                href="https://t.me"
+                href="https://t.me/yaroslav_g77"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 min-[640px]:h-14 min-[640px]:w-14"

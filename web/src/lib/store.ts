@@ -29,6 +29,7 @@ export type StoreData = {
   categories: Category[];
   products: Product[];
   buybackConfig?: BuybackConfig;
+  sliderPhotos?: SliderPhoto[];
 };
 
 export type BuybackConfig = {
@@ -36,6 +37,13 @@ export type BuybackConfig = {
   memories: string[];
   simTypes: string[];
   conditions: string[];
+};
+
+export type SliderPhoto = {
+  id: string;
+  title?: string;
+  imageUrl: string;
+  position: number;
 };
 
 export const STORE_KEY = "xstore-data-v1";
@@ -152,7 +160,8 @@ export const defaultStoreData: StoreData = {
     memories: ["64 ГБ", "128 ГБ", "256 ГБ", "512 ГБ", "1 ТБ"],
     simTypes: ["eSIM", "nano-SIM", "eSIM + nano-SIM"],
     conditions: ["Отличное", "Хорошее", "Среднее", "Плохое"]
-  }
+  },
+  sliderPhotos: []
 };
 
 function normalizeStoreData(input: StoreData): StoreData {
@@ -227,8 +236,19 @@ function normalizeStoreData(input: StoreData): StoreData {
     simTypes: Array.isArray(rawBuyback?.simTypes) ? rawBuyback.simTypes.filter(Boolean) : fallback.simTypes,
     conditions: Array.isArray(rawBuyback?.conditions) ? rawBuyback.conditions.filter(Boolean) : fallback.conditions
   };
+  const sliderPhotos = Array.isArray(input.sliderPhotos)
+    ? input.sliderPhotos
+        .map((item, index) => ({
+          id: item.id,
+          title: typeof item.title === "string" ? item.title.trim() || undefined : undefined,
+          imageUrl: typeof item.imageUrl === "string" ? item.imageUrl.trim() : "",
+          position: Number.isFinite(item.position) ? item.position : index
+        }))
+        .filter((item) => item.id && item.imageUrl)
+        .sort((a, b) => a.position - b.position)
+    : [];
 
-  return { categories, products, buybackConfig };
+  return { categories, products, buybackConfig, sliderPhotos };
 }
 
 export function loadStoreData(): StoreData {

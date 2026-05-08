@@ -1,7 +1,9 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { randomUUID } from "crypto";
 import { Prisma, Product } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
+import { UpsertSliderPhotosDto } from "./dto/upsert-slider-photos.dto";
 import { UpsertProductDto } from "./dto/upsert-product.dto";
 
 type StoreCategory = {
@@ -36,11 +38,24 @@ type BuybackConfigPayload = {
   conditions: string[];
 };
 
+type StoreSliderPhoto = {
+  id: string;
+  title?: string;
+  imageUrl: string;
+  position: number;
+};
+
 @Injectable()
 export class StoreService {
   constructor(private readonly prisma: PrismaService) {}
 
   async ensureSeedData() {
+    try {
+      await this.ensureSliderPhotoTable();
+    } catch {
+      // The store must remain available even if the optional gallery table needs manual migration.
+    }
+
     const count = await this.prisma.category.count();
     if (count === 0) {
       const categories = [
@@ -97,21 +112,19 @@ export class StoreService {
       include: { category: true },
       orderBy: { createdAt: "desc" }
     });
-    const buyback = await this.prisma.buybackConfig.findUnique({
-      where: { id: "main" }
-    });
+    const buyback = await this.getBuybackConfigRecordSafe();
+    const sliderPhotos = await this.getSliderPhotosSafe();
 
     return {
       categories: categories.map((item) => this.toCategory(item)),
       products: products.map((item) => this.toProduct(item)),
-      buybackConfig: this.toBuybackConfig(buyback)
+      buybackConfig: this.toBuybackConfig(buyback),
+      sliderPhotos
     };
   }
 
   async getBuybackConfig(): Promise<BuybackConfigPayload> {
-    const buyback = await this.prisma.buybackConfig.findUnique({
-      where: { id: "main" }
-    });
+    const buyback = await this.getBuybackConfigRecordSafe();
     return this.toBuybackConfig(buyback);
   }
 
@@ -194,6 +207,32 @@ export class StoreService {
     await this.prisma.product.delete({ where: { id } });
   }
 
+  async upsertSliderPhotos(dto: UpsertSliderPhotosDto): Promise<StoreSliderPhoto[]> {
+    await this.ensureSliderPhotoTable();
+
+    const photos = dto.photos
+      .map((item, index) => ({
+        id: item.id?.trim() || undefined,
+        title: item.title?.trim() || null,
+        imageUrl: item.imageUrl.trim(),
+        position: Number.isFinite(Number(item.position)) ? Number(item.position) : index
+      }))
+      .filter((item) => item.imageUrl);
+
+    await this.prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`DELETE FROM "SliderPhoto"`;
+      for (const [index, photo] of photos.entries()) {
+        const id = photo.id ?? randomUUID();
+        await tx.$executeRaw`
+          INSERT INTO "SliderPhoto" ("id", "title", "imageUrl", "position", "createdAt", "updatedAt")
+          VALUES (${id}, ${photo.title}, ${photo.imageUrl}, ${index}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        `;
+      }
+    });
+
+    return this.getSliderPhotos();
+  }
+
   private toCategory(item: { id: string; slug: string; name: string; memoryOptions: string | null }): StoreCategory {
     return {
       id: item.id,
@@ -234,6 +273,57 @@ export class StoreService {
       memories: this.fromPipeSeparated(item.memories),
       simTypes: this.fromPipeSeparated(item.simTypes),
       conditions: this.fromPipeSeparated(item.conditions)
+    };
+  }
+
+  private async getBuybackConfigRecordSafe(): Promise<{ models: string; memories: string; simTypes: string; conditions: string } | null> {
+    try {
+      return await this.prisma.buybackConfig.findUnique({
+        where: { id: "main" }
+      });
+    } catch {
+      return null;
+    }
+  }
+
+  private async getSliderPhotos(): Promise<StoreSliderPhoto[]> {
+    await this.ensureSliderPhotoTable();
+
+    const rows = await this.prisma.$queryRaw<Array<{ id: string; title: string | null; imageUrl: string; position: number }>>`
+      SELECT "id", "title", "imageUrl", "position"
+      FROM "SliderPhoto"
+      ORDER BY "position" ASC, "createdAt" ASC
+    `;
+    return rows.map((item) => this.toSliderPhoto(item));
+  }
+
+  private async getSliderPhotosSafe(): Promise<StoreSliderPhoto[]> {
+    try {
+      return await this.getSliderPhotos();
+    } catch {
+      return [];
+    }
+  }
+
+  private async ensureSliderPhotoTable(): Promise<void> {
+    await this.prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "SliderPhoto" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "title" TEXT,
+        "imageUrl" TEXT NOT NULL,
+        "position" INTEGER NOT NULL DEFAULT 0,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL
+      )
+    `);
+  }
+
+  private toSliderPhoto(item: { id: string; title: string | null; imageUrl: string; position: number }): StoreSliderPhoto {
+    return {
+      id: item.id,
+      title: item.title ?? undefined,
+      imageUrl: item.imageUrl,
+      position: item.position
     };
   }
 

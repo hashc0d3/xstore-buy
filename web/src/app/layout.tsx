@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "X:STORE",
-  description: "Магазин техники Apple",
+  title: "Sotik77",
+  description: "Магазин техники Sotik77 — sotik77.ru",
 };
 
 export default function RootLayout({

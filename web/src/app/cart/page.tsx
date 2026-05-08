@@ -305,7 +305,7 @@ export default function CartPage() {
               </>
             ) : (
               <div className="rounded-xl border border-zinc-300 bg-white p-3 text-sm text-zinc-600">
-                Самовывоз: Омск, ул. Гагарина 3
+                Самовывоз: г. Москва, 2-я Ямская ул., 2с1
               </div>
             )}
 

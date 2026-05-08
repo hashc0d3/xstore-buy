@@ -78,8 +78,8 @@ export function SiteHeader() {
             </Link>
           </div>
           <div className="flex gap-5 text-red-500">
-            <span>Омск, ул. Гагарина 3</span>
-            <span>11:00 - 20:00</span>
+            <span>Г.Москва 2 Ямская 2с1</span>
+            <span>12:00 - 20:00</span>
           </div>
         </div>
       </div>
@@ -87,7 +87,7 @@ export function SiteHeader() {
       <header className="sticky top-0 z-40 border-b border-white/50 liquid-glass">
         <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between gap-2 px-4 py-3 min-[390px]:gap-3 min-[640px]:px-6 min-[640px]:py-5 min-[960px]:px-8 min-[960px]:py-6 min-[1440px]:px-12 min-[1920px]:px-16">
           <Link href="/" className="inline-flex shrink-0 items-center text-2xl font-bold tracking-tight text-zinc-950 min-[390px]:text-3xl min-[640px]:text-4xl min-[1920px]:text-5xl">
-            <span className="text-red-500">X</span> : STORE
+            Sotik77
           </Link>
 
           <nav className="hidden items-center gap-5 text-zinc-700 min-[960px]:flex min-[1440px]:gap-8 min-[1920px]:text-lg">
@@ -158,7 +158,7 @@ export function SiteHeader() {
               className="text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span className="text-red-500">X</span> : STORE
+              Sotik77
             </Link>
             <button
               type="button"
@@ -200,13 +200,13 @@ export function SiteHeader() {
           </div>
 
           <div className="mt-6 space-y-1 text-[1.25rem] font-semibold leading-tight text-zinc-900 min-[390px]:text-[1.4rem] min-[640px]:mt-8 min-[640px]:text-[1.6rem]">
-            <p>+7 (923) 696-93-77</p>
-            <p>+7 (923) 686-93-77</p>
+            <p>+7 (923) 696-96-82</p>
           </div>
 
           <div className="mt-5 min-[640px]:mt-7">
-            <p className="text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">Омск, ул. Гагарина 3</p>
-            <p className="mt-1 text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">11:00 - 20:00</p>
+            <p className="text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">Г.Москва 2 Ямская 2с1</p>
+            <p className="mt-1 text-sm font-semibold leading-tight text-zinc-700 min-[640px]:text-base">Время работы: 12:00 - 20:00</p>
+            <p className="mt-1 text-sm font-semibold leading-tight text-zinc-700 min-[640px]:text-base">Выкуп техники: круглосуточно</p>
           </div>
         </div>
       </div>
@@ -215,78 +215,98 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
+  const [footerMenuOpen, setFooterMenuOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const footerLinks = [
+    { href: "/catalog", label: "Каталог" },
+    { href: "/assessment", label: "Выкуп" },
+    { href: "/cart", label: "Корзина" },
+    { href: "/info#delivery", label: "Доставка и оплата" },
+    { href: "/info#return", label: "Возврат и обмен" },
+    { href: "/info#warranty", label: "Гарантия и проверка" }
+  ];
+
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 240);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <footer className="mt-14 bg-[#111217] text-zinc-300">
-      <div className="mx-auto grid w-full max-w-[1920px] grid-cols-1 gap-8 px-4 py-12 min-[640px]:grid-cols-2 min-[640px]:px-6 min-[640px]:py-14 min-[960px]:grid-cols-4 min-[960px]:px-8 min-[960px]:py-16 min-[1440px]:px-12 min-[1920px]:px-16">
-        <div>
-          <div className="mb-6 text-3xl font-bold text-white min-[640px]:mb-8 min-[640px]:text-4xl">
-            <span className="text-red-500">X</span> : STORE
-          </div>
-          <p className="text-sm text-zinc-500">ИП ИНН</p>
-          <div className="mt-8 space-y-2 text-sm text-zinc-500 min-[640px]:mt-14">
-            <Link href="/policy" className="block hover:text-zinc-300">
-              Политика конфиденциальности
-            </Link>
-            <Link href="/offer" className="block hover:text-zinc-300">
-              Публичная оферта
-            </Link>
-          </div>
+    <footer className="mt-14 bg-[#111112] text-zinc-300">
+      <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-10 text-center min-[640px]:max-w-xl min-[960px]:max-w-5xl min-[960px]:py-14">
+        <Link href="/" className="mb-8 inline-flex items-center text-2xl font-bold tracking-tight text-white min-[640px]:text-3xl">
+          Sotik77
+        </Link>
+
+        <div className="w-full max-w-lg">
+          <button
+            type="button"
+            className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-transparent px-4 py-3 text-left text-sm font-medium text-zinc-100 transition hover:border-white/20"
+            aria-expanded={footerMenuOpen}
+            onClick={() => setFooterMenuOpen((open) => !open)}
+          >
+            Меню
+            <span className="inline-flex h-5 w-5 items-center justify-center" aria-hidden="true">
+              <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4">
+                <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          </button>
+          {footerMenuOpen ? (
+            <div className="mt-3 space-y-1 text-left">
+              {footerLinks.map((item) => (
+                <Link key={item.href} href={item.href} className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          ) : null}
         </div>
 
-        <div>
-          <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Навигация</h4>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/catalog" className="transition hover:text-zinc-100">
-                Каталог
-              </Link>
-            </li>
-            <li>
-              <Link href="/assessment" className="transition hover:text-zinc-100">
-                Выкуп
-              </Link>
-            </li>
-            <li>
-              <Link href="/cart" className="transition hover:text-zinc-100">
-                Корзина
-              </Link>
-            </li>
-            <li>
-              <Link href="/info" className="transition hover:text-zinc-100">
-                Информация
-              </Link>
-            </li>
-          </ul>
+        <div className="mt-10 flex w-full max-w-lg flex-wrap items-center justify-center gap-4">
+          <a href="tel:+79236969682" className="inline-flex h-12 items-center gap-2 rounded-xl border border-white/10 px-4 text-sm font-semibold text-zinc-100">
+            <span aria-hidden="true">☎</span>
+            +7 (923) 696-96-82
+          </a>
+          <a
+            href="https://t.me/yaroslav_g77"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10"
+            aria-label="Telegram"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icon/telegram.svg" alt="" className="h-5 w-5" />
+          </a>
         </div>
 
-        <div>
-          <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Покупателям</h4>
-          <ul className="space-y-2 text-sm">
-            <li>
-              <Link href="/info#delivery" className="transition hover:text-zinc-100">
-                Доставка и оплата
-              </Link>
-            </li>
-            <li>
-              <Link href="/info#return" className="transition hover:text-zinc-100">
-                Возврат и обмен
-              </Link>
-            </li>
-            <li>
-              <Link href="/info#warranty" className="transition hover:text-zinc-100">
-                Гарантия и проверка
-              </Link>
-            </li>
-          </ul>
+        <div className="mt-4 flex w-full max-w-lg flex-col items-center justify-center gap-1 rounded-xl border border-white/10 px-4 py-3 text-sm text-zinc-300">
+          <span className="inline-flex items-center gap-2">
+            <span aria-hidden="true">⌖</span>
+            Г.Москва 2 Ямская 2с1
+          </span>
+          <span className="text-zinc-400">Время работы: 12:00 - 20:00</span>
+          <span className="text-zinc-400">Выкуп техники: круглосуточно</span>
         </div>
 
-        <div>
-          <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Контакты</h4>
-          <p className="mb-2 text-xl font-semibold text-white">Омск, ул. Гагарина 3</p>
-          <p className="mb-6 text-red-500">11:00 - 20:00</p>
-          <p className="text-lg">+7 (923) 696-93-77</p>
-          <p className="mb-5 text-lg">+7 (923) 686-93-77</p>
-        </div>
+        <p className="mt-10 text-sm text-zinc-500">© 2026 Все права защищены.</p>
+        <Link href="/policy" className="mt-2 text-xs font-semibold uppercase tracking-wide text-zinc-500 hover:text-zinc-300">
+          Политика конфиденциальности
+        </Link>
+
+        {showScrollTop ? (
+          <button
+            type="button"
+            className="fixed bottom-5 right-5 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-red-500 text-xl font-semibold leading-none text-white shadow-[0_10px_28px_rgba(239,68,68,0.32)] transition hover:bg-red-600"
+            aria-label="Наверх"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            ↑
+          </button>
+        ) : null}
       </div>
     </footer>
   );

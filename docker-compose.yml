@@ -5,7 +5,7 @@ services:
     environment:
       PORT: "4000"
       DATABASE_URL: "file:/data/dev.db"
-      CORS_ORIGIN: "https://sotik77.ru,https://www.sotik77.ru"
+      CORS_ORIGIN: "https://xstore55.ru,http://155.117.46.144:8080,http://localhost:8080"
     volumes:
       - api-data:/data
     restart: unless-stopped
@@ -15,12 +15,13 @@ services:
       context: ./web
       args:
         NEXT_PUBLIC_API_URL: "/api"
+        API_INTERNAL_URL: "http://api:4000"
     environment:
       PORT: "3000"
       HOSTNAME: "0.0.0.0"
       API_INTERNAL_URL: "http://api:4000"
     ports:
-      - "127.0.0.1:${WEB_PORT:-8083}:3000"
+      - "127.0.0.1:8080:3000"
     depends_on:
       - api
     restart: unless-stopped
