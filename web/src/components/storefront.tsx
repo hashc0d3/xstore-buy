@@ -1137,70 +1137,70 @@ export default function Storefront() {
 
   return (
     <div className="min-h-screen bg-[#f4f4f6] text-zinc-900">
-      <div className="hidden border-b border-zinc-200 bg-white min-[960px]:block">
-        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between px-8 py-3 text-sm text-zinc-500 min-[1440px]:px-12 min-[1920px]:px-16">
+      <div className="hidden border-b border-white/5 bg-[#111112] min-[960px]:block">
+        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between px-8 py-3 text-sm text-zinc-400 min-[1440px]:px-12 min-[1920px]:px-16">
           <div className="flex gap-5">
-            <Link href="/info#delivery" className="transition hover:text-zinc-700">
+            <Link href="/info#delivery" className="transition hover:text-white">
               Доставка и оплата
             </Link>
-            <Link href="/info#return" className="transition hover:text-zinc-700">
+            <Link href="/info#return" className="transition hover:text-white">
               Возврат и обмен
             </Link>
-            <Link href="/info#warranty" className="transition hover:text-zinc-700">
+            <Link href="/info#warranty" className="transition hover:text-white">
               Гарантия и проверка
             </Link>
           </div>
-          <div className="flex gap-5 text-red-500">
+          <div className="flex gap-5 text-red-400">
             <span>Г.Москва 2 Ямская 2с1</span>
             <span>12:00 - 20:00</span>
           </div>
         </div>
       </div>
 
-      <header className="sticky top-0 z-40">
+      <header className="sticky top-0 z-40 bg-[#111112] text-zinc-100 shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
         <div
           className={`mx-auto flex w-full max-w-[1920px] items-center justify-between gap-3 px-4 transition-all duration-300 min-[640px]:px-6 min-[960px]:px-8 min-[1440px]:px-12 min-[1920px]:px-16 ${
             shouldSplitHeader
-              ? "mt-3 rounded-full border border-white/70 bg-white/88 py-2 shadow-[0_16px_40px_rgba(24,24,27,0.12)] backdrop-blur-2xl"
-              : "border-b border-white/50 liquid-glass py-4 min-[640px]:py-5 min-[960px]:py-6"
+              ? "mt-3 rounded-full border border-white/10 bg-[#1c1c1f]/85 py-2 shadow-[0_16px_40px_rgba(0,0,0,0.45)] backdrop-blur-2xl"
+              : "border-b border-white/5 py-4 min-[640px]:py-5 min-[960px]:py-6"
           }`}
         >
           <Link
             href="/"
-            className={`inline-flex shrink-0 items-center font-bold tracking-tight text-zinc-950 transition-all duration-300 ${
+            className={`inline-flex shrink-0 items-center font-bold tracking-tight text-white transition-all duration-300 ${
               shouldSplitHeader ? "text-xl min-[1200px]:text-2xl min-[1440px]:text-3xl" : "text-2xl min-[640px]:text-3xl min-[1440px]:text-4xl min-[1920px]:text-5xl"
             }`}
           >
             SOTIK<span className="text-red-500">77</span>
           </Link>
           <nav
-            className={`hidden h-10 items-center gap-5 rounded-full px-4 text-sm font-medium text-zinc-700 transition-all duration-300 min-[960px]:flex min-[1440px]:gap-7 min-[1920px]:text-base ${
-              shouldSplitHeader ? "bg-zinc-100/70" : ""
+            className={`hidden h-10 items-center gap-5 rounded-full px-4 text-sm font-medium text-zinc-300 transition-all duration-300 min-[960px]:flex min-[1440px]:gap-7 min-[1920px]:text-base ${
+              shouldSplitHeader ? "bg-white/5" : ""
             }`}
           >
-            <Link className="inline-flex items-center gap-2 hover:text-red-500" href="/catalog">
+            <Link className="inline-flex items-center gap-2 transition hover:text-white" href="/catalog">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-4 w-4" />
+              <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-4 w-4 invert" />
               Каталог
             </Link>
-            <button className="hover:text-red-500" type="button" onClick={() => setActiveModal("tradein")}>
+            <button className="transition hover:text-white" type="button" onClick={() => setActiveModal("tradein")}>
               Trade-in
             </button>
-            <Link className="hover:text-red-500" href="/assessment">
+            <Link className="transition hover:text-white" href="/assessment">
               Выкуп
             </Link>
-            <button className="hover:text-red-500" type="button" onClick={() => setActiveModal("reviews")}>
+            <button className="transition hover:text-white" type="button" onClick={() => setActiveModal("reviews")}>
               Отзывы
             </button>
-            <a className="hover:text-red-500" href="#">
+            <a className="transition hover:text-white" href="#">
               Статьи
             </a>
           </nav>
           <div className="flex shrink-0 items-center gap-2 min-[960px]:hidden">
             <Link
               href="/cart"
-              className={`relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-900 shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:w-12 ${
-                shouldSplitHeader ? "ring-1 ring-white/60" : ""
+              className={`relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-100 shadow-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 min-[640px]:h-12 min-[640px]:w-12 ${
+                shouldSplitHeader ? "ring-1 ring-white/10" : ""
               }`}
               aria-label="Корзина"
             >
@@ -1216,8 +1216,8 @@ export default function Storefront() {
             </Link>
             <button
               type="button"
-              className={`inline-flex h-11 items-center gap-2 rounded-[1.2rem] border border-zinc-300 bg-[#f2ecec] px-3 text-sm font-semibold leading-none text-[#3f2430] shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:text-base ${
-                shouldSplitHeader ? "ring-1 ring-white/60" : ""
+              className={`inline-flex h-11 items-center gap-2 rounded-[1.2rem] border border-white/10 bg-white/5 px-3 text-sm font-semibold leading-none text-zinc-100 shadow-sm transition-all duration-300 hover:border-white/20 hover:bg-white/10 min-[640px]:h-12 min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:text-base ${
+                shouldSplitHeader ? "ring-1 ring-white/10" : ""
               }`}
               aria-label={mobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
               aria-expanded={mobileMenuOpen}
@@ -1248,10 +1248,10 @@ export default function Storefront() {
           >
             <Link
               href="/cart"
-              className="inline-flex h-10 items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-3 text-xs font-semibold min-[1200px]:text-sm text-zinc-800 transition hover:border-zinc-300 hover:bg-white"
+              className="inline-flex h-10 items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 text-xs font-semibold min-[1200px]:text-sm text-zinc-100 transition hover:border-white/20 hover:bg-white/10"
             >
               Корзина
-              <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-zinc-900 px-1.5 py-0.5 text-[10px] text-white">
+              <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] text-white">
                 {cartCount}
               </span>
             </Link>
@@ -1259,15 +1259,15 @@ export default function Storefront() {
               href="https://t.me/yaroslav_g77"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:border-white/20 hover:bg-white/10"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icon/telegram.svg" alt="Telegram" className="h-4.5 w-4.5" />
+              <img src="/icon/telegram.svg" alt="Telegram" className="h-4.5 w-4.5 invert" />
             </a>
-            <div className="text-right text-[11px] font-medium leading-tight text-zinc-700 min-[1200px]:text-xs min-[1440px]:text-sm">
+            <div className="text-right text-[11px] font-medium leading-tight text-zinc-200 min-[1200px]:text-xs min-[1440px]:text-sm">
               <p>+7 (923) 696-96-82</p>
-              <p className="text-zinc-500">Время работы: 12:00 - 20:00</p>
-              <p className="text-zinc-500">Выкуп техники: круглосуточно</p>
+              <p className="text-zinc-400">Время работы: 12:00 - 20:00</p>
+              <p className="text-zinc-400">Выкуп техники: круглосуточно</p>
             </div>
           </div>
         </div>

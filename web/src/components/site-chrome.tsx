@@ -64,37 +64,37 @@ export function SiteHeader() {
 
   return (
     <>
-      <div className="hidden border-b border-zinc-200 bg-white min-[960px]:block">
-        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between px-8 py-3 text-sm text-zinc-500 min-[1440px]:px-12 min-[1920px]:px-16">
+      <div className="hidden border-b border-white/5 bg-[#111112] min-[960px]:block">
+        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between px-8 py-3 text-sm text-zinc-400 min-[1440px]:px-12 min-[1920px]:px-16">
           <div className="flex gap-5">
-            <Link href="/info#delivery" className="transition hover:text-zinc-700">
+            <Link href="/info#delivery" className="transition hover:text-white">
               Доставка и оплата
             </Link>
-            <Link href="/info#return" className="transition hover:text-zinc-700">
+            <Link href="/info#return" className="transition hover:text-white">
               Возврат и обмен
             </Link>
-            <Link href="/info#warranty" className="transition hover:text-zinc-700">
+            <Link href="/info#warranty" className="transition hover:text-white">
               Гарантия и проверка
             </Link>
           </div>
-          <div className="flex gap-5 text-red-500">
+          <div className="flex gap-5 text-red-400">
             <span>Г.Москва 2 Ямская 2с1</span>
             <span>12:00 - 20:00</span>
           </div>
         </div>
       </div>
 
-      <header className="sticky top-0 z-40 border-b border-white/50 liquid-glass">
+      <header className="sticky top-0 z-40 border-b border-white/5 bg-[#111112] text-zinc-100 shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
         <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between gap-2 px-4 py-3 min-[390px]:gap-3 min-[640px]:px-6 min-[640px]:py-5 min-[960px]:px-8 min-[960px]:py-6 min-[1440px]:px-12 min-[1920px]:px-16">
-          <Link href="/" className="inline-flex shrink-0 items-center text-2xl font-bold tracking-tight text-zinc-950 min-[390px]:text-3xl min-[640px]:text-4xl min-[1920px]:text-5xl">
+          <Link href="/" className="inline-flex shrink-0 items-center text-2xl font-bold tracking-tight text-white min-[390px]:text-3xl min-[640px]:text-4xl min-[1920px]:text-5xl">
             SOTIK<span className="text-red-500">77</span>
           </Link>
 
-          <nav className="hidden items-center gap-5 text-zinc-700 min-[960px]:flex min-[1440px]:gap-8 min-[1920px]:text-lg">
+          <nav className="hidden items-center gap-5 text-zinc-300 min-[960px]:flex min-[1440px]:gap-8 min-[1920px]:text-lg">
             {navItems.map((item) => {
               const isActive = pathname === item.href;
               return (
-                <Link key={item.href} href={item.href} className={isActive ? "text-red-500" : "hover:text-red-500"}>
+                <Link key={item.href} href={item.href} className={isActive ? "text-red-400" : "transition hover:text-white"}>
                   {item.label}
                 </Link>
               );
@@ -104,17 +104,17 @@ export function SiteHeader() {
           <div className="flex shrink-0 items-center gap-2 min-[960px]:hidden">
             <Link
               href="/cart"
-              className="inline-flex h-11 items-center gap-1.5 rounded-full border border-zinc-300 bg-white px-3 text-xs font-semibold text-zinc-900 shadow-sm min-[390px]:gap-2 min-[390px]:px-3.5 min-[640px]:h-12 min-[640px]:px-4 min-[640px]:text-sm"
+              className="inline-flex h-11 items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 text-xs font-semibold text-zinc-100 shadow-sm transition hover:border-white/20 hover:bg-white/10 min-[390px]:gap-2 min-[390px]:px-3.5 min-[640px]:h-12 min-[640px]:px-4 min-[640px]:text-sm"
               aria-label="Корзина"
             >
               <span>Корзина</span>
-              <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-zinc-900 px-1.5 py-0.5 text-[10px] text-white">
+              <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] text-white">
                 {cartCount}
               </span>
             </Link>
             <button
               type="button"
-              className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-900 shadow-sm transition min-[640px]:h-12 min-[640px]:w-12"
+              className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-100 shadow-sm transition hover:border-white/20 hover:bg-white/10 min-[640px]:h-12 min-[640px]:w-12"
               aria-label={mobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
               aria-expanded={mobileMenuOpen}
               onClick={() => setMobileMenuOpen((open) => !open)}
