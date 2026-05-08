@@ -1,10 +1,10 @@
-# X:STORE Buyback
+# X:STORE
 
-Docker-deploy for the buyback storefront.
+Docker-deploy for the main storefront.
 
 ## Production URL
 
-- Web: `http://155.117.46.144:8081`
+- Web: `https://xstore55.ru`
 - API: proxied internally through `/api`
 
 ## Deploy
@@ -12,6 +12,8 @@ Docker-deploy for the buyback storefront.
 ```bash
 docker compose up -d --build
 ```
+
+Caddy listens on ports `80` and `443`, proxies traffic to the Next.js container, and issues the SSL certificate automatically.
 
 ## Update
 

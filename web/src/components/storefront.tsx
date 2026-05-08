@@ -1168,17 +1168,53 @@ export default function Storefront() {
               Статьи
             </a>
           </nav>
-          <button
-            type="button"
-            className={`inline-flex items-center gap-2 rounded-[1.2rem] border border-zinc-300 bg-[#f2ecec] px-3 py-2 text-lg font-semibold leading-none text-[#3f2430] shadow-sm transition-all duration-300 min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:py-2.5 min-[640px]:text-xl min-[960px]:hidden ${
-              shouldSplitHeader ? "ring-1 ring-white/60" : ""
-            }`}
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5 w-5 min-[640px]:h-5.5 min-[640px]:w-5.5" />
-            Меню
-          </button>
+          <div className="flex shrink-0 items-center gap-2 min-[960px]:hidden">
+            <Link
+              href="/cart"
+              className={`relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-900 shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:w-12 ${
+                shouldSplitHeader ? "ring-1 ring-white/60" : ""
+              }`}
+              aria-label="Корзина"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5.5 w-5.5">
+                <path d="M6 7h15l-1.5 9h-12z" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M6 7 5 3H2" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="9.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
+                <circle cx="17.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
+              </svg>
+              <span className="absolute -right-1 -top-1 inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                {cartCount}
+              </span>
+            </Link>
+            <button
+              type="button"
+              className={`inline-flex h-11 items-center gap-2 rounded-[1.2rem] border border-zinc-300 bg-[#f2ecec] px-3 text-sm font-semibold leading-none text-[#3f2430] shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:text-base ${
+                shouldSplitHeader ? "ring-1 ring-white/60" : ""
+              }`}
+              aria-label={mobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen((open) => !open)}
+            >
+              <span className="relative h-4 w-5">
+                <span
+                  className={`absolute left-0 top-0 h-0.5 w-5 rounded-full bg-current transition ${
+                    mobileMenuOpen ? "translate-y-[7px] rotate-45" : ""
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-[7px] h-0.5 w-5 rounded-full bg-current transition ${
+                    mobileMenuOpen ? "opacity-0" : ""
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-[14px] h-0.5 w-5 rounded-full bg-current transition ${
+                    mobileMenuOpen ? "-translate-y-[7px] -rotate-45" : ""
+                  }`}
+                />
+              </span>
+              Меню
+            </button>
+          </div>
           <div
             className={`hidden h-10 items-center gap-2 transition-all duration-300 min-[960px]:flex`}
           >
@@ -1282,28 +1318,24 @@ export default function Storefront() {
           <section className="mb-6 grid grid-cols-1 gap-3 min-[640px]:mb-8 min-[640px]:gap-4 min-[960px]:grid-cols-5 min-[960px]:gap-5">
             <article className="relative flex min-h-[360px] flex-col overflow-hidden rounded-3xl bg-[#121317] liquid-glass-dark p-5 text-white min-[640px]:min-h-[420px] min-[640px]:p-7 min-[960px]:col-span-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/img2.png"
-                alt="Выкуп техники"
-                className="absolute inset-0 h-full w-full object-cover object-[78%_center] min-[640px]:object-[80%_center]"
-              />
+              <img src="/img3.png" alt="Магазин оригинальной техники" className="absolute inset-0 h-full w-full object-cover" />
               <div className="pointer-events-none absolute inset-0 bg-black/45" />
               <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-400">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/icon3.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
-                Оценка за 10 минут
+                <img src="/icon/icon1.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                Гарантия 12 месяцев
               </p>
               <h1 className="relative z-10 mt-4 max-w-xl text-3xl font-bold leading-tight min-[640px]:text-4xl min-[1440px]:text-5xl">
-                Выкуп техники
+                Магазин оригинальной техники
               </h1>
               <p className="relative z-10 mt-3 max-w-xl text-sm text-zinc-300 min-[640px]:text-base">
-                Честная оценка и быстрый ответ менеджера.
+                Широкий ассортимент и экспертный подбор устройств под ваши задачи и бюджет.
               </p>
               <Link
-                href="/assessment"
+                href="/catalog"
                 className="relative z-10 mt-auto inline-flex min-h-12 min-w-40 items-center justify-center self-start rounded-2xl bg-red-500 px-10 py-3.5 text-base font-semibold text-white transition hover:bg-red-600 min-[640px]:min-h-16 min-[640px]:min-w-52 min-[640px]:px-14 min-[640px]:py-4 min-[640px]:text-xl"
               >
-                Получить оценку
+                Каталог
               </Link>
               <div className="pointer-events-none absolute -bottom-20 -right-16 h-56 w-56 rounded-full bg-red-500/25 blur-3xl" />
             </article>
@@ -1337,25 +1369,25 @@ export default function Storefront() {
               </button>
 
               <Link
-                href="/catalog"
+                href="/assessment"
                 className="group relative block overflow-hidden rounded-3xl border border-white/70 liquid-glass p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg min-[640px]:p-6"
               >
                 <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/icon/icon1.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
-                  Гарантия 12 месяцев
+                  <img src="/icon/icon3.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                  Оценка за 10 минут
                 </p>
                 <h3 className="relative z-10 mt-3 max-w-[18rem] text-2xl font-bold leading-tight text-zinc-900 min-[640px]:text-3xl">
-                  Магазин оригинальной техники
+                  Выкупим ваше устройство
                 </h3>
-                <span className="relative z-10 mt-4 inline-block text-sm font-semibold text-red-500 group-hover:text-red-600">
-                  Каталог
-                </span>
+                <p className="relative z-10 mt-3 max-w-[16rem] text-sm text-zinc-500 min-[640px]:text-base">
+                  Честная оценка и быстрый ответ менеджера.
+                </p>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/img3.png"
-                  alt="Магазин оригинальной техники"
-                  className="pointer-events-none absolute -right-5 top-1/2 h-[118%] w-auto max-w-[min(11rem,38%)] -translate-y-1/2 object-contain object-right opacity-95 min-[400px]:max-w-[40%] min-[480px]:max-w-[10.5rem] min-[640px]:-right-6 min-[640px]:max-w-[12rem] min-[960px]:max-w-[13rem]"
+                  src="/img2.png"
+                  alt="Оценка устройства"
+                  className="pointer-events-none absolute -right-5 top-1/2 h-[118%] w-auto -translate-y-1/2 object-contain opacity-95 min-[640px]:-right-7"
                 />
               </Link>
             </div>
@@ -1371,20 +1403,6 @@ export default function Storefront() {
         ) : (
           <p className="mb-4 text-xs text-zinc-400 min-[640px]:mb-5 min-[640px]:text-sm">{breadcrumbs}</p>
         )}
-
-        <section
-          className={`${
-            isHomePage ? "rounded-2xl border border-white/60 liquid-glass p-2 min-[640px]:p-3" : ""
-          } grid grid-cols-4 gap-1.5 min-[480px]:gap-2 min-[640px]:gap-2.5 min-[900px]:grid-cols-7 min-[960px]:gap-3 min-[1440px]:gap-4`}
-        >
-          {displayCategories.map((category) => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              onPodZakaz={category.slug === "custom" ? () => setActiveModal("preorder") : undefined}
-            />
-          ))}
-        </section>
 
         {isHomePage ? (
           <section className="mt-6 min-[640px]:mt-8">
@@ -1542,6 +1560,20 @@ export default function Storefront() {
             </a>
           </section>
         ) : null}
+
+        <section
+          className={`${
+            isHomePage ? "mt-8 rounded-2xl border border-white/60 liquid-glass p-2 min-[640px]:mt-10 min-[640px]:p-3" : ""
+          } grid grid-cols-4 gap-1.5 min-[480px]:gap-2 min-[640px]:gap-2.5 min-[900px]:grid-cols-7 min-[960px]:gap-3 min-[1440px]:gap-4`}
+        >
+          {displayCategories.map((category) => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              onPodZakaz={category.slug === "custom" ? () => setActiveModal("preorder") : undefined}
+            />
+          ))}
+        </section>
 
         {!isHomePage ? (
           <section className="mt-8 min-[640px]:mt-10">
@@ -1733,10 +1765,12 @@ export default function Storefront() {
               </Link>
               <button
                 type="button"
-                className="text-3xl font-light text-zinc-400 min-[640px]:text-4xl"
+                className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-900"
+                aria-label="Закрыть меню"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                ×
+                <span className="absolute h-0.5 w-5 rotate-45 rounded-full bg-current" />
+                <span className="absolute h-0.5 w-5 -rotate-45 rounded-full bg-current" />
               </button>
             </div>
 
@@ -1824,19 +1858,6 @@ export default function Storefront() {
       </div>
 
       {modal}
-
-      <Link
-        href="/cart"
-        className="fixed bottom-5 right-4 z-[35] flex h-14 w-14 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 text-white shadow-[0_8px_24px_rgba(0,0,0,0.28)] transition hover:bg-zinc-800 min-[960px]:hidden"
-        aria-label="Корзина"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6">
-          <path d="M6 7h15l-1.5 9h-12z" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M6 7 5 3H2" strokeLinecap="round" strokeLinejoin="round" />
-          <circle cx="9.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
-          <circle cx="17.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
-        </svg>
-      </Link>
 
       {leadNotice ? (
         <div className="pointer-events-none fixed right-4 top-4 z-[60] w-[calc(100%-2rem)] max-w-sm min-[640px]:right-6 min-[640px]:top-6">
