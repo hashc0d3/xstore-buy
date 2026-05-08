@@ -1318,24 +1318,24 @@ export default function Storefront() {
           <section className="mb-6 grid grid-cols-1 gap-3 min-[640px]:mb-8 min-[640px]:gap-4 min-[960px]:grid-cols-5 min-[960px]:gap-5">
             <article className="relative flex min-h-[360px] flex-col overflow-hidden rounded-3xl bg-[#121317] liquid-glass-dark p-5 text-white min-[640px]:min-h-[420px] min-[640px]:p-7 min-[960px]:col-span-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/img3.png" alt="Магазин оригинальной техники" className="absolute inset-0 h-full w-full object-cover" />
+              <img src="/img2.png" alt="Оценка устройства" className="absolute inset-0 h-full w-full object-cover" />
               <div className="pointer-events-none absolute inset-0 bg-black/45" />
               <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-400">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/icon1.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
-                Гарантия 12 месяцев
+                <img src="/icon/icon3.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                Оценка за 10 минут
               </p>
               <h1 className="relative z-10 mt-4 max-w-xl text-3xl font-bold leading-tight min-[640px]:text-4xl min-[1440px]:text-5xl">
-                Магазин оригинальной техники
+                Выкупим ваше устройство
               </h1>
               <p className="relative z-10 mt-3 max-w-xl text-sm text-zinc-300 min-[640px]:text-base">
-                Широкий ассортимент и экспертный подбор устройств под ваши задачи и бюджет.
+                Честная оценка и быстрый ответ менеджера.
               </p>
               <Link
-                href="/catalog"
+                href="/assessment"
                 className="relative z-10 mt-auto inline-flex min-h-12 min-w-40 items-center justify-center self-start rounded-2xl bg-red-500 px-10 py-3.5 text-base font-semibold text-white transition hover:bg-red-600 min-[640px]:min-h-16 min-[640px]:min-w-52 min-[640px]:px-14 min-[640px]:py-4 min-[640px]:text-xl"
               >
-                Каталог
+                Оценка устройства
               </Link>
               <div className="pointer-events-none absolute -bottom-20 -right-16 h-56 w-56 rounded-full bg-red-500/25 blur-3xl" />
             </article>
@@ -1369,24 +1369,21 @@ export default function Storefront() {
               </button>
 
               <Link
-                href="/assessment"
+                href="/catalog"
                 className="group relative block overflow-hidden rounded-3xl border border-white/70 liquid-glass p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg min-[640px]:p-6"
               >
                 <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/icon/icon3.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
-                  Оценка за 10 минут
+                  <img src="/icon/icon1.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                  Гарантия 12 месяцев
                 </p>
                 <h3 className="relative z-10 mt-3 max-w-[18rem] text-2xl font-bold leading-tight text-zinc-900 min-[640px]:text-3xl">
-                  Выкупим ваше устройство
+                  Магазин оригинальной техники
                 </h3>
-                <p className="relative z-10 mt-3 max-w-[16rem] text-sm text-zinc-500 min-[640px]:text-base">
-                  Честная оценка и быстрый ответ менеджера.
-                </p>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/img2.png"
-                  alt="Оценка устройства"
+                  src="/img3.png"
+                  alt="Каталог"
                   className="pointer-events-none absolute -right-5 top-1/2 h-[118%] w-auto -translate-y-1/2 object-contain opacity-95 min-[640px]:-right-7"
                 />
               </Link>
