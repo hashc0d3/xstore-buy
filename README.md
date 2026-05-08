@@ -4,7 +4,7 @@ Docker-deploy for the main storefront.
 
 ## Production URL
 
-- Web: `https://xstore55.ru`
+- Web: `https://sotik77.ru`
 - API: proxied internally through `/api`
 
 ## Deploy

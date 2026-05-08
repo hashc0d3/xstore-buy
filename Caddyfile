@@ -1,4 +1,8 @@
-xstore55.ru {
+sotik77.ru {
 	encode zstd gzip
 	reverse_proxy web:3000
+}
+
+www.sotik77.ru {
+	redir https://sotik77.ru{uri} permanent
 }

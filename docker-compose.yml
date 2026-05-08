@@ -18,7 +18,7 @@ services:
     environment:
       PORT: "4000"
       DATABASE_URL: "file:/data/dev.db"
-      CORS_ORIGIN: "https://xstore55.ru,http://155.117.46.144:8080"
+      CORS_ORIGIN: "https://sotik77.ru,https://www.sotik77.ru"
     volumes:
       - api-data:/data
     restart: unless-stopped
