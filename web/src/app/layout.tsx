@@ -13,8 +13,29 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SOTIK77",
-  description: "Магазин техники SOTIK77 — sotik77.ru",
+  metadataBase: new URL("https://sotik77.ru"),
+  applicationName: "SOTIK77",
+  title: {
+    default: "SOTIK77",
+    template: "%s | SOTIK77"
+  },
+  description: "SOTIK77 - магазин оригинальной техники, Trade-In и выкуп устройств в Москве.",
+  alternates: {
+    canonical: "https://sotik77.ru"
+  },
+  openGraph: {
+    type: "website",
+    locale: "ru_RU",
+    url: "https://sotik77.ru",
+    siteName: "SOTIK77",
+    title: "SOTIK77",
+    description: "Магазин оригинальной техники, Trade-In и выкуп устройств в Москве."
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SOTIK77",
+    description: "Магазин оригинальной техники, Trade-In и выкуп устройств в Москве."
+  }
 };
 
 export default function RootLayout({
