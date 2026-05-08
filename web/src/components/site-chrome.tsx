@@ -164,13 +164,13 @@ export function SiteHeader() {
       </header>
 
       <div
-        className={`fixed inset-0 z-50 bg-black/70 backdrop-blur-sm transition-opacity duration-300 min-[960px]:hidden ${
+        className={`fixed inset-0 z-50 flex justify-end bg-black/70 backdrop-blur-sm transition-opacity duration-300 min-[960px]:hidden ${
           mobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
         <div
-          className={`h-full w-[86%] max-w-sm overflow-y-auto border-r border-white/5 bg-[#111112] px-5 py-5 text-zinc-100 shadow-[0_24px_64px_rgba(0,0,0,0.55)] transition-transform duration-300 ease-out min-[640px]:w-[82%] min-[640px]:px-7 min-[640px]:py-7 ${
-            mobileMenuOpen ? "translate-x-0" : "-translate-x-6"
+          className={`h-full w-[86%] max-w-sm overflow-y-auto border-l border-white/5 bg-[#111112] px-5 py-5 text-zinc-100 shadow-[0_24px_64px_rgba(0,0,0,0.55)] transition-transform duration-300 ease-out min-[640px]:w-[82%] min-[640px]:px-7 min-[640px]:py-7 ${
+            mobileMenuOpen ? "translate-x-0" : "translate-x-6"
           }`}
         >
           <div className="mb-6 flex items-center justify-between min-[640px]:mb-8">
