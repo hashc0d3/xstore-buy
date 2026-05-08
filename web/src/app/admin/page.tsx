@@ -408,7 +408,7 @@ export default function AdminPage() {
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Админка Sotik77</h1>
+            <h1 className="text-3xl font-bold">Админка SOTIK77</h1>
             <p className="text-sm text-zinc-500">Категории и товары витрины</p>
           </div>
           <div className="flex items-center gap-2">

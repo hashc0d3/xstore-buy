@@ -87,7 +87,7 @@ export function SiteHeader() {
       <header className="sticky top-0 z-40 border-b border-white/50 liquid-glass">
         <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between gap-2 px-4 py-3 min-[390px]:gap-3 min-[640px]:px-6 min-[640px]:py-5 min-[960px]:px-8 min-[960px]:py-6 min-[1440px]:px-12 min-[1920px]:px-16">
           <Link href="/" className="inline-flex shrink-0 items-center text-2xl font-bold tracking-tight text-zinc-950 min-[390px]:text-3xl min-[640px]:text-4xl min-[1920px]:text-5xl">
-            Sotik77
+            SOTIK<span className="text-red-500">77</span>
           </Link>
 
           <nav className="hidden items-center gap-5 text-zinc-700 min-[960px]:flex min-[1440px]:gap-8 min-[1920px]:text-lg">
@@ -158,7 +158,7 @@ export function SiteHeader() {
               className="text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Sotik77
+              SOTIK<span className="text-red-500">77</span>
             </Link>
             <button
               type="button"
@@ -238,7 +238,7 @@ export function SiteFooter() {
     <footer className="mt-14 bg-[#111112] text-zinc-300">
       <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-10 text-center min-[640px]:max-w-xl min-[960px]:max-w-5xl min-[960px]:py-14">
         <Link href="/" className="mb-8 inline-flex items-center text-2xl font-bold tracking-tight text-white min-[640px]:text-3xl">
-          Sotik77
+          SOTIK<span className="text-red-500">77</span>
         </Link>
 
         <div className="w-full max-w-lg">

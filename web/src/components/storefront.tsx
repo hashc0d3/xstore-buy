@@ -789,32 +789,28 @@ export default function Storefront() {
               ×
             </button>
 
-            <div className="relative z-10 max-w-[24rem]">
-            <p className="mb-3 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-red-400">
-              <span className="inline-block h-2.5 w-2.5 rounded-full bg-red-400" />
-              Нам доверяют
-            </p>
-            <h3 className="text-4xl font-bold leading-tight min-[640px]:text-5xl">Отзывы клиентов</h3>
-            <p className="mt-2 text-sm leading-6 text-zinc-300">
-              Средняя оценка 5,0 на 2ГИС и более 100 отзывов подтверждают высокий уровень сервиса и качество нашей работы.
-            </p>
+            <div className="relative z-10 mx-auto max-w-[30rem] text-center">
+              <h3 className="text-4xl font-bold leading-tight min-[640px]:text-5xl">Отзывы клиентов</h3>
+              <p className="mt-3 text-sm leading-6 text-zinc-300 min-[640px]:text-base">
+                Более тысячи клиентов доверяют нам.
+              </p>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/avito.png"
+                alt="Avito"
+                className="mx-auto mt-4 h-16 w-16 rounded-2xl border border-white/30 bg-white/10 object-cover p-1 min-[640px]:h-20 min-[640px]:w-20"
+              />
             </div>
 
             <a
-              href="https://2gis.ru"
+              href="https://www.avito.ru/brands/i131720364"
               target="_blank"
               rel="noopener noreferrer"
-              className="relative z-10 mt-6 inline-flex h-12 w-full items-center justify-center rounded-2xl bg-red-500 px-4 text-sm font-semibold uppercase tracking-[0.08em] transition hover:bg-red-600 min-[640px]:mt-8 min-[640px]:max-w-[18rem]"
+              className="relative z-10 mx-auto mt-6 inline-flex h-12 w-full items-center justify-center rounded-2xl bg-gradient-to-r from-[#6f89ff] via-[#4c7dff] to-[#1f63ff] px-4 text-sm font-semibold uppercase tracking-[0.08em] transition hover:brightness-110 min-[640px]:mt-8 min-[640px]:max-w-[18rem]"
             >
-              Перейти в 2ГИС
+              Мы на Avito
             </a>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/test1.png"
-              alt="Отзывы клиентов в 2ГИС"
-              className="pointer-events-none absolute -right-10 -bottom-14 h-[128%] w-auto object-contain min-[640px]:-right-6 min-[640px]:-bottom-16 min-[640px]:h-[136%]"
-            />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-transparent" />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 to-transparent" />
           </div>
         </div>
       );
@@ -1175,7 +1171,7 @@ export default function Storefront() {
               shouldSplitHeader ? "text-xl min-[1200px]:text-2xl min-[1440px]:text-3xl" : "text-2xl min-[640px]:text-3xl min-[1440px]:text-4xl min-[1920px]:text-5xl"
             }`}
           >
-            Sotik77
+            SOTIK<span className="text-red-500">77</span>
           </Link>
           <nav
             className={`hidden h-10 items-center gap-5 rounded-full px-4 text-sm font-medium text-zinc-700 transition-all duration-300 min-[960px]:flex min-[1440px]:gap-7 min-[1920px]:text-base ${
@@ -1570,28 +1566,33 @@ export default function Storefront() {
         {isHomePage ? (
           <section className="mt-8 min-[640px]:mt-10">
             <a
-              href="https://2gis.ru"
+              href="https://www.avito.ru/brands/i131720364"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative block w-full overflow-hidden rounded-3xl border border-zinc-800 bg-[#121317] liquid-glass-dark p-5 text-white shadow-[0_14px_34px_rgba(0,0,0,0.22)] ring-1 ring-white/5 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(0,0,0,0.3)] min-[640px]:p-7"
+              className="group relative block w-full overflow-hidden rounded-3xl border border-[#6f89ff]/40 bg-[#10131f] p-5 text-white shadow-[0_14px_34px_rgba(0,0,0,0.25)] ring-1 ring-[#6f89ff]/20 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(58,91,255,0.28)] min-[640px]:p-7"
             >
-              <div className="relative z-10 max-w-[38rem]">
-                <p className="text-xs font-semibold uppercase tracking-widest text-red-400">Нам доверяют</p>
-                <h3 className="mt-3 text-3xl font-bold leading-tight min-[640px]:text-5xl">Отзывы клиентов</h3>
-                <p className="mt-3 text-sm text-zinc-300 min-[640px]:text-lg">
-                  Средняя оценка 5,0 на 2ГИС и более 100 отзывов подтверждают высокий уровень сервиса.
+              <div className="relative z-10 mx-auto max-w-[38rem] text-center">
+                <p className="inline-flex rounded-full border border-[#6f89ff]/40 bg-[#6f89ff]/15 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#b8c8ff]">
+                  Avito
                 </p>
-                <span className="mt-6 inline-flex rounded-2xl bg-red-500 px-7 py-3 text-sm font-semibold text-white transition group-hover:bg-red-600 min-[640px]:mt-8 min-[640px]:px-10 min-[640px]:py-4">
-                  Перейти в 2ГИС
+                <h3 className="mt-3 text-3xl font-bold leading-tight min-[640px]:text-5xl">Отзывы клиентов</h3>
+                <p className="mt-3 text-sm text-zinc-200/90 min-[640px]:text-lg">
+                  Более тысячи клиентов доверяют нам.
+                </p>
+                <span className="mt-6 inline-flex rounded-2xl bg-gradient-to-r from-[#6f89ff] via-[#4c7dff] to-[#1f63ff] px-7 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(49,78,255,0.35)] transition group-hover:brightness-110 min-[640px]:mt-8 min-[640px]:px-10 min-[640px]:py-4">
+                  Мы на Avito
                 </span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/test1.png"
-                alt="Отзывы в 2ГИС"
-                className="pointer-events-none absolute -right-8 -bottom-10 h-[135%] w-auto object-contain min-[640px]:right-0 min-[640px]:-bottom-16 min-[960px]:-bottom-12 min-[960px]:h-[145%]"
+                src="/avito.png"
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-6 -bottom-8 h-40 w-40 rotate-[-14deg] object-contain opacity-25 blur-[0.3px] transition duration-300 group-hover:opacity-35 min-[640px]:-right-8 min-[640px]:-bottom-10 min-[640px]:h-52 min-[640px]:w-52"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-transparent" />
+              <div className="pointer-events-none absolute -left-12 top-1/2 h-44 w-44 -translate-y-1/2 rounded-full bg-[#00d19b]/20 blur-3xl" />
+              <div className="pointer-events-none absolute right-0 top-0 h-52 w-52 rounded-full bg-[#6f89ff]/30 blur-3xl" />
+              <div className="pointer-events-none absolute bottom-0 right-1/3 h-40 w-40 rounded-full bg-[#ff6f4b]/25 blur-3xl" />
             </a>
 
             {reviewPhotos.length ? (
@@ -1618,7 +1619,7 @@ export default function Storefront() {
                         onClick={() => setReviewSlideIndex(index)}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={photo.imageUrl} alt={photo.title ?? "Фото Sotik77"} className="h-full w-full object-cover" />
+                        <img src={photo.imageUrl} alt={photo.title ?? "Фото SOTIK77"} className="h-full w-full object-cover" />
                       </button>
                     ))}
                   </div>
@@ -1726,7 +1727,7 @@ export default function Storefront() {
       <footer className="mt-14 bg-[#111112] text-zinc-300">
         <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-10 text-center min-[640px]:max-w-xl min-[960px]:max-w-5xl min-[960px]:py-14">
           <Link href="/" className="mb-8 inline-flex items-center text-2xl font-bold tracking-tight text-white min-[640px]:text-3xl">
-            Sotik77
+            SOTIK<span className="text-red-500">77</span>
           </Link>
 
           <div className="w-full max-w-lg">
@@ -1758,7 +1759,7 @@ export default function Storefront() {
                 <Link href="/assessment" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
                   Выкуп
                 </Link>
-                <a href="https://2gis.ru" target="_blank" rel="noopener noreferrer" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                <a href="https://www.avito.ru/brands/i131720364" target="_blank" rel="noopener noreferrer" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
                   Отзывы
                 </a>
                 <Link href="/info#delivery" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
@@ -1834,7 +1835,7 @@ export default function Storefront() {
                 className="text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Sotik77
+                SOTIK<span className="text-red-500">77</span>
               </Link>
               <button
                 type="button"

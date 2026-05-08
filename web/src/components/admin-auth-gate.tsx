@@ -72,7 +72,7 @@ export default function AdminAuthGate({ children }: { children: ReactNode }) {
         onSubmit={onSubmit}
       >
         <div className="space-y-2 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-red-500">Sotik77</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-red-500">SOTIK77</p>
           <h1 className="text-2xl font-bold text-zinc-950">Вход в админку</h1>
           <p className="text-sm text-zinc-500">Введите логин и пароль администратора.</p>
         </div>
