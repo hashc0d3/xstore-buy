@@ -6,6 +6,8 @@ services:
       PORT: "4000"
       DATABASE_URL: "file:/data/dev.db"
       CORS_ORIGIN: "https://xstore55.ru,http://155.117.46.144:8080,http://localhost:8080"
+      TELEGRAM_BOT_TOKEN: "${TELEGRAM_BOT_TOKEN:-}"
+      TELEGRAM_CHAT_ID: "${TELEGRAM_CHAT_ID:-}"
     volumes:
       - api-data:/data
     restart: unless-stopped
