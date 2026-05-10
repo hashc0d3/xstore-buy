@@ -1142,21 +1142,34 @@ export default function Storefront() {
   return (
     <div className="min-h-screen bg-[#f4f4f6] text-zinc-900">
       <div className="hidden border-b border-zinc-200 bg-white min-[960px]:block">
-        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between px-8 py-3 text-sm text-zinc-500 min-[1440px]:px-12 min-[1920px]:px-16">
-          <div className="flex gap-5">
-            <Link href="/info#delivery" className="transition hover:text-zinc-700">
+        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between gap-6 px-8 py-3 text-[13px] font-medium tracking-[0.01em] text-zinc-500 min-[1440px]:px-12 min-[1920px]:px-16">
+          <div className="flex items-center gap-4">
+            <Link href="/info#delivery" className="transition hover:text-zinc-900">
               Доставка и оплата
             </Link>
-            <Link href="/info#return" className="transition hover:text-zinc-700">
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-zinc-300" />
+            <Link href="/info#return" className="transition hover:text-zinc-900">
               Возврат и обмен
             </Link>
-            <Link href="/info#warranty" className="transition hover:text-zinc-700">
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-zinc-300" />
+            <Link href="/info#warranty" className="transition hover:text-zinc-900">
               Гарантия и проверка
             </Link>
           </div>
-          <div className="flex gap-5 text-red-500">
-            <span>Омск, ул. Гагарина 3</span>
-            <span>11:00 - 20:00</span>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-red-600 ring-1 ring-inset ring-red-200">
+              <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
+                <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+              </svg>
+              Омск, ул. Гагарина 3
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 ring-1 ring-inset ring-emerald-200">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              Сейчас открыто · 11:00–20:00
+            </span>
           </div>
         </div>
       </div>
@@ -1178,25 +1191,50 @@ export default function Storefront() {
             <span className="text-red-500">X</span> : STORE
           </Link>
           <nav
-            className={`hidden h-10 items-center gap-5 rounded-full px-4 text-sm font-medium text-zinc-700 transition-all duration-300 min-[960px]:flex min-[1440px]:gap-7 min-[1920px]:text-base ${
-              shouldSplitHeader ? "bg-zinc-100/70" : ""
+            className={`hidden h-11 items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-1.5 text-sm font-medium text-zinc-700 backdrop-blur-xl transition-all duration-300 min-[960px]:flex min-[1920px]:text-base ${
+              shouldSplitHeader ? "ring-1 ring-white/60" : ""
             }`}
           >
-            <Link className="inline-flex items-center gap-2 hover:text-red-500" href="/catalog">
+            <Link
+              className={`inline-flex h-9 items-center gap-2 rounded-full px-3 transition min-[1440px]:px-4 ${
+                pathname === "/catalog"
+                  ? "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
+                  : "hover:bg-white hover:text-zinc-950"
+              }`}
+              href="/catalog"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-4 w-4" />
               Каталог
             </Link>
-            <button className="hover:text-red-500" type="button" onClick={() => setActiveModal("tradein")}>
+            <button
+              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white hover:text-zinc-950 min-[1440px]:px-4"
+              type="button"
+              onClick={() => setActiveModal("tradein")}
+            >
               Trade-in
             </button>
-            <Link className="hover:text-red-500" href="/assessment">
+            <Link
+              className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
+                pathname === "/assessment"
+                  ? "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
+                  : "hover:bg-white hover:text-zinc-950"
+              }`}
+              href="/assessment"
+            >
               Выкуп
             </Link>
-            <button className="hover:text-red-500" type="button" onClick={() => setActiveModal("reviews")}>
+            <button
+              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white hover:text-zinc-950 min-[1440px]:px-4"
+              type="button"
+              onClick={() => setActiveModal("reviews")}
+            >
               Отзывы
             </button>
-            <a className="hover:text-red-500" href="#">
+            <a
+              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white hover:text-zinc-950 min-[1440px]:px-4"
+              href="#"
+            >
               Статьи
             </a>
           </nav>
@@ -1824,13 +1862,13 @@ export default function Storefront() {
       </footer>
 
       <div
-        className={`fixed inset-0 z-50 bg-black/65 transition-opacity duration-300 min-[960px]:hidden ${
+        className={`fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity duration-300 min-[960px]:hidden ${
           mobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
         <div
-          className={`h-full w-[86%] max-w-sm overflow-y-auto bg-white px-5 py-5 transition-transform duration-300 ease-out min-[640px]:w-[82%] min-[640px]:px-7 min-[640px]:py-7 ${
-            mobileMenuOpen ? "translate-x-0" : "-translate-x-6"
+          className={`fixed right-0 top-0 h-full w-[86%] max-w-sm overflow-y-auto border-l border-zinc-200 bg-white px-5 py-5 text-zinc-900 shadow-[0_24px_64px_rgba(0,0,0,0.18)] transition-transform duration-300 ease-out min-[640px]:w-[82%] min-[640px]:px-7 min-[640px]:py-7 ${
+            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
             <div className="mb-6 flex items-center justify-between min-[640px]:mb-8">
@@ -1843,7 +1881,7 @@ export default function Storefront() {
               </Link>
               <button
                 type="button"
-                className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-900"
+                className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-900 transition hover:border-zinc-300 hover:bg-white"
                 aria-label="Закрыть меню"
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -1852,18 +1890,25 @@ export default function Storefront() {
               </button>
             </div>
 
-            <div className="space-y-4 text-[1.35rem] font-semibold leading-none text-zinc-900 min-[390px]:text-[1.5rem] min-[640px]:space-y-5 min-[640px]:text-[1.7rem]">
+            <div className="space-y-1.5">
               <Link
-                className="flex items-center gap-3 text-red-500"
+                className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-lg font-semibold transition min-[640px]:text-xl ${
+                  pathname === "/catalog"
+                    ? "border-red-200 bg-red-50 text-red-600"
+                    : "border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 hover:bg-white"
+                }`}
                 href="/catalog"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
-                <span className="text-zinc-900">Каталог</span>
+                <span className="inline-flex items-center gap-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
+                  Каталог
+                </span>
+                <span aria-hidden="true" className="text-zinc-400">›</span>
               </Link>
               <button
-                className="block text-left"
+                className="flex w-full items-center justify-between rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-left text-lg font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-white min-[640px]:text-xl"
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
@@ -1871,12 +1916,22 @@ export default function Storefront() {
                 }}
               >
                 Trade-in
+                <span aria-hidden="true" className="text-zinc-400">›</span>
               </button>
-              <Link className="block text-left" href="/assessment" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-lg font-semibold transition min-[640px]:text-xl ${
+                  pathname === "/assessment"
+                    ? "border-red-200 bg-red-50 text-red-600"
+                    : "border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 hover:bg-white"
+                }`}
+                href="/assessment"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Выкуп
+                <span aria-hidden="true" className="text-zinc-400">›</span>
               </Link>
               <button
-                className="block text-left"
+                className="flex w-full items-center justify-between rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-left text-lg font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-white min-[640px]:text-xl"
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
@@ -1884,32 +1939,71 @@ export default function Storefront() {
                 }}
               >
                 Отзывы
+                <span aria-hidden="true" className="text-zinc-400">›</span>
               </button>
-              <a className="block" href="#">
+              <a
+                className="flex items-center justify-between rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-lg font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-white min-[640px]:text-xl"
+                href="#"
+              >
                 Статьи
+                <span aria-hidden="true" className="text-zinc-400">›</span>
               </a>
             </div>
 
-            <div className="mt-6 space-y-2 text-sm text-zinc-600 min-[390px]:text-base min-[640px]:mt-8 min-[640px]:text-lg">
-              <Link href="/info#delivery" className="block" onClick={() => setMobileMenuOpen(false)}>
+            <div className="mt-6 space-y-1 rounded-2xl border border-zinc-200 bg-zinc-50 p-2 text-sm text-zinc-600 min-[640px]:text-base">
+              <Link
+                href="/info#delivery"
+                className="block rounded-xl px-3 py-2 transition hover:bg-white hover:text-zinc-900"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Доставка и оплата
               </Link>
-              <Link href="/info#return" className="block" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/info#return"
+                className="block rounded-xl px-3 py-2 transition hover:bg-white hover:text-zinc-900"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Возврат и обмен
               </Link>
-              <Link href="/info#warranty" className="block" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/info#warranty"
+                className="block rounded-xl px-3 py-2 transition hover:bg-white hover:text-zinc-900"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Гарантия и проверка
               </Link>
             </div>
 
-            <div className="mt-6 space-y-1 text-[1.25rem] font-semibold leading-tight text-zinc-900 min-[390px]:text-[1.4rem] min-[640px]:mt-8 min-[640px]:text-[1.6rem]">
-              <p>+7 (923) 696-93-77</p>
-              <p>+7 (923) 686-93-77</p>
-            </div>
+            <a
+              href="tel:+79236969377"
+              className="mt-6 flex items-center gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 transition hover:border-zinc-300 hover:bg-white"
+            >
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-red-50 text-red-500 ring-1 ring-inset ring-red-200">
+                <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-4 w-4">
+                  <path d="M5.5 3a1.5 1.5 0 0 1 1.42 1.02l.7 2.07a1.5 1.5 0 0 1-.4 1.59l-1.04.97a11 11 0 0 0 4.17 4.17l.97-1.04a1.5 1.5 0 0 1 1.59-.4l2.07.7A1.5 1.5 0 0 1 17 13.5V16a1.5 1.5 0 0 1-1.5 1.5C8.6 17.5 2.5 11.4 2.5 4.5A1.5 1.5 0 0 1 4 3h1.5Z" />
+                </svg>
+              </span>
+              <span className="flex flex-col leading-tight">
+                <span className="text-lg font-semibold text-zinc-950 min-[640px]:text-xl">+7 (923) 696-93-77</span>
+                <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">Позвонить</span>
+              </span>
+            </a>
 
-            <div className="mt-5 min-[640px]:mt-7">
-              <p className="text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">Омск, ул. Гагарина 3</p>
-              <p className="mt-1 text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">11:00 - 20:00</p>
+            <div className="mt-4 flex flex-col gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm">
+              <span className="inline-flex items-center gap-2 text-red-600">
+                <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
+                  <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+                </svg>
+                Омск, ул. Гагарина 3
+              </span>
+              <span className="inline-flex items-center gap-2 text-emerald-700">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
+                Сейчас открыто · 11:00–20:00
+              </span>
+              <span className="text-zinc-500">+7 (923) 686-93-77</span>
             </div>
 
             <div className="mt-6 flex gap-3 min-[640px]:mt-8 min-[640px]:gap-4">
@@ -1917,7 +2011,7 @@ export default function Storefront() {
                 href="https://vk.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 min-[640px]:h-14 min-[640px]:w-14"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white min-[640px]:h-14 min-[640px]:w-14"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/icon/vk.svg" alt="VK" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
@@ -1926,7 +2020,7 @@ export default function Storefront() {
                 href="https://t.me"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 min-[640px]:h-14 min-[640px]:w-14"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white min-[640px]:h-14 min-[640px]:w-14"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/icon/telegram.svg" alt="Telegram" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
