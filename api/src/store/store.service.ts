@@ -507,7 +507,17 @@ export class StoreService {
   }
 
   private sortCategoriesForStore<T extends { slug: string }>(items: T[]): T[] {
-    const order = ["iphone", "iphone-used", "macbook", "apple-watch", "ipad", "airpods", "custom"];
+    const order = [
+      "iphone",
+      "iphone-used",
+      "macbook",
+      "apple-watch",
+      "ipad",
+      "airpods",
+      "dyson",
+      "consoles",
+      "custom"
+    ];
     const rank = (slug: string) => {
       const idx = order.indexOf(slug);
       return idx === -1 ? 800 : idx;
