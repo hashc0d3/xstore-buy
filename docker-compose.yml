@@ -1,13 +1,21 @@
+# Локальная копия для https://github.com/hashc0d3/xstore-buy — см. DEPLOY-SOURCE.md
+# На сервере: cd /opt/xstore-buy && git pull origin main && docker compose up -d --build
+name: ${COMPOSE_PROJECT_NAME:-sotik77}
+
 services:
   api:
     build:
-      context: ./api
+      context: .
+      dockerfile: api/Dockerfile
     environment:
       PORT: "4000"
       DATABASE_URL: "file:/data/dev.db"
-      CORS_ORIGIN: "https://www.sotik77.ru,https://sotik77.ru,https://xstore55.ru,http://155.117.46.144:8080,http://localhost:8080"
+      CORS_ORIGIN: "${CORS_ORIGIN:-https://www.sotik77.ru,https://sotik77.ru,http://127.0.0.1:8083,http://localhost:8083}"
       TELEGRAM_BOT_TOKEN: "${TELEGRAM_BOT_TOKEN:-}"
       TELEGRAM_CHAT_ID: "${TELEGRAM_CHAT_ID:-}"
+      AUTO_SEED_CATALOG: "${AUTO_SEED_CATALOG:-1}"
+      CATALOG_ROOT: "/app/catalog"
+      API_URL: "http://127.0.0.1:4000/api"
     volumes:
       - api-data:/data
     restart: unless-stopped
@@ -16,14 +24,16 @@ services:
     build:
       context: ./web
       args:
-        NEXT_PUBLIC_API_URL: "/api"
-        API_INTERNAL_URL: "http://api:4000"
+        NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL:-/api}"
+        API_INTERNAL_URL: "${API_INTERNAL_URL:-http://api:4000}"
+        NEXT_PUBLIC_SITE_URL: "${NEXT_PUBLIC_SITE_URL:-https://www.sotik77.ru}"
+        NEXT_PUBLIC_STORE_BRAND: "${NEXT_PUBLIC_STORE_BRAND:-sotik77}"
     environment:
       PORT: "3000"
       HOSTNAME: "0.0.0.0"
-      API_INTERNAL_URL: "http://api:4000"
+      API_INTERNAL_URL: "${API_INTERNAL_URL:-http://api:4000}"
     ports:
-      - "127.0.0.1:8083:3000"
+      - "${WEB_PUBLISH:-127.0.0.1:8083:3000}"
     depends_on:
       - api
     restart: unless-stopped

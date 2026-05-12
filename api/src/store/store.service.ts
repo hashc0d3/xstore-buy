@@ -25,6 +25,8 @@ type StoreProduct = {
     color?: string;
     memory?: string;
     simType?: string;
+    screen?: string;
+    ram?: string;
     price: number;
     imageUrl?: string;
   }>;
@@ -356,8 +358,26 @@ export class StoreService {
     return map;
   }
 
-  private normalizeVariants(input?: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }>) {
-    const normalized: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }> = [];
+  private normalizeVariants(
+    input?: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+    }>
+  ) {
+    const normalized: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+    }> = [];
     if (!input?.length) return normalized;
     for (const item of input) {
       const price = Number(item.price);
@@ -366,6 +386,8 @@ export class StoreService {
         color: item.color?.trim() || undefined,
         memory: item.memory?.trim() || undefined,
         simType: item.simType?.trim() || undefined,
+        screen: item.screen?.trim() || undefined,
+        ram: item.ram?.trim() || undefined,
         price,
         imageUrl: item.imageUrl?.trim() || undefined
       });
@@ -375,7 +397,15 @@ export class StoreService {
 
   private normalizePricingPayload(
     memoryPrices?: Record<string, number>,
-    variants?: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }>
+    variants?: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+    }>
   ): Prisma.JsonValue | null {
     const normalizedVariants = this.normalizeVariants(variants);
     if (normalizedVariants.length) {
@@ -387,7 +417,15 @@ export class StoreService {
 
   private readPricingPayload(input: Prisma.JsonValue | null): {
     memoryPrices: Record<string, number>;
-    variants: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }>;
+    variants: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+    }>;
   } {
     if (!input || typeof input !== "object" || Array.isArray(input)) {
       return { memoryPrices: {}, variants: [] };
@@ -403,7 +441,15 @@ export class StoreService {
       }
     }
 
-    const variants: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }> = [];
+    const variants: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+    }> = [];
     if (Array.isArray(rawObject.variants)) {
       for (const item of rawObject.variants) {
         if (!item || typeof item !== "object") continue;
@@ -414,6 +460,8 @@ export class StoreService {
           color: typeof candidate.color === "string" ? candidate.color.trim() || undefined : undefined,
           memory: typeof candidate.memory === "string" ? candidate.memory.trim() || undefined : undefined,
           simType: typeof candidate.simType === "string" ? candidate.simType.trim() || undefined : undefined,
+          screen: typeof candidate.screen === "string" ? candidate.screen.trim() || undefined : undefined,
+          ram: typeof candidate.ram === "string" ? candidate.ram.trim() || undefined : undefined,
           price: parsedPrice,
           imageUrl: typeof candidate.imageUrl === "string" ? candidate.imageUrl.trim() || undefined : undefined
         });

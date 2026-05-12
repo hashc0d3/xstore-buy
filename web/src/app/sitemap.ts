@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { defaultStoreData } from "@/lib/store";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://sotik77.ru";
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://sotik77.ru").replace(/\/$/, "");
   const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [

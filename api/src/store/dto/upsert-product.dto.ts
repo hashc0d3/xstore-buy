@@ -14,6 +14,14 @@ class ProductVariantDto {
   @IsString()
   simType?: string;
 
+  @IsOptional()
+  @IsString()
+  screen?: string;
+
+  @IsOptional()
+  @IsString()
+  ram?: string;
+
   @IsInt()
   @Min(0)
   price!: number;

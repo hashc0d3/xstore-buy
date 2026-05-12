@@ -1,0 +1,148 @@
+[
+  {
+    "model": "AirPods 3",
+    "slug": "airpods3",
+    "variants": [
+      {
+        "model": "AirPods 3",
+        "title": "AirPods 3",
+        "color": null,
+        "price_rub": 11000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/airpods/airpods3",
+        "images": [
+          "https://www.glushakov-official.ru/img/airpods/airpods3/front.webp"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "AirPods 4",
+    "slug": "airpods4",
+    "variants": [
+      {
+        "model": "AirPods 4",
+        "title": "AirPods 4",
+        "color": null,
+        "price_rub": 11490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/airpods/airpods4",
+        "images": [
+          "https://www.glushakov-official.ru/img/airpods/airpods4/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "AirPods 4 active",
+    "slug": "airpods4_active",
+    "variants": [
+      {
+        "model": "AirPods 4 active",
+        "title": "AirPods 4 active",
+        "color": null,
+        "price_rub": 15490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/airpods/airpods4_active",
+        "images": [
+          "https://www.glushakov-official.ru/img/airpods/airpods4active/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "AirPods Max USB-C",
+    "slug": "airpods_max_usbc",
+    "variants": [
+      {
+        "model": "AirPods Max USB-C",
+        "title": "AirPods Max USB-C Blue",
+        "color": "Blue",
+        "price_rub": 48990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/airpods/airpods_max_usbc/airpods_max_usbc_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/airpods/airpodsmaxusbc/blue/front.png"
+        ]
+      },
+      {
+        "model": "AirPods Max USB-C",
+        "title": "AirPods Max USB-C Midnight",
+        "color": "Midnight",
+        "price_rub": 47990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/airpods/airpods_max_usbc/airpods_max_usbc_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/airpods/airpodsmaxusbc/midnight/front.png"
+        ]
+      },
+      {
+        "model": "AirPods Max USB-C",
+        "title": "AirPods Max USB-C Orange",
+        "color": "Orange",
+        "price_rub": 47990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/airpods/airpods_max_usbc/airpods_max_usbc_orange",
+        "images": [
+          "https://www.glushakov-official.ru/img/airpods/airpodsmaxusbc/orange/front.png"
+        ]
+      },
+      {
+        "model": "AirPods Max USB-C",
+        "title": "AirPods Max USB-C Purple",
+        "color": "Purple",
+        "price_rub": 47990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/airpods/airpods_max_usbc/airpods_max_usbc_purple",
+        "images": [
+          "https://www.glushakov-official.ru/img/airpods/airpodsmaxusbc/purple/front.png"
+        ]
+      },
+      {
+        "model": "AirPods Max USB-C",
+        "title": "AirPods Max USB-C Starlight",
+        "color": "Starlight",
+        "price_rub": 49990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/airpods/airpods_max_usbc/airpods_max_usbc_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/airpods/airpodsmaxusbc/starlight/front.png"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "AirPods Pro 2 USB-C",
+    "slug": "airpods_pro2_usbc",
+    "variants": [
+      {
+        "model": "AirPods Pro 2 USB-C",
+        "title": "AirPods Pro 2 USB-C",
+        "color": null,
+        "price_rub": 15990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/airpods/airpods_pro2_usbc",
+        "images": [
+          "https://www.glushakov-official.ru/img/airpods/airpodspro2usbc/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "AirPods Pro 3",
+    "slug": "airpods_pro3",
+    "variants": [
+      {
+        "model": "AirPods Pro 3",
+        "title": "AirPods Pro 3",
+        "color": null,
+        "price_rub": 19490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/airpods/airpods_pro3",
+        "images": [
+          "https://www.glushakov-official.ru/img/airpods/airpods3pro/white/front.jpg"
+        ]
+      }
+    ]
+  }
+]

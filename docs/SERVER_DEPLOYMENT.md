@@ -72,6 +72,8 @@ ssh root@155.117.46.144
 | `sotik77.ru`, `www.sotik77.ru`          | `http://127.0.0.1:8083`             | `xstore-buy` (web + api)       | `/opt/xstore-buy`  |
 | `playbetatool.ru`, `www.playbetatool.ru`| `https://127.0.0.1:18080`           | `betatool` (свой nginx внутри) | `/opt/betatool`    |
 
+Заливка каталога в админку (те же скрипты, что локально): в образе `api` есть `npm run seed:catalog`; JSON — из `vegan/snifer/output` или копируются в контейнер. Подробно — в `README.md` репозиториев `vegan` и `vegan-skupka`.
+
 Резервируй новый порт **из диапазона `8081–8099` или `18081+`** и запиши
 его сюда после добавления нового сайта.
 
@@ -287,7 +289,7 @@ chmod +x /etc/letsencrypt/renewal-hooks/deploy/reload-infra-nginx.sh
 ssh debian-for-tests
 cd /opt/xstore-buy
 
-git pull origin master
+git pull origin main
 docker compose up -d --build
 docker compose ps
 ```

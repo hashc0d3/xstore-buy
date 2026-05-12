@@ -21,8 +21,12 @@ export type ProductVariant = {
   color?: string;
   memory?: string;
   simType?: string;
+  screen?: string;
+  ram?: string;
   price: number;
   imageUrl?: string;
+  /** in_stock | coming_soon | out_of_stock | unknown */
+  availability?: string;
 };
 
 export type StoreData = {
@@ -194,8 +198,14 @@ function normalizeStoreData(input: StoreData): StoreData {
             color: typeof candidate.color === "string" ? candidate.color.trim() || undefined : undefined,
             memory: typeof candidate.memory === "string" ? candidate.memory.trim() || undefined : undefined,
             simType: typeof candidate.simType === "string" ? candidate.simType.trim() || undefined : undefined,
+            screen: typeof candidate.screen === "string" ? candidate.screen.trim() || undefined : undefined,
+            ram: typeof candidate.ram === "string" ? candidate.ram.trim() || undefined : undefined,
             price,
-            imageUrl: typeof candidate.imageUrl === "string" ? candidate.imageUrl.trim() || undefined : undefined
+            imageUrl: typeof candidate.imageUrl === "string" ? candidate.imageUrl.trim() || undefined : undefined,
+            availability:
+              typeof candidate.availability === "string" && candidate.availability.trim()
+                ? candidate.availability.trim().toLowerCase()
+                : undefined
           });
         }
       }
