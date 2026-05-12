@@ -32,9 +32,22 @@ git pull
 docker compose up -d --build
 ```
 
+## Каталог из сниффера при первом запуске
+
+В образ `api` копируется актуальный **`snifer/output/*.json`**. При **`AUTO_SEED_CATALOG=1`** (значение по умолчанию в `docker-compose.yml`) при **пустой** БД (новый volume `api-data`) контейнер сам один раз выполнит `seed:catalog` — в админке и на витрине будут те же товары, что и из JSON в репозитории.
+
+- Если БД уже с товарами, автозаливка **не запускается** (чтобы не затереть прод).
+- Отключить автозаливку: в `.env` или окружении **`AUTO_SEED_CATALOG=0`**, затем `docker compose up -d --build`.
+
+Обновить каталог после смены JSON: заново прогнать сниффер, закоммитить `snifer/output`, на сервере `git pull`, затем либо очистить volume БД (осторожно), либо вручную:
+
+```bash
+docker compose exec api sh -c 'API_URL=http://127.0.0.1:4000/api CATALOG_ROOT=/app/catalog npm run seed:catalog'
+```
+
 ## Каталог в админке (как локально)
 
-JSON после сниффера: `snifer/output/*.json`. Заливка теми же скриптами, что и локально.
+JSON после сниффера: `snifer/output/*.json`. Дополнительно можно заливать с ПК или вручную на сервере — как ниже.
 
 ### С вашего ПК (проще всего)
 
@@ -54,19 +67,13 @@ API_URL=https://sotik77.ru/api npm run seed:catalog
 CATALOG_ROOT=/полный/путь/к/output API_URL=https://xstore55.ru/api npm run seed:catalog
 ```
 
-### На сервере после `docker compose up`
+### На сервере (если нужен ручной импорт без пересборки образа)
 
-Скрипты входят в образ `api`. Скопируйте каталог JSON в контейнер и выполните заливку **на localhost API внутри контейнера**:
+JSON уже в образе в `/app/catalog`. Либо скопируйте свежие файлы в контейнер в этот путь и выполните:
 
 ```bash
-cd /opt/xstore   # или ваш каталог стека
-docker compose up -d --build
-CID=$(docker compose ps -q api)
-docker cp ./snifer/output/. "$CID:/tmp/catalog"
-docker compose exec api sh -c 'API_URL=http://127.0.0.1:4000/api CATALOG_ROOT=/tmp/catalog npm run seed:catalog'
+docker compose exec api sh -c 'API_URL=http://127.0.0.1:4000/api CATALOG_ROOT=/app/catalog npm run seed:catalog'
 ```
-
-Повторите для `/opt/xstore-buy` (другой контейнер `api`), подставив свой путь к JSON.
 
 ## Data
 

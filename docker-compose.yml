@@ -1,13 +1,17 @@
 services:
   api:
     build:
-      context: ./api
+      context: .
+      dockerfile: api/Dockerfile
     environment:
       PORT: "4000"
       DATABASE_URL: "file:/data/dev.db"
       CORS_ORIGIN: "https://xstore55.ru,https://www.xstore55.ru,http://155.117.46.144:8080,http://localhost:8080"
       TELEGRAM_BOT_TOKEN: "${TELEGRAM_BOT_TOKEN:-}"
       TELEGRAM_CHAT_ID: "${TELEGRAM_CHAT_ID:-}"
+      AUTO_SEED_CATALOG: "${AUTO_SEED_CATALOG:-1}"
+      CATALOG_ROOT: "/app/catalog"
+      API_URL: "http://127.0.0.1:4000/api"
     volumes:
       - api-data:/data
     restart: unless-stopped
