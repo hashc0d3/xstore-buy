@@ -62,6 +62,8 @@ export const defaultStoreData: StoreData = {
     { id: "c3", slug: "apple-watch", name: "Apple Watch" },
     { id: "c4", slug: "ipad", name: "iPad", memoryOptions: ["128 ГБ", "256 ГБ", "512 ГБ"] },
     { id: "c5", slug: "airpods", name: "AirPods" },
+    { id: "c8", slug: "dyson", name: "Dyson" },
+    { id: "c9", slug: "consoles", name: "Игровые консоли" },
     { id: "c6", slug: "custom", name: "Под заказ" }
   ],
   products: [
