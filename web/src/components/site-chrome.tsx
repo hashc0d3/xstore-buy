@@ -3,22 +3,26 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-
-const CART_STORAGE_KEY = "xstore-cart-v1";
-
-const IS_SOTIK_BRAND = process.env.NEXT_PUBLIC_STORE_BRAND === "sotik77";
-const VK_HREF = IS_SOTIK_BRAND ? "https://vk.com" : "https://vk.ru/xstore_55";
+import { BrandMark } from "@/components/brand-mark";
+import { CART_STORAGE_KEY, IS_SOTIK_BRAND, VK_HREF } from "@/lib/brand";
 
 type StoredCartItem = {
   quantity?: number;
 };
 
-const navItems = [
-  { href: "/catalog", label: "Каталог" },
-  { href: "/assessment", label: "Выкуп" },
-  { href: "/cart", label: "Корзина" },
-  { href: "/info", label: "Информация" }
-];
+const navItems = IS_SOTIK_BRAND
+  ? [
+      { href: "/assessment", label: "Выкуп" },
+      { href: "/catalog", label: "Каталог" },
+      { href: "/cart", label: "Корзина" },
+      { href: "/info", label: "Информация" }
+    ]
+  : [
+      { href: "/catalog", label: "Каталог" },
+      { href: "/assessment", label: "Выкуп" },
+      { href: "/cart", label: "Корзина" },
+      { href: "/info", label: "Информация" }
+    ];
 
 function readCartCount() {
   if (typeof window === "undefined") return 0;
@@ -103,7 +107,7 @@ export function SiteHeader() {
       <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white text-zinc-900 shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
         <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between gap-2 px-4 py-3 min-[390px]:gap-3 min-[640px]:px-6 min-[640px]:py-5 min-[960px]:px-8 min-[960px]:py-6 min-[1440px]:px-12 min-[1920px]:px-16">
           <Link href="/" className="inline-flex shrink-0 items-center text-2xl font-bold tracking-tight text-zinc-950 min-[390px]:text-3xl min-[640px]:text-4xl min-[1920px]:text-5xl">
-            <span className="text-red-500">X</span> : STORE
+            <BrandMark />
           </Link>
 
           <nav className="hidden h-11 items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-1.5 text-sm font-medium text-zinc-700 backdrop-blur-xl min-[960px]:flex min-[1920px]:text-base">
@@ -182,7 +186,7 @@ export function SiteHeader() {
               className="text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span className="text-red-500">X</span> : STORE
+              <BrandMark />
             </Link>
             <button
               type="button"
@@ -280,14 +284,23 @@ export function SiteHeader() {
 export function SiteFooter() {
   const [footerMenuOpen, setFooterMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const footerLinks = [
-    { href: "/catalog", label: "Каталог" },
-    { href: "/assessment", label: "Выкуп" },
-    { href: "/cart", label: "Корзина" },
-    { href: "/info#delivery", label: "Доставка и оплата" },
-    { href: "/info#return", label: "Возврат и обмен" },
-    { href: "/info#warranty", label: "Гарантия и проверка" }
-  ];
+  const footerLinks = IS_SOTIK_BRAND
+    ? [
+        { href: "/assessment", label: "Выкуп" },
+        { href: "/catalog", label: "Каталог" },
+        { href: "/cart", label: "Корзина" },
+        { href: "/info#delivery", label: "Доставка и оплата" },
+        { href: "/info#return", label: "Возврат и обмен" },
+        { href: "/info#warranty", label: "Гарантия и проверка" }
+      ]
+    : [
+        { href: "/catalog", label: "Каталог" },
+        { href: "/assessment", label: "Выкуп" },
+        { href: "/cart", label: "Корзина" },
+        { href: "/info#delivery", label: "Доставка и оплата" },
+        { href: "/info#return", label: "Возврат и обмен" },
+        { href: "/info#warranty", label: "Гарантия и проверка" }
+      ];
 
   useEffect(() => {
     const onScroll = () => setShowScrollTop(window.scrollY > 240);
@@ -301,7 +314,7 @@ export function SiteFooter() {
     <footer className="mt-14 bg-[#111112] text-zinc-300">
       <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-10 text-center min-[640px]:max-w-xl min-[960px]:max-w-5xl min-[960px]:py-14">
         <Link href="/" className="mb-8 inline-flex items-center text-2xl font-bold tracking-tight text-white min-[640px]:text-3xl">
-          <span className="text-red-500">X</span> : STORE
+          <BrandMark />
         </Link>
 
         <div className="w-full max-w-lg">

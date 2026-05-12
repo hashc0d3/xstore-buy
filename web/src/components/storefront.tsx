@@ -6,7 +6,20 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { BrandMark } from "@/components/brand-mark";
 import { CategoryStripSkeleton, ProductGridSkeleton } from "@/components/catalog-skeleton";
 import { createLead, fetchStoreData } from "@/lib/api";
-import { CART_STORAGE_KEY, IS_SOTIK_BRAND, SLIDER_PHOTO_ALT_FALLBACK, SOTIK_BUYBACK_NOTE, SOTIK_HEADER_ADDRESS, SOTIK_HOURS_DETAIL, SOTIK_OPEN_HOURS_BADGE, SOTIK_PHONE_DISPLAY, SOTIK_PHONE_HREF, SOTIK_TELEGRAM_HREF, VK_HREF } from "@/lib/brand";
+import {
+  CART_STORAGE_KEY,
+  IS_SOTIK_BRAND,
+  SLIDER_PHOTO_ALT_FALLBACK,
+  SOTIK_AVITO_REVIEWS_HREF,
+  SOTIK_BUYBACK_NOTE,
+  SOTIK_HEADER_ADDRESS,
+  SOTIK_HOURS_DETAIL,
+  SOTIK_OPEN_HOURS_BADGE,
+  SOTIK_PHONE_DISPLAY,
+  SOTIK_PHONE_HREF,
+  SOTIK_TELEGRAM_HREF,
+  VK_HREF
+} from "@/lib/brand";
 import { Category, Product, ProductVariant, StoreData, defaultStoreData, toRub } from "@/lib/store";
 
 const IPHONE_LIKE_SLUGS = new Set(["iphone", "iphone-used"]);
@@ -1068,6 +1081,49 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
     }
 
     if (activeModal === "reviews") {
+      if (IS_SOTIK_BRAND) {
+        return (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 min-[640px]:p-4"
+            onClick={() => setActiveModal(null)}
+          >
+            <div
+              className="relative w-full max-w-[640px] overflow-hidden rounded-3xl border border-zinc-800 bg-[#121317] p-5 text-white shadow-[0_24px_60px_rgba(0,0,0,0.45)] ring-1 ring-white/5 min-[640px]:p-7"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                onClick={() => setActiveModal(null)}
+                className="absolute right-4 top-3 z-20 text-xl text-zinc-500 transition hover:text-zinc-200"
+              >
+                ×
+              </button>
+
+              <div className="relative z-10 mx-auto max-w-[30rem] text-center">
+                <h3 className="text-4xl font-bold leading-tight min-[640px]:text-5xl">Отзывы клиентов</h3>
+                <p className="mt-3 text-sm leading-6 text-zinc-300 min-[640px]:text-base">Более тысячи клиентов доверяют нам.</p>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/avito.png"
+                  alt="Avito"
+                  className="mx-auto mt-4 h-16 w-16 rounded-2xl border border-white/30 bg-white/10 object-cover p-1 min-[640px]:h-20 min-[640px]:w-20"
+                />
+              </div>
+
+              <a
+                href={SOTIK_AVITO_REVIEWS_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative z-10 mx-auto mt-6 inline-flex h-12 w-full items-center justify-center rounded-2xl bg-gradient-to-r from-[#6f89ff] via-[#4c7dff] to-[#1f63ff] px-4 text-sm font-semibold uppercase tracking-[0.08em] transition hover:brightness-110 min-[640px]:mt-8 min-[640px]:max-w-[18rem]"
+              >
+                Мы на Avito
+              </a>
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 to-transparent" />
+            </div>
+          </div>
+        );
+      }
+
       return (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 min-[640px]:p-4"
@@ -1086,14 +1142,14 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
             </button>
 
             <div className="relative z-10 max-w-[24rem]">
-            <p className="mb-3 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-red-400">
-              <span className="inline-block h-2.5 w-2.5 rounded-full bg-red-400" />
-              Нам доверяют
-            </p>
-            <h3 className="text-4xl font-bold leading-tight min-[640px]:text-5xl">Отзывы клиентов</h3>
-            <p className="mt-2 text-sm leading-6 text-zinc-300">
-              Средняя оценка 5,0 на 2ГИС и более 100 отзывов подтверждают высокий уровень сервиса и качество нашей работы.
-            </p>
+              <p className="mb-3 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-red-400">
+                <span className="inline-block h-2.5 w-2.5 rounded-full bg-red-400" />
+                Нам доверяют
+              </p>
+              <h3 className="text-4xl font-bold leading-tight min-[640px]:text-5xl">Отзывы клиентов</h3>
+              <p className="mt-2 text-sm leading-6 text-zinc-300">
+                Средняя оценка 5,0 на 2ГИС и более 100 отзывов подтверждают высокий уровень сервиса и качество нашей работы.
+              </p>
             </div>
 
             <a
@@ -1621,45 +1677,71 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
                   : "border border-zinc-200 bg-zinc-50 text-zinc-700"
             }`}
           >
-            <Link
-              className={`inline-flex h-9 items-center gap-2 rounded-full px-3 transition min-[1440px]:px-4 ${
-                pathname === "/catalog"
-                  ? IS_SOTIK_BRAND
-                    ? "bg-red-500/15 text-red-300 ring-1 ring-inset ring-red-500/30"
-                    : "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
-                  : IS_SOTIK_BRAND
-                    ? "hover:bg-white/10 hover:text-white"
-                    : "hover:bg-white hover:text-zinc-950"
-              }`}
-              href="/catalog"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-4 w-4" />
-              Каталог
-            </Link>
-            <button
-              className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
-                IS_SOTIK_BRAND ? "hover:bg-white/10 hover:text-white" : "hover:bg-white hover:text-zinc-950"
-              }`}
-              type="button"
-              onClick={() => setActiveModal("tradein")}
-            >
-              Trade-in
-            </button>
-            <Link
-              className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
-                pathname === "/assessment"
-                  ? IS_SOTIK_BRAND
-                    ? "bg-red-500/15 text-red-300 ring-1 ring-inset ring-red-500/30"
-                    : "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
-                  : IS_SOTIK_BRAND
-                    ? "hover:bg-white/10 hover:text-white"
-                    : "hover:bg-white hover:text-zinc-950"
-              }`}
-              href="/assessment"
-            >
-              Выкуп
-            </Link>
+            {IS_SOTIK_BRAND ? (
+              <>
+                <Link
+                  className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
+                    pathname === "/assessment"
+                      ? "bg-red-500/15 text-red-300 ring-1 ring-inset ring-red-500/30"
+                      : "hover:bg-white/10 hover:text-white"
+                  }`}
+                  href="/assessment"
+                >
+                  Выкуп
+                </Link>
+                <button
+                  className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white/10 hover:text-white min-[1440px]:px-4"
+                  type="button"
+                  onClick={() => setActiveModal("tradein")}
+                >
+                  Trade-in
+                </button>
+                <Link
+                  className={`inline-flex h-9 items-center gap-2 rounded-full px-3 transition min-[1440px]:px-4 ${
+                    pathname === "/catalog"
+                      ? "bg-red-500/15 text-red-300 ring-1 ring-inset ring-red-500/30"
+                      : "hover:bg-white/10 hover:text-white"
+                  }`}
+                  href="/catalog"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-4 w-4" />
+                  Каталог
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  className={`inline-flex h-9 items-center gap-2 rounded-full px-3 transition min-[1440px]:px-4 ${
+                    pathname === "/catalog"
+                      ? "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
+                      : "hover:bg-white hover:text-zinc-950"
+                  }`}
+                  href="/catalog"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-4 w-4" />
+                  Каталог
+                </Link>
+                <button
+                  className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white hover:text-zinc-950 min-[1440px]:px-4"
+                  type="button"
+                  onClick={() => setActiveModal("tradein")}
+                >
+                  Trade-in
+                </button>
+                <Link
+                  className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
+                    pathname === "/assessment"
+                      ? "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
+                      : "hover:bg-white hover:text-zinc-950"
+                  }`}
+                  href="/assessment"
+                >
+                  Выкуп
+                </Link>
+              </>
+            )}
             <button
               className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
                 IS_SOTIK_BRAND ? "hover:bg-white/10 hover:text-white" : "hover:bg-white hover:text-zinc-950"
@@ -1745,19 +1827,17 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
                 {cartCount}
               </span>
             </Link>
-            <a
-              href={VK_HREF}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition ${
-                IS_SOTIK_BRAND
-                  ? "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10"
-                  : "border-zinc-200 bg-zinc-50 hover:border-zinc-300 hover:bg-white"
-              }`}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icon/vk.svg" alt="VK" className="h-4.5 w-4.5" />
-            </a>
+            {!IS_SOTIK_BRAND ? (
+              <a
+                href={VK_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icon/vk.svg" alt="VK" className="h-4.5 w-4.5" />
+              </a>
+            ) : null}
             <a
               href={IS_SOTIK_BRAND ? SOTIK_TELEGRAM_HREF : "https://t.me"}
               target="_blank"
@@ -1852,81 +1932,166 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
           <>
         {isHomePage ? (
           <section className="mb-6 grid grid-cols-1 gap-3 min-[640px]:mb-8 min-[640px]:gap-4 min-[960px]:grid-cols-5 min-[960px]:gap-5">
-            <article className="relative flex min-h-[360px] flex-col overflow-hidden rounded-3xl bg-[#121317] liquid-glass-dark p-5 text-white min-[640px]:min-h-[420px] min-[640px]:p-7 min-[960px]:col-span-3">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/img3.png" alt="Магазин оригинальной техники" className="absolute inset-0 h-full w-full object-cover" />
-              <div className="pointer-events-none absolute inset-0 bg-black/45" />
-              <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-400">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/icon1.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
-                Гарантия 12 месяцев
-              </p>
-              <h1 className="relative z-10 mt-4 max-w-xl text-3xl font-bold leading-tight min-[640px]:text-4xl min-[1440px]:text-5xl">
-                Магазин оригинальной техники
-              </h1>
-              <p className="relative z-10 mt-3 max-w-xl text-sm text-zinc-300 min-[640px]:text-base">
-                Широкий ассортимент и экспертный подбор устройств под ваши задачи и бюджет.
-              </p>
-              <Link
-                href="/catalog"
-                className="relative z-10 mt-auto inline-flex min-h-12 min-w-40 items-center justify-center self-start rounded-2xl bg-red-500 px-10 py-3.5 text-base font-semibold text-white transition hover:bg-red-600 min-[640px]:min-h-16 min-[640px]:min-w-52 min-[640px]:px-14 min-[640px]:py-4 min-[640px]:text-xl"
-              >
-                Каталог
-              </Link>
-              <div className="pointer-events-none absolute -bottom-20 -right-16 h-56 w-56 rounded-full bg-red-500/25 blur-3xl" />
-            </article>
-
-            <div className="grid grid-cols-1 gap-3 min-[640px]:gap-4 min-[960px]:col-span-2">
-              <button
-                type="button"
-                onClick={() => setActiveModal("tradein")}
-              className="group relative overflow-hidden rounded-3xl border border-white/70 liquid-glass p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg min-[640px]:p-6"
-              >
-                <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
+            {IS_SOTIK_BRAND ? (
+              <>
+                <Link
+                  href="/assessment"
+                  className="relative flex min-h-[360px] flex-col overflow-hidden rounded-3xl bg-[#121317] liquid-glass-dark p-5 text-white min-[640px]:min-h-[420px] min-[640px]:p-7 min-[960px]:col-span-3"
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/icon/icon2.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
-                  Выгодный обмен
-                </p>
-                <h3 className="relative z-10 mt-3 max-w-[18rem] text-2xl font-bold leading-tight text-zinc-900 min-[640px]:text-3xl">
-                  Условия по программе Trade-In
-                </h3>
-                <p className="relative z-10 mt-3 max-w-[16rem] text-sm text-zinc-500 min-[640px]:text-base">
-                  Обменивайте текущее устройство на новую модель со скидкой.
-                </p>
-                <span className="relative z-10 mt-4 inline-block text-sm font-semibold text-red-500 group-hover:text-red-600">
-                  Открыть заявку
-                </span>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/image.png"
-                  alt="Trade-In"
-                  className="pointer-events-none absolute -right-4 -top-6 h-[122%] w-auto object-contain opacity-95 min-[640px]:-right-6"
-                />
-              </button>
+                  <img src="/img2.png" alt="Выкуп техники" className="absolute inset-0 h-full w-full object-cover" />
+                  <div className="pointer-events-none absolute inset-0 bg-black/45" />
+                  <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-400">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/icon/icon3.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                    Оценка за 10 минут
+                  </p>
+                  <h1 className="relative z-10 mt-4 max-w-xl text-3xl font-bold leading-tight min-[640px]:text-4xl min-[1440px]:text-5xl">
+                    Выкупим ваше устройство
+                  </h1>
+                  <p className="relative z-10 mt-3 max-w-xl text-sm text-zinc-300 min-[640px]:text-base">
+                    Честная оценка и быстрый ответ менеджера.
+                  </p>
+                  <span className="relative z-10 mt-auto inline-flex min-h-12 min-w-40 items-center justify-center self-start rounded-2xl bg-red-500 px-10 py-3.5 text-base font-semibold text-white transition hover:bg-red-600 min-[640px]:min-h-16 min-[640px]:min-w-52 min-[640px]:px-14 min-[640px]:py-4 min-[640px]:text-xl">
+                    Оценить устройство
+                  </span>
+                  <div className="pointer-events-none absolute -bottom-20 -right-16 h-56 w-56 rounded-full bg-red-500/25 blur-3xl" />
+                </Link>
 
-              <Link
-                href="/assessment"
-                className="group relative block overflow-hidden rounded-3xl border border-white/70 liquid-glass p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg min-[640px]:p-6"
-              >
-                <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
+                <div className="grid grid-cols-1 gap-3 min-[640px]:gap-4 min-[960px]:col-span-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveModal("tradein")}
+                    className="group relative overflow-hidden rounded-3xl border border-white/70 liquid-glass p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg min-[640px]:p-6"
+                  >
+                    <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/icon/icon2.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                      Выгодный обмен
+                    </p>
+                    <h3 className="relative z-10 mt-3 max-w-[18rem] text-2xl font-bold leading-tight text-zinc-900 min-[640px]:text-3xl">
+                      Условия по программе Trade-In
+                    </h3>
+                    <p className="relative z-10 mt-3 max-w-[16rem] text-sm text-zinc-500 min-[640px]:text-base">
+                      Обменивайте текущее устройство на новую модель со скидкой.
+                    </p>
+                    <span className="relative z-10 mt-4 inline-block text-sm font-semibold text-red-500 group-hover:text-red-600">
+                      Открыть заявку
+                    </span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/image.png"
+                      alt="Trade-In"
+                      className="pointer-events-none absolute -right-4 -top-6 h-[122%] w-auto object-contain opacity-95 min-[640px]:-right-6"
+                    />
+                  </button>
+
+                  <Link
+                    href="/catalog"
+                    className="group relative block overflow-hidden rounded-3xl border border-white/70 liquid-glass p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg min-[640px]:p-6"
+                  >
+                    <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/icon/icon1.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                      Гарантия 12 месяцев
+                    </p>
+                    <h3 className="relative z-10 mt-3 max-w-[18rem] text-2xl font-bold leading-tight text-zinc-900 min-[640px]:text-3xl">
+                      Каталог
+                    </h3>
+                    <p className="relative z-10 mt-3 max-w-[16rem] text-sm text-zinc-500 min-[640px]:text-base">
+                      Смартфоны, ноутбуки и аксессуары.
+                    </p>
+                    <span className="relative z-10 mt-4 inline-block text-sm font-semibold text-red-500 group-hover:text-red-600">
+                      Перейти в каталог
+                    </span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/img3.png"
+                      alt="Каталог"
+                      className="pointer-events-none absolute -right-5 top-1/2 h-[118%] w-auto -translate-y-1/2 object-contain opacity-95 min-[640px]:-right-7"
+                    />
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <article className="relative flex min-h-[360px] flex-col overflow-hidden rounded-3xl bg-[#121317] liquid-glass-dark p-5 text-white min-[640px]:min-h-[420px] min-[640px]:p-7 min-[960px]:col-span-3">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/icon/icon3.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
-                  Оценка за 10 минут
-                </p>
-                <h3 className="relative z-10 mt-3 max-w-[18rem] text-2xl font-bold leading-tight text-zinc-900 min-[640px]:text-3xl">
-                  Выкупим ваше устройство
-                </h3>
-                <p className="relative z-10 mt-3 max-w-[16rem] text-sm text-zinc-500 min-[640px]:text-base">
-                  Честная оценка и быстрый ответ менеджера.
-                </p>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/img2.png"
-                  alt="Оценка устройства"
-                  className="pointer-events-none absolute -right-5 top-1/2 h-[118%] w-auto -translate-y-1/2 object-contain opacity-95 min-[640px]:-right-7"
-                />
-              </Link>
-            </div>
+                  <img src="/img3.png" alt="Магазин оригинальной техники" className="absolute inset-0 h-full w-full object-cover" />
+                  <div className="pointer-events-none absolute inset-0 bg-black/45" />
+                  <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-400">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src="/icon/icon1.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                    Гарантия 12 месяцев
+                  </p>
+                  <h1 className="relative z-10 mt-4 max-w-xl text-3xl font-bold leading-tight min-[640px]:text-4xl min-[1440px]:text-5xl">
+                    Магазин оригинальной техники
+                  </h1>
+                  <p className="relative z-10 mt-3 max-w-xl text-sm text-zinc-300 min-[640px]:text-base">
+                    Широкий ассортимент и экспертный подбор устройств под ваши задачи и бюджет.
+                  </p>
+                  <Link
+                    href="/catalog"
+                    className="relative z-10 mt-auto inline-flex min-h-12 min-w-40 items-center justify-center self-start rounded-2xl bg-red-500 px-10 py-3.5 text-base font-semibold text-white transition hover:bg-red-600 min-[640px]:min-h-16 min-[640px]:min-w-52 min-[640px]:px-14 min-[640px]:py-4 min-[640px]:text-xl"
+                  >
+                    Каталог
+                  </Link>
+                  <div className="pointer-events-none absolute -bottom-20 -right-16 h-56 w-56 rounded-full bg-red-500/25 blur-3xl" />
+                </article>
+
+                <div className="grid grid-cols-1 gap-3 min-[640px]:gap-4 min-[960px]:col-span-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveModal("tradein")}
+                    className="group relative overflow-hidden rounded-3xl border border-white/70 liquid-glass p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg min-[640px]:p-6"
+                  >
+                    <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/icon/icon2.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                      Выгодный обмен
+                    </p>
+                    <h3 className="relative z-10 mt-3 max-w-[18rem] text-2xl font-bold leading-tight text-zinc-900 min-[640px]:text-3xl">
+                      Условия по программе Trade-In
+                    </h3>
+                    <p className="relative z-10 mt-3 max-w-[16rem] text-sm text-zinc-500 min-[640px]:text-base">
+                      Обменивайте текущее устройство на новую модель со скидкой.
+                    </p>
+                    <span className="relative z-10 mt-4 inline-block text-sm font-semibold text-red-500 group-hover:text-red-600">
+                      Открыть заявку
+                    </span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/image.png"
+                      alt="Trade-In"
+                      className="pointer-events-none absolute -right-4 -top-6 h-[122%] w-auto object-contain opacity-95 min-[640px]:-right-6"
+                    />
+                  </button>
+
+                  <Link
+                    href="/assessment"
+                    className="group relative block overflow-hidden rounded-3xl border border-white/70 liquid-glass p-5 text-left transition hover:-translate-y-0.5 hover:shadow-lg min-[640px]:p-6"
+                  >
+                    <p className="relative z-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-red-500">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/icon/icon3.svg" alt="" aria-hidden="true" className="h-3.5 w-3.5" />
+                      Оценка за 10 минут
+                    </p>
+                    <h3 className="relative z-10 mt-3 max-w-[18rem] text-2xl font-bold leading-tight text-zinc-900 min-[640px]:text-3xl">
+                      Выкупим ваше устройство
+                    </h3>
+                    <p className="relative z-10 mt-3 max-w-[16rem] text-sm text-zinc-500 min-[640px]:text-base">
+                      Честная оценка и быстрый ответ менеджера.
+                    </p>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/img2.png"
+                      alt="Оценка устройства"
+                      className="pointer-events-none absolute -right-5 top-1/2 h-[118%] w-auto -translate-y-1/2 object-contain opacity-95 min-[640px]:-right-7"
+                    />
+                  </Link>
+                </div>
+              </>
+            )}
           </section>
         ) : null}
 
@@ -2086,30 +2251,60 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
 
         {isHomePage ? (
           <section className="mt-8 min-[640px]:mt-10">
-            <a
-              href="https://2gis.ru"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative block w-full overflow-hidden rounded-3xl border border-zinc-800 bg-[#121317] liquid-glass-dark p-5 text-white shadow-[0_14px_34px_rgba(0,0,0,0.22)] ring-1 ring-white/5 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(0,0,0,0.3)] min-[640px]:p-7"
-            >
-              <div className="relative z-10 max-w-[38rem]">
-                <p className="text-xs font-semibold uppercase tracking-widest text-red-400">Нам доверяют</p>
-                <h3 className="mt-3 text-3xl font-bold leading-tight min-[640px]:text-5xl">Отзывы клиентов</h3>
-                <p className="mt-3 text-sm text-zinc-300 min-[640px]:text-lg">
-                  Средняя оценка 5,0 на 2ГИС и более 100 отзывов подтверждают высокий уровень сервиса.
-                </p>
-                <span className="mt-6 inline-flex rounded-2xl bg-red-500 px-7 py-3 text-sm font-semibold text-white transition group-hover:bg-red-600 min-[640px]:mt-8 min-[640px]:px-10 min-[640px]:py-4">
-                  Перейти в 2ГИС
-                </span>
-              </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/test1.png"
-                alt="Отзывы в 2ГИС"
-                className="pointer-events-none absolute -right-8 -bottom-10 h-[135%] w-auto object-contain min-[640px]:right-0 min-[640px]:-bottom-16 min-[960px]:-bottom-12 min-[960px]:h-[145%]"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-transparent" />
-            </a>
+            {IS_SOTIK_BRAND ? (
+              <a
+                href={SOTIK_AVITO_REVIEWS_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative block w-full overflow-hidden rounded-3xl border border-[#6f89ff]/40 bg-[#10131f] p-5 text-white shadow-[0_14px_34px_rgba(0,0,0,0.25)] ring-1 ring-[#6f89ff]/20 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(58,91,255,0.28)] min-[640px]:p-7"
+              >
+                <div className="relative z-10 mx-auto max-w-[38rem] text-center">
+                  <p className="inline-flex rounded-full border border-[#6f89ff]/40 bg-[#6f89ff]/15 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#b8c8ff]">
+                    Avito
+                  </p>
+                  <h3 className="mt-3 text-3xl font-bold leading-tight min-[640px]:text-5xl">Отзывы клиентов</h3>
+                  <p className="mt-3 text-sm text-zinc-200/90 min-[640px]:text-lg">Более тысячи клиентов доверяют нам.</p>
+                  <span className="mt-6 inline-flex rounded-2xl bg-gradient-to-r from-[#6f89ff] via-[#4c7dff] to-[#1f63ff] px-7 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(49,78,255,0.35)] transition group-hover:brightness-110 min-[640px]:mt-8 min-[640px]:px-10 min-[640px]:py-4">
+                    Мы на Avito
+                  </span>
+                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/avito.png"
+                  alt=""
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -right-6 -bottom-8 h-40 w-40 rotate-[-14deg] object-contain opacity-25 blur-[0.3px] transition duration-300 group-hover:opacity-35 min-[640px]:-right-8 min-[640px]:-bottom-10 min-[640px]:h-52 min-[640px]:w-52"
+                />
+                <div className="pointer-events-none absolute -left-12 top-1/2 h-44 w-44 -translate-y-1/2 rounded-full bg-[#00d19b]/20 blur-3xl" />
+                <div className="pointer-events-none absolute right-0 top-0 h-52 w-52 rounded-full bg-[#6f89ff]/30 blur-3xl" />
+                <div className="pointer-events-none absolute bottom-0 right-1/3 h-40 w-40 rounded-full bg-[#ff6f4b]/25 blur-3xl" />
+              </a>
+            ) : (
+              <a
+                href="https://2gis.ru"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative block w-full overflow-hidden rounded-3xl border border-zinc-800 bg-[#121317] liquid-glass-dark p-5 text-white shadow-[0_14px_34px_rgba(0,0,0,0.22)] ring-1 ring-white/5 transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(0,0,0,0.3)] min-[640px]:p-7"
+              >
+                <div className="relative z-10 max-w-[38rem]">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-red-400">Нам доверяют</p>
+                  <h3 className="mt-3 text-3xl font-bold leading-tight min-[640px]:text-5xl">Отзывы клиентов</h3>
+                  <p className="mt-3 text-sm text-zinc-300 min-[640px]:text-lg">
+                    Средняя оценка 5,0 на 2ГИС и более 100 отзывов подтверждают высокий уровень сервиса.
+                  </p>
+                  <span className="mt-6 inline-flex rounded-2xl bg-red-500 px-7 py-3 text-sm font-semibold text-white transition group-hover:bg-red-600 min-[640px]:mt-8 min-[640px]:px-10 min-[640px]:py-4">
+                    Перейти в 2ГИС
+                  </span>
+                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/test1.png"
+                  alt="Отзывы в 2ГИС"
+                  className="pointer-events-none absolute -right-8 -bottom-10 h-[135%] w-auto object-contain min-[640px]:right-0 min-[640px]:-bottom-16 min-[960px]:-bottom-12 min-[960px]:h-[145%]"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-transparent" />
+              </a>
+            )}
 
             {reviewPhotos.length ? (
               <div className="mt-4 overflow-hidden rounded-3xl border border-white/60 liquid-glass p-3 min-[640px]:mt-5 min-[640px]:p-4">
@@ -2291,22 +2486,55 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
             </button>
             {footerMenuOpen ? (
               <div className="mt-3 space-y-1 text-left">
-                <Link href="/catalog" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
-                  Каталог
-                </Link>
-                <button
-                  type="button"
-                  className="block w-full rounded-lg px-4 py-2 text-left text-sm text-zinc-300 hover:bg-white/5 hover:text-white"
-                  onClick={() => setActiveModal("tradein")}
-                >
-                  Trade-in
-                </button>
-                <Link href="/assessment" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
-                  Выкуп
-                </Link>
-                <a href="https://2gis.ru" target="_blank" rel="noopener noreferrer" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
-                  Отзывы
-                </a>
+                {IS_SOTIK_BRAND ? (
+                  <>
+                    <Link href="/assessment" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                      Выкуп
+                    </Link>
+                    <button
+                      type="button"
+                      className="block w-full rounded-lg px-4 py-2 text-left text-sm text-zinc-300 hover:bg-white/5 hover:text-white"
+                      onClick={() => setActiveModal("tradein")}
+                    >
+                      Trade-in
+                    </button>
+                    <Link href="/catalog" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                      Каталог
+                    </Link>
+                    <a
+                      href={SOTIK_AVITO_REVIEWS_HREF}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white"
+                    >
+                      Отзывы
+                    </a>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/catalog" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                      Каталог
+                    </Link>
+                    <button
+                      type="button"
+                      className="block w-full rounded-lg px-4 py-2 text-left text-sm text-zinc-300 hover:bg-white/5 hover:text-white"
+                      onClick={() => setActiveModal("tradein")}
+                    >
+                      Trade-in
+                    </button>
+                    <Link href="/assessment" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                      Выкуп
+                    </Link>
+                    <a
+                      href="https://2gis.ru"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white"
+                    >
+                      Отзывы
+                    </a>
+                  </>
+                )}
                 <Link href="/info#delivery" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
                   Доставка и оплата
                 </Link>
@@ -2328,10 +2556,12 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
               <span aria-hidden="true">☎</span>
               {IS_SOTIK_BRAND ? SOTIK_PHONE_DISPLAY : "+7 (923) 696-93-77"}
             </a>
-            <a href={VK_HREF} target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="VK">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icon/vk.svg" alt="" className="h-5 w-5" />
-            </a>
+            {!IS_SOTIK_BRAND ? (
+              <a href={VK_HREF} target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="VK">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/icon/vk.svg" alt="" className="h-5 w-5" />
+              </a>
+            ) : null}
             <a
               href={IS_SOTIK_BRAND ? SOTIK_TELEGRAM_HREF : "https://t.me"}
               target="_blank"
@@ -2350,10 +2580,7 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
               {IS_SOTIK_BRAND ? SOTIK_HEADER_ADDRESS : "Омск, ул. Гагарина 3"}
             </span>
             {IS_SOTIK_BRAND ? (
-              <>
-                <span className="text-zinc-400">{SOTIK_HOURS_DETAIL}</span>
-                <span className="text-zinc-400">{SOTIK_BUYBACK_NOTE}</span>
-              </>
+              <span className="text-zinc-400">{SOTIK_HOURS_DETAIL}</span>
             ) : null}
           </div>
 
@@ -2376,26 +2603,34 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
       </footer>
 
       <div
-        className={`fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity duration-300 min-[960px]:hidden ${
-          mobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
+        className={`fixed inset-0 z-50 transition-opacity duration-300 min-[960px]:hidden ${
+          IS_SOTIK_BRAND ? "bg-black/65" : "bg-black/40 backdrop-blur-sm"
+        } ${mobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"}`}
       >
         <div
-          className={`fixed right-0 top-0 h-full w-[86%] max-w-sm overflow-y-auto border-l border-zinc-200 bg-white px-5 py-5 text-zinc-900 shadow-[0_24px_64px_rgba(0,0,0,0.18)] transition-transform duration-300 ease-out min-[640px]:w-[82%] min-[640px]:px-7 min-[640px]:py-7 ${
-            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`fixed right-0 top-0 h-full w-[86%] max-w-sm overflow-y-auto border-l px-5 py-5 transition-transform duration-300 ease-out min-[640px]:w-[82%] min-[640px]:px-7 min-[640px]:py-7 ${
+            IS_SOTIK_BRAND
+              ? "border-white/10 bg-[#111112] text-zinc-100 shadow-[0_24px_60px_rgba(0,0,0,0.55)]"
+              : "border-zinc-200 bg-white text-zinc-900 shadow-[0_24px_64px_rgba(0,0,0,0.18)]"
+          } ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"}`}
         >
             <div className="mb-6 flex items-center justify-between min-[640px]:mb-8">
               <Link
                 href="/"
-                className="text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl"
+                className={`text-3xl font-bold tracking-tight min-[640px]:text-4xl ${
+                  IS_SOTIK_BRAND ? "text-white" : "text-zinc-950"
+                }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <BrandMark />
               </Link>
               <button
                 type="button"
-                className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-900 transition hover:border-zinc-300 hover:bg-white"
+                className={`relative inline-flex h-11 w-11 items-center justify-center rounded-full border transition ${
+                  IS_SOTIK_BRAND
+                    ? "border-white/10 bg-white/5 text-zinc-100 hover:border-white/20 hover:bg-white/10"
+                    : "border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 hover:bg-white"
+                }`}
                 aria-label="Закрыть меню"
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -2405,47 +2640,97 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
             </div>
 
             <div className="space-y-1.5">
-              <Link
-                className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-lg font-semibold transition min-[640px]:text-xl ${
-                  pathname === "/catalog"
-                    ? "border-red-200 bg-red-50 text-red-600"
+              {IS_SOTIK_BRAND ? (
+                <>
+                  <Link
+                    className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-lg font-semibold transition min-[640px]:text-xl ${
+                      pathname === "/assessment"
+                        ? "border-red-500/40 bg-red-500/15 text-red-300"
+                        : "border-white/10 bg-white/[0.06] text-zinc-100 hover:border-white/20 hover:bg-white/10"
+                    }`}
+                    href="/assessment"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Выкуп
+                    <span aria-hidden="true" className="text-zinc-500">›</span>
+                  </Link>
+                  <button
+                    className="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 text-left text-lg font-semibold text-zinc-100 transition hover:border-white/20 hover:bg-white/10 min-[640px]:text-xl"
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setActiveModal("tradein");
+                    }}
+                  >
+                    Trade-in
+                    <span aria-hidden="true" className="text-zinc-500">›</span>
+                  </button>
+                  <Link
+                    className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-lg font-semibold transition min-[640px]:text-xl ${
+                      pathname === "/catalog"
+                        ? "border-red-500/40 bg-red-500/15 text-red-300"
+                        : "border-white/10 bg-white/[0.06] text-zinc-100 hover:border-white/20 hover:bg-white/10"
+                    }`}
+                    href="/catalog"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <span className="inline-flex items-center gap-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
+                      Каталог
+                    </span>
+                    <span aria-hidden="true" className="text-zinc-500">›</span>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-lg font-semibold transition min-[640px]:text-xl ${
+                      pathname === "/catalog"
+                        ? "border-red-200 bg-red-50 text-red-600"
+                        : "border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 hover:bg-white"
+                    }`}
+                    href="/catalog"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <span className="inline-flex items-center gap-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
+                      Каталог
+                    </span>
+                    <span aria-hidden="true" className="text-zinc-400">›</span>
+                  </Link>
+                  <button
+                    className="flex w-full items-center justify-between rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-left text-lg font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-white min-[640px]:text-xl"
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setActiveModal("tradein");
+                    }}
+                  >
+                    Trade-in
+                    <span aria-hidden="true" className="text-zinc-400">›</span>
+                  </button>
+                  <Link
+                    className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-lg font-semibold transition min-[640px]:text-xl ${
+                      pathname === "/assessment"
+                        ? "border-red-200 bg-red-50 text-red-600"
+                        : "border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 hover:bg-white"
+                    }`}
+                    href="/assessment"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Выкуп
+                    <span aria-hidden="true" className="text-zinc-400">›</span>
+                  </Link>
+                </>
+              )}
+              <button
+                className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-lg font-semibold transition min-[640px]:text-xl ${
+                  IS_SOTIK_BRAND
+                    ? "border-white/10 bg-white/[0.06] text-zinc-100 hover:border-white/20 hover:bg-white/10"
                     : "border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 hover:bg-white"
                 }`}
-                href="/catalog"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <span className="inline-flex items-center gap-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
-                  Каталог
-                </span>
-                <span aria-hidden="true" className="text-zinc-400">›</span>
-              </Link>
-              <button
-                className="flex w-full items-center justify-between rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-left text-lg font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-white min-[640px]:text-xl"
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setActiveModal("tradein");
-                }}
-              >
-                Trade-in
-                <span aria-hidden="true" className="text-zinc-400">›</span>
-              </button>
-              <Link
-                className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-lg font-semibold transition min-[640px]:text-xl ${
-                  pathname === "/assessment"
-                    ? "border-red-200 bg-red-50 text-red-600"
-                    : "border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 hover:bg-white"
-                }`}
-                href="/assessment"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Выкуп
-                <span aria-hidden="true" className="text-zinc-400">›</span>
-              </Link>
-              <button
-                className="flex w-full items-center justify-between rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-left text-lg font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-white min-[640px]:text-xl"
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
@@ -2453,35 +2738,51 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
                 }}
               >
                 Отзывы
-                <span aria-hidden="true" className="text-zinc-400">›</span>
+                <span aria-hidden="true" className={IS_SOTIK_BRAND ? "text-zinc-500" : "text-zinc-400"}>›</span>
               </button>
               <a
-                className="flex items-center justify-between rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-lg font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-white min-[640px]:text-xl"
+                className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-lg font-semibold transition min-[640px]:text-xl ${
+                  IS_SOTIK_BRAND
+                    ? "border-white/10 bg-white/[0.06] text-zinc-100 hover:border-white/20 hover:bg-white/10"
+                    : "border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 hover:bg-white"
+                }`}
                 href="#"
               >
                 Статьи
-                <span aria-hidden="true" className="text-zinc-400">›</span>
+                <span aria-hidden="true" className={IS_SOTIK_BRAND ? "text-zinc-500" : "text-zinc-400"}>›</span>
               </a>
             </div>
 
-            <div className="mt-6 space-y-1 rounded-2xl border border-zinc-200 bg-zinc-50 p-2 text-sm text-zinc-600 min-[640px]:text-base">
+            <div
+              className={`mt-6 space-y-1 rounded-2xl border p-2 text-sm min-[640px]:text-base ${
+                IS_SOTIK_BRAND
+                  ? "border-white/10 bg-white/5 text-zinc-400"
+                  : "border-zinc-200 bg-zinc-50 text-zinc-600"
+              }`}
+            >
               <Link
                 href="/info#delivery"
-                className="block rounded-xl px-3 py-2 transition hover:bg-white hover:text-zinc-900"
+                className={`block rounded-xl px-3 py-2 transition ${
+                  IS_SOTIK_BRAND ? "hover:bg-white/10 hover:text-white" : "hover:bg-white hover:text-zinc-900"
+                }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Доставка и оплата
               </Link>
               <Link
                 href="/info#return"
-                className="block rounded-xl px-3 py-2 transition hover:bg-white hover:text-zinc-900"
+                className={`block rounded-xl px-3 py-2 transition ${
+                  IS_SOTIK_BRAND ? "hover:bg-white/10 hover:text-white" : "hover:bg-white hover:text-zinc-900"
+                }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Возврат и обмен
               </Link>
               <Link
                 href="/info#warranty"
-                className="block rounded-xl px-3 py-2 transition hover:bg-white hover:text-zinc-900"
+                className={`block rounded-xl px-3 py-2 transition ${
+                  IS_SOTIK_BRAND ? "hover:bg-white/10 hover:text-white" : "hover:bg-white hover:text-zinc-900"
+                }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Гарантия и проверка
@@ -2490,32 +2791,58 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
 
             <a
               href={IS_SOTIK_BRAND ? SOTIK_PHONE_HREF : "tel:+79236969377"}
-              className="mt-6 flex items-center gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 transition hover:border-zinc-300 hover:bg-white"
+              className={`mt-6 flex items-center gap-3 rounded-2xl border px-4 py-3 transition ${
+                IS_SOTIK_BRAND
+                  ? "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10"
+                  : "border-zinc-200 bg-zinc-50 hover:border-zinc-300 hover:bg-white"
+              }`}
             >
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-red-50 text-red-500 ring-1 ring-inset ring-red-200">
+              <span
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-full ring-1 ring-inset ${
+                  IS_SOTIK_BRAND
+                    ? "bg-red-500/15 text-red-400 ring-red-500/30"
+                    : "bg-red-50 text-red-500 ring-red-200"
+                }`}
+              >
                 <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-4 w-4">
                   <path d="M5.5 3a1.5 1.5 0 0 1 1.42 1.02l.7 2.07a1.5 1.5 0 0 1-.4 1.59l-1.04.97a11 11 0 0 0 4.17 4.17l.97-1.04a1.5 1.5 0 0 1 1.59-.4l2.07.7A1.5 1.5 0 0 1 17 13.5V16a1.5 1.5 0 0 1-1.5 1.5C8.6 17.5 2.5 11.4 2.5 4.5A1.5 1.5 0 0 1 4 3h1.5Z" />
                 </svg>
               </span>
               <span className="flex flex-col leading-tight">
-                <span className="text-lg font-semibold text-zinc-950 min-[640px]:text-xl">
+                <span
+                  className={`text-lg font-semibold min-[640px]:text-xl ${
+                    IS_SOTIK_BRAND ? "text-white" : "text-zinc-950"
+                  }`}
+                >
                   {IS_SOTIK_BRAND ? SOTIK_PHONE_DISPLAY : "+7 (923) 696-93-77"}
                 </span>
-                <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">Позвонить</span>
+                {IS_SOTIK_BRAND ? (
+                  <span className="mt-1 text-sm font-semibold leading-snug text-zinc-400">{SOTIK_BUYBACK_NOTE}</span>
+                ) : null}
+                <span
+                  className={`text-[11px] font-medium uppercase tracking-[0.12em] ${
+                    IS_SOTIK_BRAND ? "mt-2 text-zinc-500" : "text-zinc-500"
+                  }`}
+                >
+                  Позвонить
+                </span>
               </span>
             </a>
 
-            <div className="mt-4 flex flex-col gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm">
+            <div
+              className={`mt-4 flex flex-col gap-2 rounded-2xl border px-4 py-3 text-sm ${
+                IS_SOTIK_BRAND ? "border-white/10 bg-white/5" : "border-zinc-200 bg-zinc-50"
+              }`}
+            >
               {IS_SOTIK_BRAND ? (
                 <>
-                  <span className="inline-flex items-center gap-2 text-red-600">
+                  <span className="inline-flex items-center gap-2 text-red-400">
                     <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
                       <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
                     </svg>
                     {SOTIK_HEADER_ADDRESS}
                   </span>
-                  <span className="text-zinc-700">{SOTIK_HOURS_DETAIL}</span>
-                  <span className="text-zinc-700">{SOTIK_BUYBACK_NOTE}</span>
+                  <span className="text-zinc-400">{SOTIK_HOURS_DETAIL}</span>
                 </>
               ) : (
                 <>
@@ -2538,20 +2865,26 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
             </div>
 
             <div className="mt-6 flex gap-3 min-[640px]:mt-8 min-[640px]:gap-4">
-              <a
-                href={VK_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white min-[640px]:h-14 min-[640px]:w-14"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/vk.svg" alt="VK" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
-              </a>
+              {!IS_SOTIK_BRAND ? (
+                <a
+                  href={VK_HREF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white min-[640px]:h-14 min-[640px]:w-14"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/icon/vk.svg" alt="VK" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
+                </a>
+              ) : null}
               <a
                 href={IS_SOTIK_BRAND ? SOTIK_TELEGRAM_HREF : "https://t.me"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white min-[640px]:h-14 min-[640px]:w-14"
+                className={`inline-flex h-12 w-12 items-center justify-center rounded-2xl border transition min-[640px]:h-14 min-[640px]:w-14 ${
+                  IS_SOTIK_BRAND
+                    ? "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10"
+                    : "border-zinc-200 bg-zinc-50 hover:border-zinc-300 hover:bg-white"
+                }`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/icon/telegram.svg" alt="Telegram" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />

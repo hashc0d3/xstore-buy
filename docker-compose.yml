@@ -28,6 +28,7 @@ services:
         API_INTERNAL_URL: "${API_INTERNAL_URL:-http://api:4000}"
         NEXT_PUBLIC_SITE_URL: "${NEXT_PUBLIC_SITE_URL:-https://www.sotik77.ru}"
         NEXT_PUBLIC_STORE_BRAND: "${NEXT_PUBLIC_STORE_BRAND:-sotik77}"
+        NEXT_PUBLIC_SOTIK_AVITO_REVIEWS_URL: "${NEXT_PUBLIC_SOTIK_AVITO_REVIEWS_URL:-}"
     environment:
       PORT: "3000"
       HOSTNAME: "0.0.0.0"
