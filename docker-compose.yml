@@ -37,9 +37,12 @@ services:
       PORT: "3000"
       HOSTNAME: "0.0.0.0"
       API_INTERNAL_URL: "${API_INTERNAL_URL:-http://api:4000}"
-    # Только host-порт (loopback), иначе WEB_PUBLISH=8080 превращался в 0.0.0.0:8080 и конфликтовал с другим стеком
+    # Long syntax: только loopback; в .env задайте число WEB_HOST_PORT=8080 (без :3000 и без 127.0.0.1)
     ports:
-      - "127.0.0.1:${WEB_HOST_PORT:-8080}:3000"
+      - target: 3000
+        host_ip: 127.0.0.1
+        published: "${WEB_HOST_PORT:-8080}"
+        protocol: tcp
     depends_on:
       - api
     restart: unless-stopped

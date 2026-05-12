@@ -15,7 +15,7 @@ Docker-deploy for the main storefront.
 docker compose up -d --build
 ```
 
-The web container is published on `127.0.0.1:8080`. Use nginx on the host as the public reverse proxy and issue SSL with certbot:
+The web container binds **`127.0.0.1:${WEB_HOST_PORT:-8080}`** (set **`WEB_HOST_PORT`** in `.env` if that port is already in use; nginx `proxy_pass` must use the same port).
 
 ```bash
 sudo cp nginx/xstore55.ru.conf /etc/nginx/sites-available/xstore55.ru
