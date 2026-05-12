@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { CreateCategoryDto } from "./dto/create-category.dto";
+import { UpdateCategoryDto } from "./dto/update-category.dto";
 import { UpsertBuybackConfigDto } from "./dto/upsert-buyback-config.dto";
 import { UpsertProductDto } from "./dto/upsert-product.dto";
 import { UpsertSliderPhotosDto } from "./dto/upsert-slider-photos.dto";
@@ -22,6 +23,11 @@ export class StoreController {
   @Post("categories")
   async createCategory(@Body() dto: CreateCategoryDto) {
     return this.storeService.createCategory(dto);
+  }
+
+  @Patch("categories/:id")
+  async updateCategory(@Param("id") id: string, @Body() dto: UpdateCategoryDto) {
+    return this.storeService.updateCategory(id, dto);
   }
 
   @Post("products")

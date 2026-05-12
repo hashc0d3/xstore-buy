@@ -72,9 +72,13 @@ export async function deleteProduct(id: string): Promise<void> {
   });
 }
 
-export async function deleteCategory(id: string): Promise<void> {
+export async function updateCategory(
+  id: string,
+  input: { name?: string; imageUrl?: string }
+): Promise<void> {
   await request(`/store/categories/${id}`, {
-    method: "DELETE"
+    method: "PATCH",
+    body: JSON.stringify(input)
   });
 }
 

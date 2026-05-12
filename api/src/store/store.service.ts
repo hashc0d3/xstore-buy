@@ -3,6 +3,7 @@ import { randomUUID } from "crypto";
 import { Prisma, Product } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
+import { UpdateCategoryDto } from "./dto/update-category.dto";
 import { UpsertSliderPhotosDto } from "./dto/upsert-slider-photos.dto";
 import { UpsertProductDto } from "./dto/upsert-product.dto";
 
@@ -160,6 +161,33 @@ export class StoreService {
       }
     });
     return this.toCategory(created);
+  }
+
+  async updateCategory(id: string, dto: UpdateCategoryDto): Promise<StoreCategory> {
+    const category = await this.prisma.category.findUnique({ where: { id } });
+    if (!category) {
+      throw new NotFoundException("Категория не найдена");
+    }
+    const data: Prisma.CategoryUpdateInput = {};
+    if (dto.name !== undefined) {
+      const name = dto.name.trim();
+      if (!name) {
+        throw new BadRequestException("Название категории не может быть пустым");
+      }
+      data.name = name;
+    }
+    if (dto.imageUrl !== undefined) {
+      const raw = dto.imageUrl.trim();
+      data.imageUrl = raw || null;
+    }
+    if (Object.keys(data).length === 0) {
+      throw new BadRequestException("Укажите новое название и/или фото");
+    }
+    const saved = await this.prisma.category.update({
+      where: { id },
+      data
+    });
+    return this.toCategory(saved);
   }
 
   async upsertProduct(dto: UpsertProductDto): Promise<StoreProduct> {
