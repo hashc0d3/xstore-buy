@@ -50,3 +50,12 @@
 | SOTIK77 (sotik77) | [hashc0d3/xstore-buy](https://github.com/hashc0d3/xstore-buy) | `vegan-skupka` (`C:\Users\jasper\Documents\vegan-skupka`) |
 
 У заказчика часто два деплоя (`/opt/xstore` и `/opt/xstore-buy`). Код синхронизируется из соответствующих репозиториев; отличия — env и домен. Подробнее для второго репо: **`vegan-skupka/DEPLOY-SOURCE.md`**.
+
+## SQLite: почему «пропали» товары и как их не терять
+
+- Каталог хранится в volume **`api-data`**, путь в контейнере: `file:/data/dev.db`.
+- Команда **`docker compose down -v`** или другой **`COMPOSE_PROJECT_NAME`** на том же хосте даёт **новый** пустой volume — витрина «обнуляется». На проде не используйте `-v` без бэкапа.
+- При **первой** пустой БД и **`AUTO_SEED_CATALOG=1`** заливаются только JSON из `snifer/output` (без Dyson и консолей из Glushakov).
+- Добавить/обновить **только** Dyson и «Игровые консоли» (`slug`: `dyson`, `consoles`), не трогая остальные товары:  
+  **`docker compose exec api node scripts/seed-dyson-consoles.js`**
+- Полный набор из сниффера (iPhone, MacBook, …): **`npm run seed:catalog`** из каталога `api/` (нужны файлы в `snifer/output`).
