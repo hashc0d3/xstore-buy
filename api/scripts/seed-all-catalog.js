@@ -5,7 +5,7 @@
  * Запуск из каталога api/:
  *   node scripts/seed-all-catalog.js
  *
- * На проде в контейнере (API_URL=127.0.0.1 — Dyson/консоли попадут в БД автоматически):
+ * На проде в контейнере (после up): API через http://api:4000/api — см. docker-compose.
  *   docker compose exec api node scripts/seed-all-catalog.js
  *
  * С ПК на удалённый API (только JSON-категории; Dyson — отдельно на сервере):
@@ -72,7 +72,10 @@ async function waitForStoreApi(apiBase, maxSec) {
   for (let attempt = 1; attempt <= maxSec; attempt += 1) {
     try {
       const res = await fetch(url, { signal: AbortSignal.timeout(2000) });
-      if (res.ok) return;
+      if (res.ok) {
+        await res.arrayBuffer().catch(() => {});
+        return;
+      }
     } catch (_) {
       /* retry */
     }
@@ -83,8 +86,29 @@ async function waitForStoreApi(apiBase, maxSec) {
   );
 }
 
+/** В Docker по имени сервиса надёжнее, чем 127.0.0.1 (spawn-дочерние процессы / сеть). */
+function resolveApiBase() {
+  let u = (env.API_URL || "http://localhost:4000/api").replace(/\/$/, "").trim();
+  if (fs.existsSync("/.dockerenv") && /127\.0\.0\.1|localhost/i.test(u)) {
+    u = "http://api:4000/api";
+  }
+  return u;
+}
+
+/** Локальный HTTP-залив + Prisma Dyson: localhost, 127.0.0.1 или сервис api из compose внутри контейнера. */
+function isInProcessCatalogSeed(apiBase) {
+  try {
+    const { hostname } = new URL(apiBase.includes("://") ? apiBase : `http://${apiBase}`);
+    if (hostname === "localhost" || hostname === "127.0.0.1") return true;
+    if (fs.existsSync("/.dockerenv") && hostname === "api") return true;
+  } catch {
+    /* fallthrough */
+  }
+  return /^(https?:\/\/)?(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/i.test(apiBase);
+}
+
 async function main() {
-  const apiBase = (env.API_URL || "http://localhost:4000/api").replace(/\/$/, "").trim();
+  const apiBase = resolveApiBase();
   const maxWait = Number(process.env.SEED_WAIT_SEC || 120);
   if (process.env.SEED_SKIP_API_WAIT !== "1") {
     await waitForStoreApi(apiBase, maxWait);
@@ -105,12 +129,11 @@ async function main() {
     }
   }
 
-  const isLocalApi =
-    /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/i.test(apiBase);
+  const runDysonPrisma = isInProcessCatalogSeed(apiBase);
 
   if (process.env.SKIP_DYSON_CONSOLES === "1") {
     console.log("\n[seed-all-catalog] SKIP_DYSON_CONSOLES=1 — шаг Dyson/консолей не запускался.");
-  } else if (!isLocalApi) {
+  } else if (!runDysonPrisma) {
     console.log(
       "\n[seed-all-catalog] Удалённый API — пропуск Prisma-сида Dyson/консолей.\n" +
         "  На сервере выполните: docker compose exec api node scripts/seed-dyson-consoles.js"
@@ -133,7 +156,7 @@ async function main() {
 
   console.log(
     "\nГотово: основной каталог залит" +
-      (isLocalApi && process.env.SKIP_DYSON_CONSOLES !== "1" ? " + Dyson и консоли" : "") +
+      (runDysonPrisma && process.env.SKIP_DYSON_CONSOLES !== "1" ? " + Dyson и консоли" : "") +
       "."
   );
 }
