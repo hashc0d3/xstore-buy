@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChangeEvent, DragEvent, FormEvent, useEffect, useMemo, useState } from "react";
-import { createCategory, deleteCategory, deleteProduct, fetchStoreData, fileToDataUrl, upsertProduct } from "@/lib/api";
+import { createCategory, deleteCategory, deleteProduct, fetchStoreData, fileToDataUrl, updateCategory, upsertProduct } from "@/lib/api";
 import { Product, ProductVariant, StoreData, defaultStoreData, toRub } from "@/lib/store";
 
 function createSlug(value: string): string {
@@ -40,6 +40,10 @@ export default function AdminPage() {
   const [categoryName, setCategoryName] = useState("");
   const [categoryImageUrl, setCategoryImageUrl] = useState("");
   const [categoryImageFileLabel, setCategoryImageFileLabel] = useState("");
+  const [editCategoryId, setEditCategoryId] = useState("");
+  const [editCategoryName, setEditCategoryName] = useState("");
+  const [editCategoryImageUrl, setEditCategoryImageUrl] = useState("");
+  const [editCategoryImageFileLabel, setEditCategoryImageFileLabel] = useState("");
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [productFormError, setProductFormError] = useState("");
   const [categoryActionError, setCategoryActionError] = useState("");
@@ -119,6 +123,41 @@ export default function AdminPage() {
     setNewRamOption("");
     setProductVariants((prev) => prev.map((item) => ({ ...item, screen: "", ram: "" })));
   }, [isMacbookCategory]);
+
+  const onEditCategorySelect = (id: string) => {
+    setEditCategoryId(id);
+    setCategoryActionError("");
+    if (!id) {
+      setEditCategoryName("");
+      setEditCategoryImageUrl("");
+      setEditCategoryImageFileLabel("");
+      return;
+    }
+    const cat = categories.find((c) => c.id === id);
+    if (!cat) return;
+    setEditCategoryName(cat.name);
+    setEditCategoryImageUrl(cat.imageUrl ?? "");
+    setEditCategoryImageFileLabel("");
+  };
+
+  const onEditCategorySubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!editCategoryId) return;
+    const name = editCategoryName.trim();
+    if (!name) {
+      setCategoryActionError("Укажите название категории.");
+      return;
+    }
+    setCategoryActionError("");
+    void updateCategory(editCategoryId, {
+      name,
+      imageUrl: editCategoryImageUrl.trim()
+    })
+      .then(syncStoreData)
+      .catch(() => {
+        setCategoryActionError("Не удалось сохранить категорию. Проверьте API.");
+      });
+  };
 
   const onCategorySubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -586,6 +625,7 @@ export default function AdminPage() {
         </div>
 
         <div className="grid gap-4 lg:grid-cols-2">
+          <div className="space-y-4">
           <section className="rounded-2xl bg-white p-5 shadow-sm">
             <h2 className="mb-4 text-xl font-semibold">Добавить категорию</h2>
             <form onSubmit={onCategorySubmit} className="space-y-3">
@@ -631,9 +671,88 @@ export default function AdminPage() {
               <button type="submit" className="btn-primary">
                 Сохранить категорию
               </button>
-              {categoryActionError ? <p className="text-sm font-medium text-red-600">{categoryActionError}</p> : null}
             </form>
           </section>
+
+          <section className="rounded-2xl bg-white p-5 shadow-sm">
+            <h2 className="mb-4 text-xl font-semibold">Редактировать категорию</h2>
+            <p className="mb-3 text-sm text-zinc-500">
+              Название и фото на витрине (slug и URL раздела не меняются).
+            </p>
+            <form onSubmit={onEditCategorySubmit} className="space-y-3">
+              <select
+                className="field"
+                value={editCategoryId}
+                onChange={(e) => onEditCategorySelect(e.target.value)}
+              >
+                <option value="">Выберите категорию…</option>
+                {categories.map((item) => (
+                  <option value={item.id} key={item.id}>
+                    {item.name} ({item.slug})
+                  </option>
+                ))}
+              </select>
+              <input
+                className="field"
+                placeholder="Название"
+                value={editCategoryName}
+                onChange={(e) => setEditCategoryName(e.target.value)}
+                disabled={!editCategoryId}
+              />
+              <input
+                className="field"
+                placeholder="Фото категории — URL или data URL после загрузки файла"
+                value={editCategoryImageUrl.startsWith("data:") ? "" : editCategoryImageUrl}
+                onChange={(e) => {
+                  setEditCategoryImageUrl(e.target.value);
+                  setEditCategoryImageFileLabel("");
+                }}
+                disabled={!editCategoryId}
+              />
+              <label
+                className={`block cursor-pointer rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-3 py-3 text-sm text-zinc-600 transition hover:border-zinc-400 ${
+                  !editCategoryId ? "pointer-events-none opacity-50" : ""
+                }`}
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={!editCategoryId}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    try {
+                      const dataUrl = await fileToDataUrl(file);
+                      setEditCategoryImageUrl(dataUrl);
+                      setEditCategoryImageFileLabel(file.name);
+                    } catch {
+                      // ignore
+                    }
+                    e.target.value = "";
+                  }}
+                />
+                Загрузить файл: {editCategoryImageFileLabel || "нажмите для выбора"}
+              </label>
+              {editCategoryImageUrl && editCategoryImageUrl.startsWith("data:") ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={editCategoryImageUrl} alt="" className="h-20 w-20 rounded-lg border border-zinc-200 object-cover" />
+              ) : editCategoryImageUrl && !editCategoryImageUrl.startsWith("data:") ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={editCategoryImageUrl} alt="" className="h-20 w-20 rounded-lg border border-zinc-200 object-cover" />
+              ) : null}
+              <button type="submit" className="btn-primary" disabled={!editCategoryId}>
+                Сохранить изменения
+              </button>
+            </form>
+          </section>
+          </div>
+
+          {categoryActionError ? (
+            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 lg:col-span-2">
+              {categoryActionError}
+            </div>
+          ) : null}
 
           <section className="rounded-2xl bg-white p-5 shadow-sm">
             <h2 className="mb-4 text-xl font-semibold">Добавить товар</h2>
