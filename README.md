@@ -36,7 +36,7 @@ Web: http://localhost:8083 — туда зайдёт через тот же
 ```bash
 ssh debian-for-tests
 cd /opt/xstore-buy
-git pull origin master
+git pull origin main
 docker compose up -d --build
 docker compose ps
 ```
@@ -72,3 +72,13 @@ docker compose ps
 
 API использует SQLite в docker-volume `api-data`. Prisma-миграции
 накатываются автоматически при старте контейнера `api`.
+
+В образ `api` копируется **`snifer/output/*.json`** в `/app/catalog`. При **`AUTO_SEED_CATALOG=1`** (по умолчанию в `docker-compose.yml`), если в БД **ещё нет товаров**, при старте один раз выполняется **`seed:catalog`** — витрина и админка совпадают с JSON из репозитория. Если товары уже есть, автозаливка пропускается. Отключить: **`AUTO_SEED_CATALOG=0`**.
+
+Обновить каталог после смены JSON: `git pull`, `docker compose up -d --build`, затем при необходимости вручную:
+
+```bash
+docker compose exec api sh -c 'API_URL=http://127.0.0.1:4000/api CATALOG_ROOT=/app/catalog npm run seed:catalog'
+```
+
+В README выше для деплоя используется ветка **`main`** на GitHub.
