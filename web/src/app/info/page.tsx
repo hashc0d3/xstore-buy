@@ -1,5 +1,7 @@
 import Storefront from "@/components/storefront";
+import { getStoreDataServer } from "@/lib/server/get-store-data";
 
-export default function InfoPage() {
-  return <Storefront />;
+export default async function InfoPage() {
+  const initialStoreData = await getStoreDataServer();
+  return <Storefront initialStoreData={initialStoreData} />;
 }

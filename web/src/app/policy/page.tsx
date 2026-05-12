@@ -1,5 +1,7 @@
 import Storefront from "@/components/storefront";
+import { getStoreDataServer } from "@/lib/server/get-store-data";
 
-export default function PolicyPage() {
-  return <Storefront />;
+export default async function PolicyPage() {
+  const initialStoreData = await getStoreDataServer();
+  return <Storefront initialStoreData={initialStoreData} />;
 }

@@ -10,7 +10,7 @@ if [ "${AUTO_SEED_CATALOG:-1}" = "1" ]; then
   srv=$!
   n=0
   while [ "$n" -lt 120 ]; do
-    if node -e "require('http').get('http://127.0.0.1:'+(process.env.PORT||'4000')+'/store',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))" 2>/dev/null; then
+    if node -e "require('http').get('http://127.0.0.1:'+(process.env.PORT||'4000')+'/api/store',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))" 2>/dev/null; then
       break
     fi
     n=$((n + 1))

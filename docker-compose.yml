@@ -1,3 +1,12 @@
+# Два независимых деплоя на одном сервере:
+#   /opt/xstore     — репо https://github.com/hashc0d3/xstore      → www.xstore55.ru
+#   /opt/xstore-buy — репо https://github.com/hashc0d3/xstore-buy  → www.sotik77.ru
+#
+# В каждом каталоге свой .env (см. deploy/.env.xstore.example и deploy/.env.sotik77.example).
+# Обязательно: docker compose build --no-cache web после смены NEXT_PUBLIC_*.
+
+name: ${COMPOSE_PROJECT_NAME:-store}
+
 services:
   api:
     build:
@@ -6,7 +15,7 @@ services:
     environment:
       PORT: "4000"
       DATABASE_URL: "file:/data/dev.db"
-      CORS_ORIGIN: "https://xstore55.ru,https://www.xstore55.ru,http://155.117.46.144:8080,http://localhost:8080"
+      CORS_ORIGIN: "${CORS_ORIGIN:-https://www.xstore55.ru,https://xstore55.ru,http://127.0.0.1:8080,http://localhost:8080}"
       TELEGRAM_BOT_TOKEN: "${TELEGRAM_BOT_TOKEN:-}"
       TELEGRAM_CHAT_ID: "${TELEGRAM_CHAT_ID:-}"
       AUTO_SEED_CATALOG: "${AUTO_SEED_CATALOG:-1}"
@@ -20,16 +29,16 @@ services:
     build:
       context: ./web
       args:
-        NEXT_PUBLIC_API_URL: "/api"
-        API_INTERNAL_URL: "http://api:4000"
-        NEXT_PUBLIC_SITE_URL: "https://xstore55.ru"
-        NEXT_PUBLIC_STORE_BRAND: "xstore"
+        NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL:-/api}"
+        API_INTERNAL_URL: "${API_INTERNAL_URL:-http://api:4000}"
+        NEXT_PUBLIC_SITE_URL: "${NEXT_PUBLIC_SITE_URL:-https://www.xstore55.ru}"
+        NEXT_PUBLIC_STORE_BRAND: "${NEXT_PUBLIC_STORE_BRAND:-xstore}"
     environment:
       PORT: "3000"
       HOSTNAME: "0.0.0.0"
-      API_INTERNAL_URL: "http://api:4000"
+      API_INTERNAL_URL: "${API_INTERNAL_URL:-http://api:4000}"
     ports:
-      - "127.0.0.1:8080:3000"
+      - "${WEB_PUBLISH:-127.0.0.1:8080}:3000"
     depends_on:
       - api
     restart: unless-stopped

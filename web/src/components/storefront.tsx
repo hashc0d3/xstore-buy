@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { BrandMark } from "@/components/brand-mark";
+import { CategoryStripSkeleton, ProductGridSkeleton } from "@/components/catalog-skeleton";
 import { createLead, fetchStoreData } from "@/lib/api";
+import { CART_STORAGE_KEY, SLIDER_PHOTO_ALT_FALLBACK, VK_HREF } from "@/lib/brand";
 import { Category, Product, ProductVariant, StoreData, defaultStoreData, toRub } from "@/lib/store";
 
 const IPHONE_LIKE_SLUGS = new Set(["iphone", "iphone-used"]);
@@ -94,42 +97,23 @@ function effectiveVariantsForProduct(product: Product, categorySlug: string | un
   return raw;
 }
 
-/** Сборка SOTIK77: `NEXT_PUBLIC_STORE_BRAND=sotik77`; иначе логотип X:STORE. */
-const IS_SOTIK_BRAND = process.env.NEXT_PUBLIC_STORE_BRAND === "sotik77";
-
-/** X:STORE — официальная группа VK. */
-const VK_HREF = IS_SOTIK_BRAND ? "https://vk.com" : "https://vk.ru/xstore_55";
-
-function StoreLogoMark() {
-  if (IS_SOTIK_BRAND) {
-    return (
-      <>
-        SOTIK<span className="text-red-500">77</span>
-      </>
-    );
-  }
-  return (
-    <>
-      <span className="text-red-500">X</span> : STORE
-    </>
-  );
-}
-
-const SLIDER_PHOTO_ALT_FALLBACK = IS_SOTIK_BRAND ? "Фото SOTIK77" : "Фото X:STORE";
-
 function availabilityBadgeText(availability?: string, price?: number): string | null {
   const a = (availability || "").toLowerCase();
   if (a === "coming_soon") return "Скоро в продаже";
   if (a === "out_of_stock") return "Нет в наличии";
-  if (a === "unknown" && price !== undefined && price <= 0) return "Скоро в продаже";
+  // Цена 0 без явной метки в админке — не показываем «0 ₽», а «Скоро в продаже».
+  if (price !== undefined && price <= 0 && (a === "unknown" || !a || a === "in_stock")) {
+    return "Скоро в продаже";
+  }
   return null;
 }
 
 function variantCanAddToCart(variant: { availability?: string; price: number } | null | undefined): boolean {
   if (!variant) return false;
+  if (variant.price <= 0) return false;
   const a = (variant.availability || "").toLowerCase();
   if (a === "coming_soon" || a === "out_of_stock") return false;
-  return variant.price > 0;
+  return true;
 }
 
 type ModalType = "tradein" | "reviews" | "order" | "product" | "preorder" | null;
@@ -153,8 +137,6 @@ type CartItem = {
   imageUrl: string;
   quantity: number;
 };
-
-const CART_STORAGE_KEY = "xstore-cart-v1";
 
 function persistCartItems(items: CartItem[]) {
   window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
@@ -420,8 +402,13 @@ function ProductCard({
   ]);
 
   const shownPrice = activeVariant?.price ?? product.basePrice;
-  const stockBadge = availabilityBadgeText(activeVariant?.availability, activeVariant?.price);
-  const canCart = variantCanAddToCart(activeVariant);
+  const stockBadge = availabilityBadgeText(
+    activeVariant?.availability,
+    activeVariant ? activeVariant.price : product.basePrice
+  );
+  const canCart = variantCanAddToCart(
+    activeVariant ?? { price: product.basePrice, availability: undefined }
+  );
   const currentImage = activeVariant?.imageUrl ?? product.imageUrl;
 
   const colorLabel = product.color ?? "";
@@ -712,7 +699,12 @@ function ProductCard({
   );
 }
 
-export default function Storefront() {
+export type StorefrontProps = {
+  /** SSR: данные с API сразу, без пустой витрины и лишнего ожидания. */
+  initialStoreData?: StoreData;
+};
+
+export default function Storefront({ initialStoreData }: StorefrontProps) {
   const pathname = usePathname();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -736,7 +728,8 @@ export default function Storefront() {
     ram?: string;
   } | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [storeData, setStoreData] = useState<StoreData>(defaultStoreData);
+  const [storeData, setStoreData] = useState<StoreData>(() => initialStoreData ?? defaultStoreData);
+  const [storeFetched, setStoreFetched] = useState(() => Boolean(initialStoreData));
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartHydrated, setCartHydrated] = useState(false);
   const [sendingLead, setSendingLead] = useState(false);
@@ -763,7 +756,10 @@ export default function Storefront() {
   }, [cartHydrated, cartItems]);
 
   useEffect(() => {
-    void fetchStoreData().then((remote) => setStoreData(remote));
+    void fetchStoreData().then((remote) => {
+      setStoreData(remote);
+      setStoreFetched(true);
+    });
   }, []);
 
   const reviewPhotos = useMemo(() => {
@@ -1303,8 +1299,13 @@ export default function Storefront() {
 
       const shownModalPrice = activeVariant?.price ?? selectedProduct.basePrice;
       const shownModalImage = activeVariant?.imageUrl ?? selectedProduct.imageUrl;
-      const modalStockBadge = availabilityBadgeText(activeVariant?.availability, activeVariant?.price);
-      const modalCanCart = variantCanAddToCart(activeVariant);
+      const modalStockBadge = availabilityBadgeText(
+        activeVariant?.availability,
+        activeVariant ? activeVariant.price : selectedProduct.basePrice
+      );
+      const modalCanCart = variantCanAddToCart(
+        activeVariant ?? { price: selectedProduct.basePrice, availability: undefined }
+      );
       return (
         <Modal
           title={selectedProduct.name}
@@ -1566,7 +1567,7 @@ export default function Storefront() {
               shouldSplitHeader ? "text-xl min-[1200px]:text-2xl min-[1440px]:text-3xl" : "text-2xl min-[640px]:text-3xl min-[1440px]:text-4xl min-[1920px]:text-5xl"
             }`}
           >
-            <StoreLogoMark />
+            <BrandMark />
           </Link>
           <nav
             className={`hidden h-11 items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-1.5 text-sm font-medium text-zinc-700 backdrop-blur-xl transition-all duration-300 min-[960px]:flex min-[1920px]:text-base ${
@@ -1857,13 +1858,15 @@ export default function Storefront() {
             isHomePage ? "rounded-2xl border border-white/60 liquid-glass p-2 min-[640px]:p-3" : ""
           } grid grid-cols-4 gap-1.5 min-[480px]:gap-2 min-[640px]:gap-2.5 min-[900px]:grid-cols-7 min-[960px]:gap-3 min-[1440px]:gap-4`}
         >
-          {displayCategories.map((category) => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              onPodZakaz={category.slug === "custom" ? () => setActiveModal("preorder") : undefined}
-            />
-          ))}
+          {storeFetched
+            ? displayCategories.map((category) => (
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  onPodZakaz={category.slug === "custom" ? () => setActiveModal("preorder") : undefined}
+                />
+              ))
+            : <CategoryStripSkeleton />}
         </section>
 
         {isHomePage ? (
@@ -2099,7 +2102,9 @@ export default function Storefront() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            {filteredProducts.length ? (
+            {!storeFetched ? (
+              <ProductGridSkeleton />
+            ) : filteredProducts.length ? (
               <div className="grid grid-cols-2 gap-2 min-[640px]:grid-cols-2 min-[640px]:gap-3 min-[960px]:grid-cols-5 min-[1440px]:grid-cols-6 min-[1920px]:grid-cols-7 min-[1920px]:gap-4">
                 {filteredProducts.map((product) => (
                   <ProductCard
@@ -2180,7 +2185,7 @@ export default function Storefront() {
       <footer className="mt-14 bg-[#111112] text-zinc-300">
         <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-10 text-center min-[640px]:max-w-xl min-[960px]:max-w-5xl min-[960px]:py-14">
           <Link href="/" className="mb-8 inline-flex items-center text-2xl font-bold tracking-tight text-white min-[640px]:text-3xl">
-            <StoreLogoMark />
+            <BrandMark />
           </Link>
 
           <div className="w-full max-w-lg">
@@ -2282,7 +2287,7 @@ export default function Storefront() {
                 className="text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <StoreLogoMark />
+                <BrandMark />
               </Link>
               <button
                 type="button"
