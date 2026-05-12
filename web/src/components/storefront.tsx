@@ -97,6 +97,9 @@ function effectiveVariantsForProduct(product: Product, categorySlug: string | un
 /** Сборка SOTIK77: `NEXT_PUBLIC_STORE_BRAND=sotik77`; иначе логотип X:STORE. */
 const IS_SOTIK_BRAND = process.env.NEXT_PUBLIC_STORE_BRAND === "sotik77";
 
+/** X:STORE — официальная группа VK. */
+const VK_HREF = IS_SOTIK_BRAND ? "https://vk.com" : "https://vk.ru/xstore_55";
+
 function StoreLogoMark() {
   if (IS_SOTIK_BRAND) {
     return (
@@ -1673,7 +1676,7 @@ export default function Storefront() {
               </span>
             </Link>
             <a
-              href="https://vk.com"
+              href={VK_HREF}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white"
@@ -2230,7 +2233,7 @@ export default function Storefront() {
               <span aria-hidden="true">☎</span>
               +7 (923) 696-93-77
             </a>
-            <a href="https://vk.com" target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="VK">
+            <a href={VK_HREF} target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="VK">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icon/vk.svg" alt="" className="h-5 w-5" />
             </a>
@@ -2410,7 +2413,7 @@ export default function Storefront() {
 
             <div className="mt-6 flex gap-3 min-[640px]:mt-8 min-[640px]:gap-4">
               <a
-                href="https://vk.com"
+                href={VK_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white min-[640px]:h-14 min-[640px]:w-14"

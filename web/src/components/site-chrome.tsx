@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 
 const CART_STORAGE_KEY = "xstore-cart-v1";
 
+const IS_SOTIK_BRAND = process.env.NEXT_PUBLIC_STORE_BRAND === "sotik77";
+const VK_HREF = IS_SOTIK_BRAND ? "https://vk.com" : "https://vk.ru/xstore_55";
+
 type StoredCartItem = {
   quantity?: number;
 };
@@ -331,7 +334,7 @@ export function SiteFooter() {
             <span aria-hidden="true">☎</span>
             +7 (923) 696-93-77
           </a>
-          <a href="https://vk.com" target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="VK">
+          <a href={VK_HREF} target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="VK">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/icon/vk.svg" alt="" className="h-5 w-5" />
           </a>
