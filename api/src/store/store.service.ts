@@ -68,6 +68,8 @@ export class StoreService {
       { slug: "apple-watch", name: "Apple Watch", memoryOptions: [] },
       { slug: "ipad", name: "iPad", memoryOptions: ["128 ГБ", "256 ГБ", "512 ГБ"] },
       { slug: "airpods", name: "AirPods", memoryOptions: [] },
+      { slug: "dyson", name: "Dyson", memoryOptions: [] },
+      { slug: "consoles", name: "Игровые консоли", memoryOptions: [] },
       { slug: "custom", name: "Под заказ", memoryOptions: [] }
     ];
 
