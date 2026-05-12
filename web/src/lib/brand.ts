@@ -2,7 +2,8 @@
  * Два независимых продакшена: X:STORE (xstore55) и SOTIK77 (sotik77).
  * Сборка задаётся только через NEXT_PUBLIC_STORE_BRAND при `next build` / Docker ARG.
  */
-export const STORE_BRAND = (process.env.NEXT_PUBLIC_STORE_BRAND ?? "xstore").trim();
+/** lower-case: «SOTIK77» в .env не должен ломать определение бренда */
+export const STORE_BRAND = (process.env.NEXT_PUBLIC_STORE_BRAND ?? "xstore").trim().toLowerCase();
 
 export const IS_SOTIK_BRAND = STORE_BRAND === "sotik77";
 

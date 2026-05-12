@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { IS_SOTIK_BRAND } from "@/lib/brand";
 
-const COOKIE_CONSENT_KEY = "xstore-cookie-consent-v1";
+const COOKIE_CONSENT_KEY = IS_SOTIK_BRAND ? "sotik77-cookie-consent-v1" : "xstore-cookie-consent-v1";
 
 export function CookieConsent() {
   const [visible, setVisible] = useState(false);
