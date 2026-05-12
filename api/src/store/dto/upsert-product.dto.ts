@@ -14,6 +14,14 @@ class ProductVariantDto {
   @IsString()
   simType?: string;
 
+  @IsOptional()
+  @IsString()
+  screen?: string;
+
+  @IsOptional()
+  @IsString()
+  ram?: string;
+
   @IsInt()
   @Min(0)
   price!: number;
@@ -21,6 +29,11 @@ class ProductVariantDto {
   @IsOptional()
   @IsString()
   imageUrl?: string;
+
+  /** in_stock | coming_soon | out_of_stock | unknown */
+  @IsOptional()
+  @IsString()
+  availability?: string;
 }
 
 export class UpsertProductDto {

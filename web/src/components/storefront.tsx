@@ -4,15 +4,109 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createLead, fetchStoreData } from "@/lib/api";
-import { Category, Product, StoreData, defaultStoreData, toRub } from "@/lib/store";
+import { Category, Product, ProductVariant, StoreData, defaultStoreData, toRub } from "@/lib/store";
 
 const IPHONE_LIKE_SLUGS = new Set(["iphone", "iphone-used"]);
+const MACBOOK_LIKE_SLUGS = new Set(["macbook"]);
+const IPAD_LIKE_SLUGS = new Set(["ipad"]);
+const WATCH_LIKE_SLUGS = new Set(["apple-watch"]);
+
+function normalizeCategorySlug(slug: string | undefined): string | undefined {
+  if (!slug) return undefined;
+  const t = slug.trim().toLowerCase();
+  return t || undefined;
+}
 
 function isIphoneLikeSlug(slug: string | undefined): boolean {
-  return Boolean(slug && IPHONE_LIKE_SLUGS.has(slug));
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && IPHONE_LIKE_SLUGS.has(s));
+}
+
+function isMacbookLikeSlug(slug: string | undefined): boolean {
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && MACBOOK_LIKE_SLUGS.has(s));
+}
+
+function isIpadLikeSlug(slug: string | undefined): boolean {
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && IPAD_LIKE_SLUGS.has(s));
+}
+
+function isWatchLikeSlug(slug: string | undefined): boolean {
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && WATCH_LIKE_SLUGS.has(s));
+}
+
+/** Старый формат админки: только memoryPrices без массива variants — собираем варианты для карточек/модалки. */
+function effectiveVariantsForProduct(product: Product, categorySlug: string | undefined): ProductVariant[] {
+  const raw = product.variants ?? [];
+  if (raw.length > 0) return raw;
+  const slug = normalizeCategorySlug(categorySlug);
+  if (!slug) return [];
+  const fromMemoryPrices =
+    isIphoneLikeSlug(slug) || isMacbookLikeSlug(slug) || isIpadLikeSlug(slug);
+  if (!fromMemoryPrices) return [];
+  const mp = product.memoryPrices;
+  if (!mp || typeof mp !== "object") return [];
+  const entries = Object.entries(mp).filter(([k, v]) => {
+    const n = Number(v);
+    return Boolean(k?.trim()) && Number.isFinite(n);
+  });
+  if (!entries.length) return [];
+  entries.sort((a, b) => Number(a[1]) - Number(b[1]));
+  const color = product.color?.trim();
+  const imageUrl = product.imageUrl;
+  return entries.map(([memory, price]) => ({
+    ...(color ? { color } : {}),
+    memory,
+    price: Number(price),
+    imageUrl
+  }));
+}
+
+/** Сборка SOTIK77: `NEXT_PUBLIC_STORE_BRAND=sotik77`; иначе логотип X:STORE. */
+const IS_SOTIK_BRAND = process.env.NEXT_PUBLIC_STORE_BRAND === "sotik77";
+
+function StoreLogoMark() {
+  if (IS_SOTIK_BRAND) {
+    return (
+      <>
+        SOTIK<span className="text-red-500">77</span>
+      </>
+    );
+  }
+  return (
+    <>
+      <span className="text-red-500">X</span> : STORE
+    </>
+  );
+}
+
+const SLIDER_PHOTO_ALT_FALLBACK = IS_SOTIK_BRAND ? "Фото SOTIK77" : "Фото X:STORE";
+
+function availabilityBadgeText(availability?: string, price?: number): string | null {
+  const a = (availability || "").toLowerCase();
+  if (a === "coming_soon") return "Скоро в продаже";
+  if (a === "out_of_stock") return "Нет в наличии";
+  if (a === "unknown" && price !== undefined && price <= 0) return "Скоро в продаже";
+  return null;
+}
+
+function variantCanAddToCart(variant: { availability?: string; price: number } | null | undefined): boolean {
+  if (!variant) return false;
+  const a = (variant.availability || "").toLowerCase();
+  if (a === "coming_soon" || a === "out_of_stock") return false;
+  return variant.price > 0;
 }
 
 type ModalType = "tradein" | "reviews" | "order" | "product" | "preorder" | null;
+type VariantSelection = {
+  color?: string;
+  memory?: string;
+  simType?: string;
+  screen?: string;
+  ram?: string;
+};
 type CartItem = {
   key: string;
   productId: string;
@@ -20,6 +114,8 @@ type CartItem = {
   color?: string;
   memory?: string;
   simType?: string;
+  screen?: string;
+  ram?: string;
   price: number;
   imageUrl: string;
   quantity: number;
@@ -176,12 +272,23 @@ function ProductCard({
 }: {
   product: Product;
   category?: Category;
-  onOrder: (selection: { color?: string; memory?: string; simType?: string }) => void;
-  onAddToCart: (selection: { color?: string; memory?: string; simType?: string; price: number; imageUrl: string }) => void;
-  onOpenDetails: (selection: { color?: string; memory?: string; simType?: string }) => void;
+  onOrder: (selection: VariantSelection) => void;
+  onAddToCart: (
+    selection: VariantSelection & { price: number; imageUrl: string }
+  ) => void;
+  onOpenDetails: (selection: VariantSelection) => void;
 }) {
-  const isIphoneCategory = isIphoneLikeSlug(category?.slug);
-  const variants = useMemo(() => product.variants ?? [], [product.variants]);
+  const categorySlug = category?.slug ?? product.categorySlug;
+  const isIphoneCategory = isIphoneLikeSlug(categorySlug);
+  const isMacbookCategory = isMacbookLikeSlug(categorySlug);
+  const isIpadCategory = isIpadLikeSlug(categorySlug);
+  const isWatchCategory = isWatchLikeSlug(categorySlug);
+  const usesMemory = isIphoneCategory || isMacbookCategory || isIpadCategory;
+  const usesScreen = isMacbookCategory || isIpadCategory || isWatchCategory;
+  const usesRam = isMacbookCategory;
+  const showSimSelector = isIphoneCategory || isIpadCategory || isWatchCategory;
+  const simLabel = isIphoneCategory ? "SIM" : isIpadCategory ? "Связь" : isWatchCategory ? "Ремешок" : "SIM";
+  const variants = useMemo(() => effectiveVariantsForProduct(product, categorySlug), [product, categorySlug]);
   const hasVariants = variants.length > 0;
   const colorOptions = useMemo(
     () =>
@@ -200,52 +307,88 @@ function ProductCard({
   const colorScopedVariants = hasVariants
     ? variants.filter((item) => !selectedColor || item.color === selectedColor)
     : [];
-  const allMemoryOptions = hasVariants && isIphoneCategory
+  const allMemoryOptions = hasVariants && usesMemory
     ? Array.from(new Set(colorScopedVariants.map((item) => item.memory).filter((item): item is string => Boolean(item))))
     : [];
-  const allSimOptions = hasVariants && isIphoneCategory
+  const allSimOptions = hasVariants && showSimSelector
     ? Array.from(new Set(colorScopedVariants.map((item) => item.simType).filter((item): item is string => Boolean(item))))
     : [];
+  const allScreenOptions = hasVariants && usesScreen
+    ? Array.from(new Set(colorScopedVariants.map((item) => item.screen).filter((item): item is string => Boolean(item))))
+    : [];
+  const allRamOptions = hasVariants && usesRam
+    ? Array.from(new Set(colorScopedVariants.map((item) => item.ram).filter((item): item is string => Boolean(item))))
+    : [];
   const [selectedMemory, setSelectedMemory] = useState<string>(() => {
-    if (hasVariants && isIphoneCategory) return allMemoryOptions[0] ?? "";
+    if (hasVariants && usesMemory) return allMemoryOptions[0] ?? "";
     return "";
   });
   const [selectedSim, setSelectedSim] = useState<string>(() => allSimOptions[0] ?? "");
-  const memoryScopedVariants = hasVariants && isIphoneCategory
-    ? colorScopedVariants.filter((item) => !selectedSim || item.simType === selectedSim)
-    : colorScopedVariants;
-  const simScopedVariants = hasVariants && isIphoneCategory
-    ? colorScopedVariants.filter((item) => !selectedMemory || item.memory === selectedMemory)
-    : colorScopedVariants;
-  const memoryOptions = hasVariants && isIphoneCategory
-    ? Array.from(new Set(memoryScopedVariants.map((item) => item.memory).filter((item): item is string => Boolean(item))))
+  const [selectedScreen, setSelectedScreen] = useState<string>(() => allScreenOptions[0] ?? "");
+  const [selectedRam, setSelectedRam] = useState<string>(() => allRamOptions[0] ?? "");
+  const matches = (
+    item: typeof variants[number],
+    excludeKey: keyof VariantSelection
+  ) =>
+    (!selectedColor || item.color === selectedColor) &&
+    (excludeKey === "memory" || !usesMemory || !selectedMemory || item.memory === selectedMemory) &&
+    (excludeKey === "simType" || !showSimSelector || !selectedSim || item.simType === selectedSim) &&
+    (excludeKey === "screen" || !usesScreen || !selectedScreen || item.screen === selectedScreen) &&
+    (excludeKey === "ram" || !usesRam || !selectedRam || item.ram === selectedRam);
+
+  const memoryOptions = hasVariants && usesMemory
+    ? Array.from(new Set(variants.filter((item) => matches(item, "memory")).map((item) => item.memory).filter((item): item is string => Boolean(item))))
     : [];
-  const simOptions = hasVariants && isIphoneCategory
-    ? Array.from(new Set(simScopedVariants.map((item) => item.simType).filter((item): item is string => Boolean(item))))
+  const simOptions = hasVariants && showSimSelector
+    ? Array.from(new Set(variants.filter((item) => matches(item, "simType")).map((item) => item.simType).filter((item): item is string => Boolean(item))))
+    : [];
+  const screenOptions = hasVariants && usesScreen
+    ? Array.from(new Set(variants.filter((item) => matches(item, "screen")).map((item) => item.screen).filter((item): item is string => Boolean(item))))
+    : [];
+  const ramOptions = hasVariants && usesRam
+    ? Array.from(new Set(variants.filter((item) => matches(item, "ram")).map((item) => item.ram).filter((item): item is string => Boolean(item))))
     : [];
 
   const activeVariant = useMemo(() => {
     if (!hasVariants) return null;
-    if (!isIphoneCategory) {
+    if (!isIphoneCategory && !isMacbookCategory && !isIpadCategory && !isWatchCategory) {
       return (
         variants.find((item) => (!selectedColor || item.color === selectedColor)) ??
         variants[0]
       );
     }
+    const matchesAll = (item: typeof variants[number]) =>
+      (!selectedColor || item.color === selectedColor) &&
+      (!usesMemory || !selectedMemory || item.memory === selectedMemory) &&
+      (!showSimSelector || !selectedSim || item.simType === selectedSim) &&
+      (!usesScreen || !selectedScreen || item.screen === selectedScreen) &&
+      (!usesRam || !selectedRam || item.ram === selectedRam);
     return (
-      variants.find(
-        (item) =>
-          (!selectedColor || item.color === selectedColor) &&
-          (!selectedMemory || item.memory === selectedMemory) &&
-          (!selectedSim || item.simType === selectedSim)
-      ) ??
-      variants.find((item) => (!selectedColor || item.color === selectedColor) && (!selectedMemory || item.memory === selectedMemory)) ??
-      variants.find((item) => (!selectedColor || item.color === selectedColor)) ??
+      variants.find(matchesAll) ??
+      variants.find((item) => !selectedColor || item.color === selectedColor) ??
       variants[0]
     );
-  }, [hasVariants, isIphoneCategory, selectedColor, selectedMemory, selectedSim, variants]);
+  }, [
+    hasVariants,
+    isIphoneCategory,
+    isMacbookCategory,
+    isIpadCategory,
+    isWatchCategory,
+    selectedColor,
+    selectedMemory,
+    selectedRam,
+    selectedScreen,
+    selectedSim,
+    showSimSelector,
+    usesMemory,
+    usesRam,
+    usesScreen,
+    variants
+  ]);
 
   const shownPrice = activeVariant?.price ?? product.basePrice;
+  const stockBadge = availabilityBadgeText(activeVariant?.availability, activeVariant?.price);
+  const canCart = variantCanAddToCart(activeVariant);
   const currentImage = activeVariant?.imageUrl ?? product.imageUrl;
 
   const colorLabel = product.color ?? "";
@@ -270,7 +413,9 @@ function ProductCard({
         onOpenDetails({
           color: selectedColor || undefined,
           memory: selectedMemory || undefined,
-          simType: selectedSim || undefined
+          simType: selectedSim || undefined,
+          screen: selectedScreen || undefined,
+          ram: selectedRam || undefined
         })
       }
       onKeyDown={(e) => {
@@ -279,7 +424,9 @@ function ProductCard({
           onOpenDetails({
             color: selectedColor || undefined,
             memory: selectedMemory || undefined,
-            simType: selectedSim || undefined
+            simType: selectedSim || undefined,
+            screen: selectedScreen || undefined,
+            ram: selectedRam || undefined
           });
         }
       }}
@@ -313,18 +460,22 @@ function ProductCard({
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedColor(color);
-                    if (hasVariants && isIphoneCategory) {
+                    if (hasVariants && (isIphoneCategory || isMacbookCategory || isIpadCategory || isWatchCategory)) {
                       const scoped = variants.filter((item) => item.color === color);
                       const fallback =
                         scoped.find(
                           (item) =>
-                            (!selectedMemory || item.memory === selectedMemory) &&
-                            (!selectedSim || item.simType === selectedSim)
+                            (!usesMemory || !selectedMemory || item.memory === selectedMemory) &&
+                            (!showSimSelector || !selectedSim || item.simType === selectedSim) &&
+                            (!usesScreen || !selectedScreen || item.screen === selectedScreen) &&
+                            (!usesRam || !selectedRam || item.ram === selectedRam)
                         ) ??
-                        scoped.find((item) => !selectedMemory || item.memory === selectedMemory) ??
+                        scoped.find((item) => !usesMemory || !selectedMemory || item.memory === selectedMemory) ??
                         scoped[0];
-                      setSelectedMemory(fallback?.memory ?? "");
-                      setSelectedSim(fallback?.simType ?? "");
+                      if (usesMemory) setSelectedMemory(fallback?.memory ?? "");
+                      if (showSimSelector) setSelectedSim(fallback?.simType ?? "");
+                      if (usesScreen) setSelectedScreen(fallback?.screen ?? "");
+                      if (usesRam) setSelectedRam(fallback?.ram ?? "");
                     }
                   }}
                 >
@@ -340,9 +491,44 @@ function ProductCard({
             ) : null}
           </div>
         ) : null}
+        {screenOptions.length > 0 ? (
+          <div className="space-y-1">
+            <p className="text-xs text-zinc-500">{isWatchCategory ? "Размер корпуса" : "Диагональ"}</p>
+            <div className="flex flex-wrap gap-1">
+              {screenOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold transition min-[640px]:px-2 min-[640px]:text-[11px] ${
+                    selectedScreen === option ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedScreen(option);
+                    const scoped = colorScopedVariants.filter((item) => item.screen === option);
+                    const fallback =
+                      scoped.find(
+                        (item) =>
+                          (!usesMemory || !selectedMemory || item.memory === selectedMemory) &&
+                          (!usesRam || !selectedRam || item.ram === selectedRam) &&
+                          (!showSimSelector || !selectedSim || item.simType === selectedSim)
+                      ) ?? scoped[0];
+                    if (fallback) {
+                      if (usesMemory) setSelectedMemory(fallback.memory ?? "");
+                      if (usesRam) setSelectedRam(fallback.ram ?? "");
+                      if (showSimSelector) setSelectedSim(fallback.simType ?? "");
+                    }
+                  }}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
         {memoryOptions.length > 0 ? (
           <div className="space-y-1">
-            <p className="text-xs text-zinc-500">Объем</p>
+            <p className="text-xs text-zinc-500">{isMacbookCategory || isIpadCategory ? "Накопитель" : "Объем"}</p>
             <div className="flex flex-wrap gap-1">
               {memoryOptions.map((option) => (
                 <button
@@ -356,10 +542,52 @@ function ProductCard({
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedMemory(option);
+                    const scoped = colorScopedVariants.filter((item) => item.memory === option);
                     const fallback =
-                      colorScopedVariants.find((item) => item.memory === option && (!selectedSim || item.simType === selectedSim)) ??
-                      colorScopedVariants.find((item) => item.memory === option);
-                    setSelectedSim(fallback?.simType ?? "");
+                      scoped.find(
+                        (item) =>
+                          (!selectedSim || item.simType === selectedSim) &&
+                          (!selectedScreen || item.screen === selectedScreen) &&
+                          (!selectedRam || item.ram === selectedRam)
+                      ) ?? scoped[0];
+                    if (fallback) {
+                      if (showSimSelector) setSelectedSim(fallback.simType ?? "");
+                      if (usesScreen) setSelectedScreen(fallback.screen ?? "");
+                      if (usesRam) setSelectedRam(fallback.ram ?? "");
+                    }
+                  }}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+        {ramOptions.length > 0 ? (
+          <div className="space-y-1">
+            <p className="text-xs text-zinc-500">Оперативная память</p>
+            <div className="flex flex-wrap gap-1">
+              {ramOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold transition min-[640px]:px-2 min-[640px]:text-[11px] ${
+                    selectedRam === option ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedRam(option);
+                    const scoped = colorScopedVariants.filter((item) => item.ram === option);
+                    const fallback =
+                      scoped.find(
+                        (item) =>
+                          (!selectedMemory || item.memory === selectedMemory) &&
+                          (!selectedScreen || item.screen === selectedScreen)
+                      ) ?? scoped[0];
+                    if (fallback) {
+                      setSelectedMemory(fallback.memory ?? "");
+                      setSelectedScreen(fallback.screen ?? "");
+                    }
                   }}
                 >
                   {option}
@@ -370,7 +598,7 @@ function ProductCard({
         ) : null}
         {simOptions.length > 0 ? (
           <div className="space-y-1">
-            <p className="text-xs text-zinc-500">SIM</p>
+            <p className="text-xs text-zinc-500">{simLabel}</p>
             <div className="flex flex-wrap gap-1">
               {simOptions.map((option) => (
                 <button
@@ -383,9 +611,16 @@ function ProductCard({
                     e.stopPropagation();
                     setSelectedSim(option);
                     const fallback =
-                      colorScopedVariants.find((item) => item.simType === option && (!selectedMemory || item.memory === selectedMemory)) ??
-                      colorScopedVariants.find((item) => item.simType === option);
-                    setSelectedMemory(fallback?.memory ?? "");
+                      colorScopedVariants.find(
+                        (item) =>
+                          item.simType === option &&
+                          (!usesMemory || !selectedMemory || item.memory === selectedMemory) &&
+                          (!usesScreen || !selectedScreen || item.screen === selectedScreen)
+                      ) ?? colorScopedVariants.find((item) => item.simType === option);
+                    if (fallback) {
+                      if (usesMemory) setSelectedMemory(fallback.memory ?? "");
+                      if (usesScreen) setSelectedScreen(fallback.screen ?? "");
+                    }
                   }}
                 >
                   {option}
@@ -395,7 +630,12 @@ function ProductCard({
           </div>
         ) : null}
         <div className="mt-auto space-y-2">
-          <p className="text-base font-bold text-zinc-900 min-[480px]:text-lg min-[960px]:text-xl">от {toRub(shownPrice)}</p>
+          {stockBadge ? (
+            <p className="text-[11px] font-semibold text-amber-800 min-[640px]:text-xs">{stockBadge}</p>
+          ) : null}
+          <p className="text-base font-bold text-zinc-900 min-[480px]:text-lg min-[960px]:text-xl">
+            {shownPrice > 0 ? `от ${toRub(shownPrice)}` : stockBadge === "Скоро в продаже" ? "Скоро в продаже" : "Цена по запросу"}
+          </p>
           <button
             type="button"
             onClick={(e) => {
@@ -403,7 +643,9 @@ function ProductCard({
               onOrder({
                 color: selectedColor || undefined,
                 memory: selectedMemory || undefined,
-                simType: selectedSim || undefined
+                simType: selectedSim || undefined,
+                screen: selectedScreen || undefined,
+                ram: selectedRam || undefined
               });
             }}
             className="w-full rounded-lg border border-red-100 bg-[#fdecec] py-1.5 text-xs font-semibold text-red-500 transition-all duration-200 hover:-translate-y-0.5 hover:border-zinc-900 hover:bg-zinc-900 hover:text-white hover:shadow-[0_10px_24px_rgba(24,24,27,0.25)] min-[640px]:text-sm"
@@ -412,17 +654,22 @@ function ProductCard({
           </button>
           <button
             type="button"
+            disabled={!canCart}
+            title={!canCart ? "Недоступно для корзины" : undefined}
             onClick={(e) => {
               e.stopPropagation();
+              if (!canCart) return;
               onAddToCart({
                 color: selectedColor || undefined,
                 memory: selectedMemory || undefined,
                 simType: selectedSim || undefined,
+                screen: selectedScreen || undefined,
+                ram: selectedRam || undefined,
                 price: shownPrice,
                 imageUrl: currentImage
               });
             }}
-            className="w-full rounded-lg border border-zinc-200 bg-white py-1.5 text-xs font-semibold text-zinc-800 transition hover:border-zinc-300 hover:bg-zinc-50 min-[640px]:text-sm"
+            className="w-full rounded-lg border border-zinc-200 bg-white py-1.5 text-xs font-semibold text-zinc-800 transition hover:border-zinc-300 hover:bg-zinc-50 min-[640px]:text-sm disabled:cursor-not-allowed disabled:opacity-45"
           >
             В корзину
           </button>
@@ -436,17 +683,24 @@ export default function Storefront() {
   const pathname = usePathname();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [footerMenuOpen, setFooterMenuOpen] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [isHeaderFloating, setIsHeaderFloating] = useState(false);
   const [isDesktopHeader, setIsDesktopHeader] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [selectedProductMemory, setSelectedProductMemory] = useState("");
   const [selectedProductColor, setSelectedProductColor] = useState("");
   const [selectedProductSim, setSelectedProductSim] = useState("");
+  const [selectedProductScreen, setSelectedProductScreen] = useState("");
+  const [selectedProductRam, setSelectedProductRam] = useState("");
+  const [reviewSlideIndex, setReviewSlideIndex] = useState(0);
   const [orderSelection, setOrderSelection] = useState<{
     productName?: string;
     color?: string;
     memory?: string;
     simType?: string;
+    screen?: string;
+    ram?: string;
   } | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [storeData, setStoreData] = useState<StoreData>(defaultStoreData);
@@ -479,6 +733,18 @@ export default function Storefront() {
     void fetchStoreData().then((remote) => setStoreData(remote));
   }, []);
 
+  const reviewPhotos = useMemo(() => {
+    return (storeData.sliderPhotos ?? []).filter((photo) => photo.imageUrl);
+  }, [storeData.sliderPhotos]);
+
+  useEffect(() => {
+    if (!reviewPhotos.length) {
+      setReviewSlideIndex(0);
+      return;
+    }
+    setReviewSlideIndex((index) => Math.min(index, reviewPhotos.length - 1));
+  }, [reviewPhotos.length]);
+
   useEffect(() => {
     if (!mobileMenuOpen) return;
     const prevOverflow = document.body.style.overflow;
@@ -491,6 +757,7 @@ export default function Storefront() {
   useEffect(() => {
     const onScroll = () => {
       setIsHeaderFloating(window.scrollY > 10);
+      setShowScrollTop(window.scrollY > 240);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -567,7 +834,13 @@ export default function Storefront() {
     return visibleProducts.filter((product) => {
       const categoryName = categoriesBySlug[product.categorySlug]?.name ?? "";
       const variantHaystack = (product.variants ?? [])
-        .flatMap((variant) => [variant.color ?? "", variant.memory ?? "", variant.simType ?? ""])
+        .flatMap((variant) => [
+          variant.color ?? "",
+          variant.memory ?? "",
+          variant.simType ?? "",
+          variant.screen ?? "",
+          variant.ram ?? ""
+        ])
         .join(" ");
       const haystack = [product.name, product.color ?? "", product.description ?? "", categoryName, variantHaystack]
         .join(" ")
@@ -576,6 +849,22 @@ export default function Storefront() {
     });
   }, [categoriesBySlug, searchQuery, visibleProducts]);
 
+  const visibleReviewPhotos = useMemo(() => {
+    if (!reviewPhotos.length) return [];
+    const total = reviewPhotos.length;
+    const slots = Math.min(5, total);
+    const offset = Math.floor(slots / 2);
+
+    return Array.from({ length: slots }, (_, slot) => {
+      const index = (reviewSlideIndex - offset + slot + total) % total;
+      return {
+        photo: reviewPhotos[index],
+        index,
+        isCenter: slot === offset
+      };
+    });
+  }, [reviewPhotos, reviewSlideIndex]);
+
   const cartCount = useMemo(() => {
     return cartItems.reduce((sum, item) => sum + item.quantity, 0);
   }, [cartItems]);
@@ -583,9 +872,16 @@ export default function Storefront() {
   const addToCart = useCallback(
     (
       product: Product,
-      selection: { color?: string; memory?: string; simType?: string; price: number; imageUrl: string }
+      selection: VariantSelection & { price: number; imageUrl: string }
     ) => {
-      const key = [product.id, selection.color ?? "", selection.memory ?? "", selection.simType ?? ""].join("|");
+      const key = [
+        product.id,
+        selection.color ?? "",
+        selection.memory ?? "",
+        selection.simType ?? "",
+        selection.screen ?? "",
+        selection.ram ?? ""
+      ].join("|");
       setCartItems((prev) => {
         let nextItems: CartItem[];
         const existing = prev.find((item) => item.key === key);
@@ -601,13 +897,14 @@ export default function Storefront() {
               color: selection.color,
               memory: selection.memory,
               simType: selection.simType,
+              screen: selection.screen,
+              ram: selection.ram,
               price: selection.price,
               imageUrl: selection.imageUrl,
               quantity: 1
             }
           ];
         }
-        // Persist immediately so fast navigation to /cart does not lose the update.
         persistCartItems(nextItems);
         return nextItems;
       });
@@ -657,6 +954,8 @@ export default function Storefront() {
     color?: string;
     memory?: string;
     simType?: string;
+    screen?: string;
+    ram?: string;
     customerName?: string;
     telegram?: string;
   }) => {
@@ -865,7 +1164,9 @@ export default function Storefront() {
                 productName: orderSelection?.productName,
                 color: orderSelection?.color,
                 memory: orderSelection?.memory,
-                simType: orderSelection?.simType
+                simType: orderSelection?.simType,
+                screen: orderSelection?.screen,
+                ram: orderSelection?.ram
               });
             }}
           >
@@ -912,8 +1213,17 @@ export default function Storefront() {
 
     if (activeModal === "product" && selectedProduct) {
       const selectedCategory = categoriesBySlug[selectedProduct.categorySlug];
-      const isIphoneCategory = isIphoneLikeSlug(selectedCategory?.slug);
-      const productVariants = selectedProduct.variants ?? [];
+      const productCategorySlug = selectedCategory?.slug ?? selectedProduct.categorySlug;
+      const isIphoneCategory = isIphoneLikeSlug(productCategorySlug);
+      const isMacbookCategory = isMacbookLikeSlug(productCategorySlug);
+      const isIpadCategory = isIpadLikeSlug(productCategorySlug);
+      const isWatchCategory = isWatchLikeSlug(productCategorySlug);
+      const usesMemory = isIphoneCategory || isMacbookCategory || isIpadCategory;
+      const usesScreen = isMacbookCategory || isIpadCategory || isWatchCategory;
+      const usesRam = isMacbookCategory;
+      const showSimSelector = isIphoneCategory || isIpadCategory || isWatchCategory;
+      const simLabelModal = isIphoneCategory ? "тип SIM" : isIpadCategory ? "связь" : isWatchCategory ? "ремешок" : "SIM";
+      const productVariants = effectiveVariantsForProduct(selectedProduct, productCategorySlug);
       const hasVariants = productVariants.length > 0;
       const colorOptions = hasVariants
         ? Array.from(new Set(productVariants.map((item) => item.color).filter((item): item is string => Boolean(item))))
@@ -924,38 +1234,44 @@ export default function Storefront() {
       const colorScopedVariants = hasVariants
         ? productVariants.filter((item) => !colorFilter || item.color === colorFilter)
         : [];
-      const memoryScopedVariants = hasVariants && isIphoneCategory
-        ? colorScopedVariants.filter((item) => !selectedProductSim || item.simType === selectedProductSim)
-        : colorScopedVariants;
-      const simScopedVariants = hasVariants && isIphoneCategory
-        ? colorScopedVariants.filter((item) => !selectedProductMemory || item.memory === selectedProductMemory)
-        : colorScopedVariants;
-      const memoryOptions = hasVariants && isIphoneCategory
-        ? Array.from(new Set(memoryScopedVariants.map((item) => item.memory).filter((item): item is string => Boolean(item))))
+      const matchesExcept = (
+        item: typeof productVariants[number],
+        excludeKey: keyof VariantSelection
+      ) =>
+        (excludeKey === "memory" || !usesMemory || !selectedProductMemory || item.memory === selectedProductMemory) &&
+        (excludeKey === "simType" || !showSimSelector || !selectedProductSim || item.simType === selectedProductSim) &&
+        (excludeKey === "screen" || !usesScreen || !selectedProductScreen || item.screen === selectedProductScreen) &&
+        (excludeKey === "ram" || !usesRam || !selectedProductRam || item.ram === selectedProductRam);
+      const memoryOptions = hasVariants && usesMemory
+        ? Array.from(new Set(colorScopedVariants.filter((item) => matchesExcept(item, "memory")).map((item) => item.memory).filter((item): item is string => Boolean(item))))
         : [];
-      const simOptions = hasVariants && isIphoneCategory
-        ? Array.from(new Set(simScopedVariants.map((item) => item.simType).filter((item): item is string => Boolean(item))))
+      const simOptions = hasVariants && showSimSelector
+        ? Array.from(new Set(colorScopedVariants.filter((item) => matchesExcept(item, "simType")).map((item) => item.simType).filter((item): item is string => Boolean(item))))
+        : [];
+      const screenOptions = hasVariants && usesScreen
+        ? Array.from(new Set(colorScopedVariants.filter((item) => matchesExcept(item, "screen")).map((item) => item.screen).filter((item): item is string => Boolean(item))))
+        : [];
+      const ramOptions = hasVariants && usesRam
+        ? Array.from(new Set(colorScopedVariants.filter((item) => matchesExcept(item, "ram")).map((item) => item.ram).filter((item): item is string => Boolean(item))))
         : [];
 
-      const activeVariant =
-        hasVariants
-          ? isIphoneCategory
-            ? productVariants.find(
-                (item) =>
-                  (!colorFilter || item.color === colorFilter) &&
-                  (!selectedProductMemory || item.memory === selectedProductMemory) &&
-                  (!selectedProductSim || item.simType === selectedProductSim)
-              ) ??
-              productVariants.find(
-                (item) => (!colorFilter || item.color === colorFilter) && (!selectedProductMemory || item.memory === selectedProductMemory)
-              ) ??
-              productVariants.find((item) => (!colorFilter || item.color === colorFilter)) ??
-              productVariants[0]
-            : productVariants.find((item) => (!colorFilter || item.color === colorFilter)) ?? productVariants[0]
-          : null;
+      const activeVariant = hasVariants
+        ? productVariants.find(
+            (item) =>
+              (!colorFilter || item.color === colorFilter) &&
+              (!usesMemory || !selectedProductMemory || item.memory === selectedProductMemory) &&
+              (!showSimSelector || !selectedProductSim || item.simType === selectedProductSim) &&
+              (!usesScreen || !selectedProductScreen || item.screen === selectedProductScreen) &&
+              (!usesRam || !selectedProductRam || item.ram === selectedProductRam)
+          ) ??
+          productVariants.find((item) => !colorFilter || item.color === colorFilter) ??
+          productVariants[0]
+        : null;
 
       const shownModalPrice = activeVariant?.price ?? selectedProduct.basePrice;
       const shownModalImage = activeVariant?.imageUrl ?? selectedProduct.imageUrl;
+      const modalStockBadge = availabilityBadgeText(activeVariant?.availability, activeVariant?.price);
+      const modalCanCart = variantCanAddToCart(activeVariant);
       return (
         <Modal
           title={selectedProduct.name}
@@ -968,6 +1284,8 @@ export default function Storefront() {
             setSelectedProductMemory("");
             setSelectedProductColor("");
             setSelectedProductSim("");
+            setSelectedProductScreen("");
+            setSelectedProductRam("");
           }}
         >
           <div className="space-y-2 min-[640px]:grid min-[640px]:grid-cols-[minmax(220px,0.95fr)_minmax(260px,1.05fr)] min-[640px]:gap-4 min-[640px]:space-y-0">
@@ -980,7 +1298,7 @@ export default function Storefront() {
                 {selectedProduct.description ??
                   "Подробное описание для этого товара скоро появится. Вы можете оставить заявку, и менеджер уточнит все характеристики."}
               </p>
-              {isIphoneCategory ? (
+              {isIphoneCategory || isIpadCategory ? (
                 <p className="rounded-xl border border-amber-200/90 bg-amber-50 px-2.5 py-1.5 text-[11px] font-medium leading-snug text-amber-950 min-[640px]:text-xs">
                   Имееться недостаток товара: невозможно установить и использовать RuStore.
                 </p>
@@ -1002,6 +1320,8 @@ export default function Storefront() {
                             setSelectedProductColor(option);
                             setSelectedProductMemory("");
                             setSelectedProductSim("");
+                            setSelectedProductScreen("");
+                            setSelectedProductRam("");
                           }}
                         >
                           {option}
@@ -1010,10 +1330,29 @@ export default function Storefront() {
                     </div>
                   </div>
                 ) : null}
-                {isIphoneCategory ? (
+                {screenOptions.length ? (
+                  <div className="mt-1 space-y-1">
+                    <p className="text-xs text-zinc-500">{isWatchCategory ? "Выберите размер корпуса" : "Выберите диагональ"}</p>
+                    <div className="flex flex-wrap gap-1">
+                      {screenOptions.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold transition min-[640px]:text-xs ${
+                            selectedProductScreen === option ? "bg-zinc-900 text-white" : "bg-white text-zinc-700 hover:bg-zinc-100"
+                          }`}
+                          onClick={() => setSelectedProductScreen(option)}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+                {usesMemory ? (
                   memoryOptions.length ? (
                     <div className="mt-1 space-y-1">
-                      <p className="text-xs text-zinc-500">Выберите объем</p>
+                      <p className="text-xs text-zinc-500">{isMacbookCategory || isIpadCategory ? "Выберите накопитель" : "Выберите объем"}</p>
                       <div className="flex flex-wrap gap-1">
                         {memoryOptions.map((option) => (
                           <button
@@ -1030,12 +1369,31 @@ export default function Storefront() {
                       </div>
                     </div>
                   ) : (
-                    <p className="mt-1">Объем: не указан</p>
+                    <p className="mt-1">{isMacbookCategory || isIpadCategory ? "Накопитель: не указан" : "Объем: не указан"}</p>
                   )
+                ) : null}
+                {ramOptions.length ? (
+                  <div className="mt-1 space-y-1">
+                    <p className="text-xs text-zinc-500">Выберите оперативную память</p>
+                    <div className="flex flex-wrap gap-1">
+                      {ramOptions.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold transition min-[640px]:text-xs ${
+                            selectedProductRam === option ? "bg-zinc-900 text-white" : "bg-white text-zinc-700 hover:bg-zinc-100"
+                          }`}
+                          onClick={() => setSelectedProductRam(option)}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 ) : null}
                 {simOptions.length ? (
                   <div className="mt-1 space-y-1">
-                    <p className="text-xs text-zinc-500">Выберите тип SIM</p>
+                    <p className="text-xs text-zinc-500">Выберите {simLabelModal}</p>
                     <div className="flex flex-wrap gap-1">
                       {simOptions.map((option) => (
                         <button
@@ -1052,7 +1410,17 @@ export default function Storefront() {
                     </div>
                   </div>
                 ) : null}
-                <p className="mt-1 font-semibold text-zinc-900">Цена: от {toRub(shownModalPrice)}</p>
+                {modalStockBadge ? (
+                  <p className="mt-1 text-[11px] font-semibold text-amber-800 min-[640px]:text-xs">{modalStockBadge}</p>
+                ) : null}
+                <p className="mt-1 font-semibold text-zinc-900">
+                  Цена:{" "}
+                  {shownModalPrice > 0
+                    ? `от ${toRub(shownModalPrice)}`
+                    : modalStockBadge === "Скоро в продаже"
+                      ? "скоро в продаже"
+                      : "по запросу"}
+                </p>
               </div>
               <div className="grid grid-cols-1 gap-2 min-[640px]:grid-cols-2">
                 <button
@@ -1063,7 +1431,9 @@ export default function Storefront() {
                       productName: selectedProduct.name,
                       color: (activeVariant?.color ?? selectedProductColor) || undefined,
                       memory: (activeVariant?.memory ?? selectedProductMemory) || undefined,
-                      simType: (activeVariant?.simType ?? selectedProductSim) || undefined
+                      simType: (activeVariant?.simType ?? selectedProductSim) || undefined,
+                      screen: (activeVariant?.screen ?? selectedProductScreen) || undefined,
+                      ram: (activeVariant?.ram ?? selectedProductRam) || undefined
                     });
                     setSelectedProduct(null);
                     setActiveModal("order");
@@ -1073,16 +1443,21 @@ export default function Storefront() {
                 </button>
                 <button
                   type="button"
-                  className="w-full rounded-xl border border-zinc-200 bg-white py-2 text-sm font-semibold text-zinc-800 transition hover:border-zinc-900 hover:bg-zinc-900 hover:text-white"
-                  onClick={() =>
+                  disabled={!modalCanCart}
+                  title={!modalCanCart ? "Недоступно для корзины" : undefined}
+                  className="w-full rounded-xl border border-zinc-200 bg-white py-2 text-sm font-semibold text-zinc-800 transition hover:border-zinc-900 hover:bg-zinc-900 hover:text-white disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:border-zinc-200 disabled:hover:bg-white disabled:hover:text-zinc-800"
+                  onClick={() => {
+                    if (!modalCanCart) return;
                     addToCart(selectedProduct, {
                       color: (activeVariant?.color ?? selectedProductColor) || undefined,
                       memory: (activeVariant?.memory ?? selectedProductMemory) || undefined,
                       simType: (activeVariant?.simType ?? selectedProductSim) || undefined,
+                      screen: (activeVariant?.screen ?? selectedProductScreen) || undefined,
+                      ram: (activeVariant?.ram ?? selectedProductRam) || undefined,
                       price: shownModalPrice,
                       imageUrl: shownModalImage
-                    })
-                  }
+                    });
+                  }}
                 >
                   В корзину
                 </button>
@@ -1103,6 +1478,8 @@ export default function Storefront() {
     selectedProduct,
     selectedProductColor,
     selectedProductMemory,
+    selectedProductRam,
+    selectedProductScreen,
     selectedProductSim,
     sendingLead
   ]);
@@ -1110,21 +1487,34 @@ export default function Storefront() {
   return (
     <div className="min-h-screen bg-[#f4f4f6] text-zinc-900">
       <div className="hidden border-b border-zinc-200 bg-white min-[960px]:block">
-        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between px-8 py-3 text-sm text-zinc-500 min-[1440px]:px-12 min-[1920px]:px-16">
-          <div className="flex gap-5">
-            <Link href="/info#delivery" className="transition hover:text-zinc-700">
+        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between gap-6 px-8 py-3 text-[13px] font-medium tracking-[0.01em] text-zinc-500 min-[1440px]:px-12 min-[1920px]:px-16">
+          <div className="flex items-center gap-4">
+            <Link href="/info#delivery" className="transition hover:text-zinc-900">
               Доставка и оплата
             </Link>
-            <Link href="/info#return" className="transition hover:text-zinc-700">
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-zinc-300" />
+            <Link href="/info#return" className="transition hover:text-zinc-900">
               Возврат и обмен
             </Link>
-            <Link href="/info#warranty" className="transition hover:text-zinc-700">
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-zinc-300" />
+            <Link href="/info#warranty" className="transition hover:text-zinc-900">
               Гарантия и проверка
             </Link>
           </div>
-          <div className="flex gap-5 text-red-500">
-            <span>Омск, ул. Гагарина 3</span>
-            <span>11:00 - 20:00</span>
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-red-600 ring-1 ring-inset ring-red-200">
+              <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
+                <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+              </svg>
+              Омск, ул. Гагарина 3
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 ring-1 ring-inset ring-emerald-200">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              </span>
+              Сейчас открыто · 11:00–20:00
+            </span>
           </div>
         </div>
       </div>
@@ -1143,42 +1533,103 @@ export default function Storefront() {
               shouldSplitHeader ? "text-xl min-[1200px]:text-2xl min-[1440px]:text-3xl" : "text-2xl min-[640px]:text-3xl min-[1440px]:text-4xl min-[1920px]:text-5xl"
             }`}
           >
-            <span className="text-red-500">X</span> : STORE
+            <StoreLogoMark />
           </Link>
           <nav
-            className={`hidden h-10 items-center gap-5 rounded-full px-4 text-sm font-medium text-zinc-700 transition-all duration-300 min-[960px]:flex min-[1440px]:gap-7 min-[1920px]:text-base ${
-              shouldSplitHeader ? "bg-zinc-100/70" : ""
+            className={`hidden h-11 items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-1.5 text-sm font-medium text-zinc-700 backdrop-blur-xl transition-all duration-300 min-[960px]:flex min-[1920px]:text-base ${
+              shouldSplitHeader ? "ring-1 ring-white/60" : ""
             }`}
           >
-            <Link className="inline-flex items-center gap-2 hover:text-red-500" href="/catalog">
+            <Link
+              className={`inline-flex h-9 items-center gap-2 rounded-full px-3 transition min-[1440px]:px-4 ${
+                pathname === "/catalog"
+                  ? "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
+                  : "hover:bg-white hover:text-zinc-950"
+              }`}
+              href="/catalog"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-4 w-4" />
               Каталог
             </Link>
-            <button className="hover:text-red-500" type="button" onClick={() => setActiveModal("tradein")}>
+            <button
+              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white hover:text-zinc-950 min-[1440px]:px-4"
+              type="button"
+              onClick={() => setActiveModal("tradein")}
+            >
               Trade-in
             </button>
-            <Link className="hover:text-red-500" href="/assessment">
+            <Link
+              className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
+                pathname === "/assessment"
+                  ? "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
+                  : "hover:bg-white hover:text-zinc-950"
+              }`}
+              href="/assessment"
+            >
               Выкуп
             </Link>
-            <button className="hover:text-red-500" type="button" onClick={() => setActiveModal("reviews")}>
+            <button
+              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white hover:text-zinc-950 min-[1440px]:px-4"
+              type="button"
+              onClick={() => setActiveModal("reviews")}
+            >
               Отзывы
             </button>
-            <a className="hover:text-red-500" href="#">
+            <a
+              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white hover:text-zinc-950 min-[1440px]:px-4"
+              href="#"
+            >
               Статьи
             </a>
           </nav>
-          <button
-            type="button"
-            className={`inline-flex items-center gap-2 rounded-[1.2rem] border border-zinc-300 bg-[#f2ecec] px-3 py-2 text-lg font-semibold leading-none text-[#3f2430] shadow-sm transition-all duration-300 min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:py-2.5 min-[640px]:text-xl min-[960px]:hidden ${
-              shouldSplitHeader ? "ring-1 ring-white/60" : ""
-            }`}
-            onClick={() => setMobileMenuOpen(true)}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5 w-5 min-[640px]:h-5.5 min-[640px]:w-5.5" />
-            Меню
-          </button>
+          <div className="flex shrink-0 items-center gap-2 min-[960px]:hidden">
+            <Link
+              href="/cart"
+              className={`relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-900 shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:w-12 ${
+                shouldSplitHeader ? "ring-1 ring-white/60" : ""
+              }`}
+              aria-label="Корзина"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5.5 w-5.5">
+                <path d="M6 7h15l-1.5 9h-12z" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M6 7 5 3H2" strokeLinecap="round" strokeLinejoin="round" />
+                <circle cx="9.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
+                <circle cx="17.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
+              </svg>
+              <span className="absolute -right-1 -top-1 inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                {cartCount}
+              </span>
+            </Link>
+            <button
+              type="button"
+              className={`inline-flex h-11 items-center gap-2 rounded-[1.2rem] border border-zinc-300 bg-[#f2ecec] px-3 text-sm font-semibold leading-none text-[#3f2430] shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:text-base ${
+                shouldSplitHeader ? "ring-1 ring-white/60" : ""
+              }`}
+              aria-label={mobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
+              aria-expanded={mobileMenuOpen}
+              onClick={() => setMobileMenuOpen((open) => !open)}
+            >
+              <span className="relative h-4 w-5">
+                <span
+                  className={`absolute left-0 top-0 h-0.5 w-5 rounded-full bg-current transition ${
+                    mobileMenuOpen ? "translate-y-[7px] rotate-45" : ""
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-[7px] h-0.5 w-5 rounded-full bg-current transition ${
+                    mobileMenuOpen ? "opacity-0" : ""
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-[14px] h-0.5 w-5 rounded-full bg-current transition ${
+                    mobileMenuOpen ? "-translate-y-[7px] -rotate-45" : ""
+                  }`}
+                />
+              </span>
+              Меню
+            </button>
+          </div>
           <div
             className={`hidden h-10 items-center gap-2 transition-all duration-300 min-[960px]:flex`}
           >
@@ -1536,6 +1987,69 @@ export default function Storefront() {
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-transparent" />
             </a>
+
+            {reviewPhotos.length ? (
+              <div className="mt-4 overflow-hidden rounded-3xl border border-white/60 liquid-glass p-3 min-[640px]:mt-5 min-[640px]:p-4">
+                <div className="mb-3 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+                  <span />
+                  <h4 className="text-center text-xl font-bold text-zinc-900 min-[640px]:text-2xl">Довольные клиенты</h4>
+                  <p className="shrink-0 text-sm font-semibold text-zinc-500">
+                    {reviewSlideIndex + 1} / {reviewPhotos.length}
+                  </p>
+                </div>
+
+                <div className="relative rounded-2xl border border-white/70 bg-gradient-to-br from-white/85 via-red-50/55 to-zinc-100/85 px-11 py-5 shadow-inner">
+                  <div className="block min-[640px]:grid min-[640px]:grid-cols-5 min-[640px]:items-center min-[640px]:gap-3">
+                    {visibleReviewPhotos.map(({ photo, index, isCenter }) => (
+                      <button
+                        key={`${photo.id}-${index}`}
+                        type="button"
+                        className={`group relative overflow-hidden rounded-2xl transition-all duration-300 ${
+                          isCenter
+                            ? "block h-64 w-full shadow-[0_18px_36px_rgba(0,0,0,0.22)] ring-2 ring-red-500 min-[640px]:h-80 min-[640px]:scale-105"
+                            : "hidden opacity-70 hover:opacity-95 min-[640px]:block min-[640px]:h-56"
+                        }`}
+                        onClick={() => setReviewSlideIndex(index)}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={photo.imageUrl} alt={photo.title ?? SLIDER_PHOTO_ALT_FALLBACK} className="h-full w-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="absolute left-3 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-xl font-semibold text-zinc-950 shadow-lg transition hover:bg-white"
+                    aria-label="Предыдущее фото"
+                    onClick={() => setReviewSlideIndex((index) => (index === 0 ? reviewPhotos.length - 1 : index - 1))}
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-xl font-semibold text-zinc-950 shadow-lg transition hover:bg-white"
+                    aria-label="Следующее фото"
+                    onClick={() => setReviewSlideIndex((index) => (index + 1) % reviewPhotos.length)}
+                  >
+                    ›
+                  </button>
+                </div>
+
+                <div className="mt-3 flex justify-center gap-1.5">
+                  {reviewPhotos.map((photo, index) => (
+                    <button
+                      key={photo.id}
+                      type="button"
+                      className={`h-2 rounded-full transition-all ${
+                        reviewSlideIndex === index ? "w-7 bg-red-500" : "w-2 bg-zinc-300 hover:bg-zinc-400"
+                      }`}
+                      aria-label={`Показать фото ${index + 1}`}
+                      onClick={() => setReviewSlideIndex(index)}
+                    />
+                  ))}
+                </div>
+              </div>
+            ) : null}
           </section>
         ) : null}
 
@@ -1564,27 +2078,54 @@ export default function Storefront() {
                         productName: product.name,
                         color: selection.color,
                         memory: selection.memory,
-                        simType: selection.simType
+                        simType: selection.simType,
+                        screen: selection.screen,
+                        ram: selection.ram
                       });
                       setActiveModal("order");
                     }}
                     onAddToCart={(selection) => addToCart(product, selection)}
                     onOpenDetails={(selection) => {
-                      const variants = product.variants ?? [];
-                      const isIphoneCategory = isIphoneLikeSlug(product.categorySlug);
+                      const variants = effectiveVariantsForProduct(product, product.categorySlug);
+                      const slug = product.categorySlug;
+                      const isIphoneCategory = isIphoneLikeSlug(slug);
+                      const isMacbookCategory = isMacbookLikeSlug(slug);
+                      const isIpadCategory = isIpadLikeSlug(slug);
+                      const isWatchCategory = isWatchLikeSlug(slug);
                       if (variants.length) {
                         setSelectedProductColor(selection.color ?? variants[0]?.color ?? "");
                         if (isIphoneCategory) {
                           setSelectedProductMemory(selection.memory ?? variants[0]?.memory ?? "");
                           setSelectedProductSim(selection.simType ?? variants[0]?.simType ?? "");
-                        } else {
-                          setSelectedProductMemory("");
+                          setSelectedProductScreen("");
+                          setSelectedProductRam("");
+                        } else if (isMacbookCategory) {
+                          setSelectedProductMemory(selection.memory ?? variants[0]?.memory ?? "");
+                          setSelectedProductScreen(selection.screen ?? variants[0]?.screen ?? "");
+                          setSelectedProductRam(selection.ram ?? variants[0]?.ram ?? "");
                           setSelectedProductSim("");
+                        } else if (isIpadCategory) {
+                          setSelectedProductMemory(selection.memory ?? variants[0]?.memory ?? "");
+                          setSelectedProductSim(selection.simType ?? variants[0]?.simType ?? "");
+                          setSelectedProductScreen(selection.screen ?? variants[0]?.screen ?? "");
+                          setSelectedProductRam("");
+                        } else if (isWatchCategory) {
+                          setSelectedProductMemory("");
+                          setSelectedProductSim(selection.simType ?? variants[0]?.simType ?? "");
+                          setSelectedProductScreen(selection.screen ?? variants[0]?.screen ?? "");
+                          setSelectedProductRam("");
+                        } else {
+                          setSelectedProductMemory(selection.memory ?? variants[0]?.memory ?? "");
+                          setSelectedProductSim("");
+                          setSelectedProductScreen("");
+                          setSelectedProductRam("");
                         }
                       } else {
                         setSelectedProductColor(selection.color ?? product.color ?? "");
                         setSelectedProductMemory("");
                         setSelectedProductSim("");
+                        setSelectedProductScreen("");
+                        setSelectedProductRam("");
                       }
                       setSelectedProduct(product);
                       setActiveModal("product");
@@ -1603,120 +2144,103 @@ export default function Storefront() {
         ) : null}
       </main>
 
-      <footer className="mt-14 bg-[#111217] text-zinc-300">
-        <div className="mx-auto grid w-full max-w-[1920px] grid-cols-1 gap-8 px-4 py-12 min-[640px]:grid-cols-2 min-[640px]:px-6 min-[640px]:py-14 min-[960px]:grid-cols-4 min-[960px]:px-8 min-[960px]:py-16 min-[1440px]:px-12 min-[1920px]:px-16">
-          <div>
-            <div className="mb-6 text-3xl font-bold text-white min-[640px]:mb-8 min-[640px]:text-4xl">
-              <span className="text-red-500">X</span> : STORE
-            </div>
-            <p className="text-sm text-zinc-500">ИП ИНН</p>
-            <div className="mt-8 space-y-2 text-sm text-zinc-500 min-[640px]:mt-14">
-              <Link href="/policy" className="block hover:text-zinc-300">
-                Политика конфиденциальности
-              </Link>
-              <Link href="/offer" className="block hover:text-zinc-300">
-                Публичная оферта
-              </Link>
-            </div>
+      <footer className="mt-14 bg-[#111112] text-zinc-300">
+        <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-10 text-center min-[640px]:max-w-xl min-[960px]:max-w-5xl min-[960px]:py-14">
+          <Link href="/" className="mb-8 inline-flex items-center text-2xl font-bold tracking-tight text-white min-[640px]:text-3xl">
+            <StoreLogoMark />
+          </Link>
+
+          <div className="w-full max-w-lg">
+            <button
+              type="button"
+              className="flex w-full items-center justify-between rounded-xl border border-white/10 bg-transparent px-4 py-3 text-left text-sm font-medium text-zinc-100 transition hover:border-white/20"
+              aria-expanded={footerMenuOpen}
+              onClick={() => setFooterMenuOpen((open) => !open)}
+            >
+              Меню
+              <span className="inline-flex h-5 w-5 items-center justify-center" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4">
+                  <path d="M5 7.5 10 12.5 15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+            </button>
+            {footerMenuOpen ? (
+              <div className="mt-3 space-y-1 text-left">
+                <Link href="/catalog" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Каталог
+                </Link>
+                <button
+                  type="button"
+                  className="block w-full rounded-lg px-4 py-2 text-left text-sm text-zinc-300 hover:bg-white/5 hover:text-white"
+                  onClick={() => setActiveModal("tradein")}
+                >
+                  Trade-in
+                </button>
+                <Link href="/assessment" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Выкуп
+                </Link>
+                <a href="https://2gis.ru" target="_blank" rel="noopener noreferrer" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Отзывы
+                </a>
+                <Link href="/info#delivery" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Доставка и оплата
+                </Link>
+                <Link href="/info#return" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Возврат и обмен
+                </Link>
+                <Link href="/info#warranty" className="block rounded-lg px-4 py-2 text-sm text-zinc-300 hover:bg-white/5 hover:text-white">
+                  Гарантия и проверка
+                </Link>
+              </div>
+            ) : null}
           </div>
 
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Каталог</h4>
-            <ul className="space-y-2 text-sm">
-              {storeData.categories.map((item) => (
-                <li key={item.id}>
-                  <Link href={`/catalog/${item.slug}`} className="transition hover:text-zinc-100">
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          <div className="mt-10 flex w-full max-w-lg flex-wrap items-center justify-center gap-4">
+            <a href="tel:+79236969377" className="inline-flex h-12 items-center gap-2 rounded-xl border border-white/10 px-4 text-sm font-semibold text-zinc-100">
+              <span aria-hidden="true">☎</span>
+              +7 (923) 696-93-77
+            </a>
+            <a href="https://vk.com" target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="VK">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icon/vk.svg" alt="" className="h-5 w-5" />
+            </a>
+            <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="Telegram">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icon/telegram.svg" alt="" className="h-5 w-5" />
+            </a>
           </div>
 
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Меню</h4>
-            <ul className="space-y-2 text-sm">
-              {quickLinks.map((item) => (
-                <li key={item}>
-                  {item === "Доставка и оплата" ? (
-                    <Link href="/info#delivery" className="transition hover:text-zinc-100">
-                      {item}
-                    </Link>
-                  ) : item === "Возврат и обмен" ? (
-                    <Link href="/info#return" className="transition hover:text-zinc-100">
-                      {item}
-                    </Link>
-                  ) : item === "Гарантия и проверка" ? (
-                    <Link href="/info#warranty" className="transition hover:text-zinc-100">
-                      {item}
-                    </Link>
-                  ) : item === "Каталог" ? (
-                    <Link href="/catalog" className="transition hover:text-zinc-100">
-                      {item}
-                    </Link>
-                  ) : item === "Trade-in" ? (
-                    <button type="button" className="transition hover:text-zinc-100" onClick={() => setActiveModal("tradein")}>
-                      {item}
-                    </button>
-                  ) : item === "Выкуп" ? (
-                    <Link href="/assessment" className="transition hover:text-zinc-100">
-                      {item}
-                    </Link>
-                  ) : item === "Отзывы" ? (
-                    <a
-                      href="https://2gis.ru"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="transition hover:text-zinc-100"
-                    >
-                      {item}
-                    </a>
-                  ) : (
-                    <span>{item}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
+          <div className="mt-4 flex w-full max-w-lg items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-sm text-zinc-300">
+            <span aria-hidden="true">⌖</span>
+            Омск, ул. Гагарина 3
           </div>
 
-          <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase text-zinc-500">Контакты</h4>
-            <p className="mb-2 text-xl font-semibold text-white">Омск, ул. Гагарина 3</p>
-            <p className="mb-6 text-red-500">11:00 - 20:00</p>
-            <p className="text-lg">+7 (923) 696-93-77</p>
-            <p className="mb-5 text-lg">+7 (923) 686-93-77</p>
-            <div className="flex gap-3">
-              <a
-                href="https://vk.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-800 transition hover:bg-zinc-700"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/vk.svg" alt="VK" className="h-4.5 w-4.5" />
-              </a>
-              <a
-                href="https://t.me"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-800 transition hover:bg-zinc-700"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/telegram.svg" alt="Telegram" className="h-4.5 w-4.5" />
-              </a>
-            </div>
-          </div>
+          <p className="mt-10 text-sm text-zinc-500">© 2026 Все права защищены.</p>
+          <Link href="/policy" className="mt-2 text-xs font-semibold uppercase tracking-wide text-zinc-500 hover:text-zinc-300">
+            Политика конфиденциальности
+          </Link>
+
+          {showScrollTop ? (
+            <button
+              type="button"
+              className="fixed bottom-5 right-5 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-red-500 text-xl font-semibold leading-none text-white shadow-[0_10px_28px_rgba(239,68,68,0.32)] transition hover:bg-red-600"
+              aria-label="Наверх"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              ↑
+            </button>
+          ) : null}
         </div>
       </footer>
 
       <div
-        className={`fixed inset-0 z-50 bg-black/65 transition-opacity duration-300 min-[960px]:hidden ${
+        className={`fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity duration-300 min-[960px]:hidden ${
           mobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
         <div
-          className={`h-full w-[86%] max-w-sm overflow-y-auto bg-white px-5 py-5 transition-transform duration-300 ease-out min-[640px]:w-[82%] min-[640px]:px-7 min-[640px]:py-7 ${
-            mobileMenuOpen ? "translate-x-0" : "-translate-x-6"
+          className={`fixed right-0 top-0 h-full w-[86%] max-w-sm overflow-y-auto border-l border-zinc-200 bg-white px-5 py-5 text-zinc-900 shadow-[0_24px_64px_rgba(0,0,0,0.18)] transition-transform duration-300 ease-out min-[640px]:w-[82%] min-[640px]:px-7 min-[640px]:py-7 ${
+            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
             <div className="mb-6 flex items-center justify-between min-[640px]:mb-8">
@@ -1725,29 +2249,38 @@ export default function Storefront() {
                 className="text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <span className="text-red-500">X</span> : STORE
+                <StoreLogoMark />
               </Link>
               <button
                 type="button"
-                className="text-3xl font-light text-zinc-400 min-[640px]:text-4xl"
+                className="relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 text-zinc-900 transition hover:border-zinc-300 hover:bg-white"
+                aria-label="Закрыть меню"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                ×
+                <span className="absolute h-0.5 w-5 rotate-45 rounded-full bg-current" />
+                <span className="absolute h-0.5 w-5 -rotate-45 rounded-full bg-current" />
               </button>
             </div>
 
-            <div className="space-y-4 text-[1.35rem] font-semibold leading-none text-zinc-900 min-[390px]:text-[1.5rem] min-[640px]:space-y-5 min-[640px]:text-[1.7rem]">
+            <div className="space-y-1.5">
               <Link
-                className="flex items-center gap-3 text-red-500"
+                className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-lg font-semibold transition min-[640px]:text-xl ${
+                  pathname === "/catalog"
+                    ? "border-red-200 bg-red-50 text-red-600"
+                    : "border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 hover:bg-white"
+                }`}
                 href="/catalog"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
-                <span className="text-zinc-900">Каталог</span>
+                <span className="inline-flex items-center gap-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/icon/catalog.svg" alt="" aria-hidden="true" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
+                  Каталог
+                </span>
+                <span aria-hidden="true" className="text-zinc-400">›</span>
               </Link>
               <button
-                className="block text-left"
+                className="flex w-full items-center justify-between rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-left text-lg font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-white min-[640px]:text-xl"
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
@@ -1755,12 +2288,22 @@ export default function Storefront() {
                 }}
               >
                 Trade-in
+                <span aria-hidden="true" className="text-zinc-400">›</span>
               </button>
-              <Link className="block text-left" href="/assessment" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                className={`flex items-center justify-between rounded-2xl border px-4 py-3 text-lg font-semibold transition min-[640px]:text-xl ${
+                  pathname === "/assessment"
+                    ? "border-red-200 bg-red-50 text-red-600"
+                    : "border-zinc-200 bg-zinc-50 text-zinc-900 hover:border-zinc-300 hover:bg-white"
+                }`}
+                href="/assessment"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Выкуп
+                <span aria-hidden="true" className="text-zinc-400">›</span>
               </Link>
               <button
-                className="block text-left"
+                className="flex w-full items-center justify-between rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-left text-lg font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-white min-[640px]:text-xl"
                 type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
@@ -1768,32 +2311,71 @@ export default function Storefront() {
                 }}
               >
                 Отзывы
+                <span aria-hidden="true" className="text-zinc-400">›</span>
               </button>
-              <a className="block" href="#">
+              <a
+                className="flex items-center justify-between rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-lg font-semibold text-zinc-900 transition hover:border-zinc-300 hover:bg-white min-[640px]:text-xl"
+                href="#"
+              >
                 Статьи
+                <span aria-hidden="true" className="text-zinc-400">›</span>
               </a>
             </div>
 
-            <div className="mt-6 space-y-2 text-sm text-zinc-600 min-[390px]:text-base min-[640px]:mt-8 min-[640px]:text-lg">
-              <Link href="/info#delivery" className="block" onClick={() => setMobileMenuOpen(false)}>
+            <div className="mt-6 space-y-1 rounded-2xl border border-zinc-200 bg-zinc-50 p-2 text-sm text-zinc-600 min-[640px]:text-base">
+              <Link
+                href="/info#delivery"
+                className="block rounded-xl px-3 py-2 transition hover:bg-white hover:text-zinc-900"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Доставка и оплата
               </Link>
-              <Link href="/info#return" className="block" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/info#return"
+                className="block rounded-xl px-3 py-2 transition hover:bg-white hover:text-zinc-900"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Возврат и обмен
               </Link>
-              <Link href="/info#warranty" className="block" onClick={() => setMobileMenuOpen(false)}>
+              <Link
+                href="/info#warranty"
+                className="block rounded-xl px-3 py-2 transition hover:bg-white hover:text-zinc-900"
+                onClick={() => setMobileMenuOpen(false)}
+              >
                 Гарантия и проверка
               </Link>
             </div>
 
-            <div className="mt-6 space-y-1 text-[1.25rem] font-semibold leading-tight text-zinc-900 min-[390px]:text-[1.4rem] min-[640px]:mt-8 min-[640px]:text-[1.6rem]">
-              <p>+7 (923) 696-93-77</p>
-              <p>+7 (923) 686-93-77</p>
-            </div>
+            <a
+              href="tel:+79236969377"
+              className="mt-6 flex items-center gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 transition hover:border-zinc-300 hover:bg-white"
+            >
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-red-50 text-red-500 ring-1 ring-inset ring-red-200">
+                <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-4 w-4">
+                  <path d="M5.5 3a1.5 1.5 0 0 1 1.42 1.02l.7 2.07a1.5 1.5 0 0 1-.4 1.59l-1.04.97a11 11 0 0 0 4.17 4.17l.97-1.04a1.5 1.5 0 0 1 1.59-.4l2.07.7A1.5 1.5 0 0 1 17 13.5V16a1.5 1.5 0 0 1-1.5 1.5C8.6 17.5 2.5 11.4 2.5 4.5A1.5 1.5 0 0 1 4 3h1.5Z" />
+                </svg>
+              </span>
+              <span className="flex flex-col leading-tight">
+                <span className="text-lg font-semibold text-zinc-950 min-[640px]:text-xl">+7 (923) 696-93-77</span>
+                <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">Позвонить</span>
+              </span>
+            </a>
 
-            <div className="mt-5 min-[640px]:mt-7">
-              <p className="text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">Омск, ул. Гагарина 3</p>
-              <p className="mt-1 text-[1.25rem] font-semibold leading-tight text-red-500 min-[390px]:text-[1.4rem] min-[640px]:text-[1.6rem]">11:00 - 20:00</p>
+            <div className="mt-4 flex flex-col gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm">
+              <span className="inline-flex items-center gap-2 text-red-600">
+                <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
+                  <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+                </svg>
+                Омск, ул. Гагарина 3
+              </span>
+              <span className="inline-flex items-center gap-2 text-emerald-700">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
+                Сейчас открыто · 11:00–20:00
+              </span>
+              <span className="text-zinc-500">+7 (923) 686-93-77</span>
             </div>
 
             <div className="mt-6 flex gap-3 min-[640px]:mt-8 min-[640px]:gap-4">
@@ -1801,7 +2383,7 @@ export default function Storefront() {
                 href="https://vk.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 min-[640px]:h-14 min-[640px]:w-14"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white min-[640px]:h-14 min-[640px]:w-14"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/icon/vk.svg" alt="VK" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
@@ -1810,7 +2392,7 @@ export default function Storefront() {
                 href="https://t.me"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 min-[640px]:h-14 min-[640px]:w-14"
+                className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white min-[640px]:h-14 min-[640px]:w-14"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/icon/telegram.svg" alt="Telegram" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
@@ -1820,19 +2402,6 @@ export default function Storefront() {
       </div>
 
       {modal}
-
-      <Link
-        href="/cart"
-        className="fixed bottom-5 right-4 z-[35] flex h-14 w-14 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 text-white shadow-[0_8px_24px_rgba(0,0,0,0.28)] transition hover:bg-zinc-800 min-[960px]:hidden"
-        aria-label="Корзина"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6">
-          <path d="M6 7h15l-1.5 9h-12z" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M6 7 5 3H2" strokeLinecap="round" strokeLinejoin="round" />
-          <circle cx="9.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
-          <circle cx="17.5" cy="20" r="1.25" fill="currentColor" stroke="none" />
-        </svg>
-      </Link>
 
       {leadNotice ? (
         <div className="pointer-events-none fixed right-4 top-4 z-[60] w-[calc(100%-2rem)] max-w-sm min-[640px]:right-6 min-[640px]:top-6">

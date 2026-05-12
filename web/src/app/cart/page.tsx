@@ -13,6 +13,8 @@ type CartItem = {
   color?: string;
   memory?: string;
   simType?: string;
+  screen?: string;
+  ram?: string;
   price: number;
   imageUrl: string;
   quantity: number;
@@ -104,7 +106,7 @@ export default function CartPage() {
   const cartItemsText = useMemo(() => {
     return items
       .map((item) => {
-        const attrs = [item.color, item.memory, item.simType].filter(Boolean).join(", ");
+        const attrs = [item.color, item.screen, item.memory, item.ram, item.simType].filter(Boolean).join(", ");
         return `• ${item.name}${attrs ? ` (${attrs})` : ""} — ${item.quantity} × ${toRub(item.price)} = ${toRub(item.quantity * item.price)}`;
       })
       .join("\n");
@@ -305,7 +307,7 @@ export default function CartPage() {
               </>
             ) : (
               <div className="rounded-xl border border-zinc-300 bg-white p-3 text-sm text-zinc-600">
-                Самовывоз: Омск, ул. Гагарина 3
+                Самовывоз: г. Москва, 2-я Ямская ул., 2с1
               </div>
             )}
 
@@ -363,7 +365,9 @@ export default function CartPage() {
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-lg font-semibold text-zinc-900 min-[640px]:text-xl">{item.name}</p>
                         {item.color ? <p className="text-sm text-zinc-600">Цвет: {item.color}</p> : null}
+                        {item.screen ? <p className="text-sm text-zinc-600">Диагональ: {item.screen}</p> : null}
                         {item.memory ? <p className="text-sm text-zinc-600">Память: {item.memory}</p> : null}
+                        {item.ram ? <p className="text-sm text-zinc-600">Оперативная память: {item.ram}</p> : null}
                         {item.simType ? <p className="text-sm text-zinc-600">SIM-карта: {item.simType}</p> : null}
                         <div className="mt-2 inline-flex items-center gap-2">
                           <button

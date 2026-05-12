@@ -1,4 +1,4 @@
-import { BuybackConfig, Product, StoreData, defaultStoreData } from "@/lib/store";
+import { BuybackConfig, Product, SliderPhoto, StoreData, defaultStoreData } from "@/lib/store";
 
 const VEGAN_DEFAULT_API = process.env.NODE_ENV === "production" ? "/api" : "http://localhost:4000/api";
 const fromEnv = process.env.NEXT_PUBLIC_API_URL?.trim();
@@ -19,7 +19,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   });
 
   if (!res.ok) {
-    throw new Error(`API error ${res.status}`);
+    throw new Error(`API error ${res.status}: ${res.statusText}`);
   }
 
   return (await res.json()) as T;
@@ -52,8 +52,11 @@ export async function upsertProduct(input: {
     color?: string;
     memory?: string;
     simType?: string;
+    screen?: string;
+    ram?: string;
     price: number;
     imageUrl?: string;
+    availability?: string;
   }>;
   imageUrl?: string;
 }): Promise<void> {
@@ -79,6 +82,8 @@ export async function createLead(input: {
   color?: string;
   memory?: string;
   simType?: string;
+  screen?: string;
+  ram?: string;
   customerName?: string;
   telegram?: string;
   contactMethod?: string;
@@ -127,6 +132,13 @@ export async function upsertBuybackConfig(input: BuybackConfig): Promise<void> {
   await request("/store/buyback", {
     method: "POST",
     body: JSON.stringify(input)
+  });
+}
+
+export async function upsertSliderPhotos(input: SliderPhoto[]): Promise<SliderPhoto[]> {
+  return request<SliderPhoto[]>("/store/slider", {
+    method: "POST",
+    body: JSON.stringify({ photos: input })
   });
 }
 

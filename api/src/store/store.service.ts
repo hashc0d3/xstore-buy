@@ -1,7 +1,9 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { randomUUID } from "crypto";
 import { Prisma, Product } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
+import { UpsertSliderPhotosDto } from "./dto/upsert-slider-photos.dto";
 import { UpsertProductDto } from "./dto/upsert-product.dto";
 
 type StoreCategory = {
@@ -23,8 +25,11 @@ type StoreProduct = {
     color?: string;
     memory?: string;
     simType?: string;
+    screen?: string;
+    ram?: string;
     price: number;
     imageUrl?: string;
+    availability?: string;
   }>;
   imageUrl: string;
 };
@@ -36,42 +41,43 @@ type BuybackConfigPayload = {
   conditions: string[];
 };
 
+type StoreSliderPhoto = {
+  id: string;
+  title?: string;
+  imageUrl: string;
+  position: number;
+};
+
 @Injectable()
 export class StoreService {
   constructor(private readonly prisma: PrismaService) {}
 
   async ensureSeedData() {
-    const count = await this.prisma.category.count();
-    if (count === 0) {
-      const categories = [
-        { slug: "iphone", name: "iPhone", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
-        { slug: "iphone-used", name: "iPhone Б/У", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
-        { slug: "macbook", name: "MacBook", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
-        { slug: "apple-watch", name: "Apple Watch", memoryOptions: [] },
-        { slug: "ipad", name: "iPad", memoryOptions: ["128 ГБ", "256 ГБ", "512 ГБ"] },
-        { slug: "airpods", name: "AirPods", memoryOptions: [] },
-        { slug: "custom", name: "Под заказ", memoryOptions: [] }
-      ];
-
-      for (const category of categories) {
-        await this.prisma.category.create({
-          data: {
-            slug: category.slug,
-            name: category.name,
-            memoryOptions: category.memoryOptions.join("|")
-          }
-        });
-      }
+    try {
+      await this.ensureSliderPhotoTable();
+    } catch {
+      // The store must remain available even if the optional gallery table needs manual migration.
     }
 
-    const iphoneUsed = await this.prisma.category.findUnique({ where: { slug: "iphone-used" } });
-    if (!iphoneUsed) {
-      await this.prisma.category.create({
-        data: {
-          slug: "iphone-used",
-          name: "iPhone Б/У",
-          memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"].join("|")
-        }
+    const defaultCategories: Array<{ slug: string; name: string; memoryOptions: string[] }> = [
+      { slug: "iphone", name: "iPhone", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
+      { slug: "iphone-used", name: "iPhone Б/У", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
+      { slug: "macbook", name: "MacBook", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
+      { slug: "apple-watch", name: "Apple Watch", memoryOptions: [] },
+      { slug: "ipad", name: "iPad", memoryOptions: ["128 ГБ", "256 ГБ", "512 ГБ"] },
+      { slug: "airpods", name: "AirPods", memoryOptions: [] },
+      { slug: "custom", name: "Под заказ", memoryOptions: [] }
+    ];
+
+    for (const category of defaultCategories) {
+      await this.prisma.category.upsert({
+        where: { slug: category.slug },
+        create: {
+          slug: category.slug,
+          name: category.name,
+          memoryOptions: category.memoryOptions.join("|")
+        },
+        update: {}
       });
     }
 
@@ -97,21 +103,19 @@ export class StoreService {
       include: { category: true },
       orderBy: { createdAt: "desc" }
     });
-    const buyback = await this.prisma.buybackConfig.findUnique({
-      where: { id: "main" }
-    });
+    const buyback = await this.getBuybackConfigRecordSafe();
+    const sliderPhotos = await this.getSliderPhotosSafe();
 
     return {
       categories: categories.map((item) => this.toCategory(item)),
       products: products.map((item) => this.toProduct(item)),
-      buybackConfig: this.toBuybackConfig(buyback)
+      buybackConfig: this.toBuybackConfig(buyback),
+      sliderPhotos
     };
   }
 
   async getBuybackConfig(): Promise<BuybackConfigPayload> {
-    const buyback = await this.prisma.buybackConfig.findUnique({
-      where: { id: "main" }
-    });
+    const buyback = await this.getBuybackConfigRecordSafe();
     return this.toBuybackConfig(buyback);
   }
 
@@ -194,6 +198,32 @@ export class StoreService {
     await this.prisma.product.delete({ where: { id } });
   }
 
+  async upsertSliderPhotos(dto: UpsertSliderPhotosDto): Promise<StoreSliderPhoto[]> {
+    await this.ensureSliderPhotoTable();
+
+    const photos = dto.photos
+      .map((item, index) => ({
+        id: item.id?.trim() || undefined,
+        title: item.title?.trim() || null,
+        imageUrl: item.imageUrl.trim(),
+        position: Number.isFinite(Number(item.position)) ? Number(item.position) : index
+      }))
+      .filter((item) => item.imageUrl);
+
+    await this.prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`DELETE FROM "SliderPhoto"`;
+      for (const [index, photo] of photos.entries()) {
+        const id = photo.id ?? randomUUID();
+        await tx.$executeRaw`
+          INSERT INTO "SliderPhoto" ("id", "title", "imageUrl", "position", "createdAt", "updatedAt")
+          VALUES (${id}, ${photo.title}, ${photo.imageUrl}, ${index}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        `;
+      }
+    });
+
+    return this.getSliderPhotos();
+  }
+
   private toCategory(item: { id: string; slug: string; name: string; memoryOptions: string | null }): StoreCategory {
     return {
       id: item.id,
@@ -237,6 +267,57 @@ export class StoreService {
     };
   }
 
+  private async getBuybackConfigRecordSafe(): Promise<{ models: string; memories: string; simTypes: string; conditions: string } | null> {
+    try {
+      return await this.prisma.buybackConfig.findUnique({
+        where: { id: "main" }
+      });
+    } catch {
+      return null;
+    }
+  }
+
+  private async getSliderPhotos(): Promise<StoreSliderPhoto[]> {
+    await this.ensureSliderPhotoTable();
+
+    const rows = await this.prisma.$queryRaw<Array<{ id: string; title: string | null; imageUrl: string; position: number }>>`
+      SELECT "id", "title", "imageUrl", "position"
+      FROM "SliderPhoto"
+      ORDER BY "position" ASC, "createdAt" ASC
+    `;
+    return rows.map((item) => this.toSliderPhoto(item));
+  }
+
+  private async getSliderPhotosSafe(): Promise<StoreSliderPhoto[]> {
+    try {
+      return await this.getSliderPhotos();
+    } catch {
+      return [];
+    }
+  }
+
+  private async ensureSliderPhotoTable(): Promise<void> {
+    await this.prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "SliderPhoto" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "title" TEXT,
+        "imageUrl" TEXT NOT NULL,
+        "position" INTEGER NOT NULL DEFAULT 0,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL
+      )
+    `);
+  }
+
+  private toSliderPhoto(item: { id: string; title: string | null; imageUrl: string; position: number }): StoreSliderPhoto {
+    return {
+      id: item.id,
+      title: item.title ?? undefined,
+      imageUrl: item.imageUrl,
+      position: item.position
+    };
+  }
+
   private fromPipeSeparated(value: string): string[] {
     return value
       .split("|")
@@ -266,18 +347,43 @@ export class StoreService {
     return map;
   }
 
-  private normalizeVariants(input?: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }>) {
-    const normalized: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }> = [];
+  private normalizeVariants(
+    input?: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+      availability?: string;
+    }>
+  ) {
+    const normalized: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+      availability?: string;
+    }> = [];
     if (!input?.length) return normalized;
     for (const item of input) {
       const price = Number(item.price);
       if (!Number.isFinite(price)) continue;
+      const av = item.availability?.trim().toLowerCase();
       normalized.push({
         color: item.color?.trim() || undefined,
         memory: item.memory?.trim() || undefined,
         simType: item.simType?.trim() || undefined,
+        screen: item.screen?.trim() || undefined,
+        ram: item.ram?.trim() || undefined,
         price,
-        imageUrl: item.imageUrl?.trim() || undefined
+        imageUrl: item.imageUrl?.trim() || undefined,
+        availability:
+          av && ["in_stock", "coming_soon", "out_of_stock", "unknown"].includes(av) ? av : undefined
       });
     }
     return normalized;
@@ -285,7 +391,16 @@ export class StoreService {
 
   private normalizePricingPayload(
     memoryPrices?: Record<string, number>,
-    variants?: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }>
+    variants?: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+      availability?: string;
+    }>
   ): Prisma.JsonValue | null {
     const normalizedVariants = this.normalizeVariants(variants);
     if (normalizedVariants.length) {
@@ -297,7 +412,16 @@ export class StoreService {
 
   private readPricingPayload(input: Prisma.JsonValue | null): {
     memoryPrices: Record<string, number>;
-    variants: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }>;
+    variants: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+      availability?: string;
+    }>;
   } {
     if (!input || typeof input !== "object" || Array.isArray(input)) {
       return { memoryPrices: {}, variants: [] };
@@ -313,19 +437,35 @@ export class StoreService {
       }
     }
 
-    const variants: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }> = [];
+    const variants: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+      availability?: string;
+    }> = [];
     if (Array.isArray(rawObject.variants)) {
       for (const item of rawObject.variants) {
         if (!item || typeof item !== "object") continue;
         const candidate = item as Record<string, unknown>;
         const parsedPrice = Number(candidate.price);
         if (!Number.isFinite(parsedPrice)) continue;
+        const avRaw = candidate.availability;
+        const av =
+          typeof avRaw === "string" ? avRaw.trim().toLowerCase() : undefined;
         variants.push({
           color: typeof candidate.color === "string" ? candidate.color.trim() || undefined : undefined,
           memory: typeof candidate.memory === "string" ? candidate.memory.trim() || undefined : undefined,
           simType: typeof candidate.simType === "string" ? candidate.simType.trim() || undefined : undefined,
+          screen: typeof candidate.screen === "string" ? candidate.screen.trim() || undefined : undefined,
+          ram: typeof candidate.ram === "string" ? candidate.ram.trim() || undefined : undefined,
           price: parsedPrice,
-          imageUrl: typeof candidate.imageUrl === "string" ? candidate.imageUrl.trim() || undefined : undefined
+          imageUrl: typeof candidate.imageUrl === "string" ? candidate.imageUrl.trim() || undefined : undefined,
+          availability:
+            av && ["in_stock", "coming_soon", "out_of_stock", "unknown"].includes(av) ? av : undefined
         });
       }
     }
