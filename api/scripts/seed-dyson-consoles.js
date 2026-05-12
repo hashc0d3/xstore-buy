@@ -163,7 +163,6 @@ async function main() {
       memoryOptions: null
     },
     update: {
-      name: "Dyson",
       imageUrl: IMG_CAT_DYSON
     }
   });
@@ -177,7 +176,6 @@ async function main() {
       memoryOptions: null
     },
     update: {
-      name: "Игровые консоли",
       imageUrl: IMG_CAT_CONSOLES
     }
   });
