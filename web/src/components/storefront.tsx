@@ -1088,37 +1088,44 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
             onClick={() => setActiveModal(null)}
           >
             <div
-              className="relative w-full max-w-[640px] overflow-hidden rounded-3xl border border-zinc-800 bg-[#121317] p-5 text-white shadow-[0_24px_60px_rgba(0,0,0,0.45)] ring-1 ring-white/5 min-[640px]:p-7"
+              className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-[#6f89ff]/40 bg-[#10131f] p-6 text-white shadow-[0_24px_60px_rgba(58,91,255,0.22)] ring-1 ring-[#6f89ff]/25 min-[640px]:max-w-xl min-[640px]:p-8"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 type="button"
                 onClick={() => setActiveModal(null)}
-                className="absolute right-4 top-3 z-20 text-xl text-zinc-500 transition hover:text-zinc-200"
+                className="absolute right-3 top-3 z-20 inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#6f89ff]/35 bg-[#10131f]/80 text-lg text-[#b8c8ff] backdrop-blur-sm transition hover:border-[#6f89ff]/55 hover:bg-[#151a2a] hover:text-white"
+                aria-label="Закрыть"
               >
                 ×
               </button>
 
-              <div className="relative z-10 mx-auto max-w-[30rem] text-center">
-                <h3 className="text-4xl font-bold leading-tight min-[640px]:text-5xl">Отзывы клиентов</h3>
-                <p className="mt-3 text-sm leading-6 text-zinc-300 min-[640px]:text-base">Более тысячи клиентов доверяют нам.</p>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/avito.png"
-                  alt="Avito"
-                  className="mx-auto mt-4 h-16 w-16 rounded-2xl border border-white/30 bg-white/10 object-cover p-1 min-[640px]:h-20 min-[640px]:w-20"
-                />
+              <div className="relative z-10 mx-auto max-w-md pt-2 text-center min-[640px]:max-w-lg">
+                <p className="inline-flex rounded-full border border-[#6f89ff]/40 bg-[#6f89ff]/15 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#b8c8ff]">
+                  Avito
+                </p>
+                <h3 className="mt-4 text-3xl font-bold leading-tight min-[640px]:text-4xl min-[640px]:text-5xl">Отзывы клиентов</h3>
+                <p className="mt-3 text-sm text-zinc-200/90 min-[640px]:text-lg">Более тысячи клиентов доверяют нам.</p>
+                <a
+                  href={SOTIK_AVITO_REVIEWS_HREF}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mx-auto mt-8 inline-flex min-h-12 w-full max-w-xs items-center justify-center rounded-2xl bg-gradient-to-r from-[#6f89ff] via-[#4c7dff] to-[#1f63ff] px-8 py-3.5 text-sm font-semibold text-white shadow-[0_10px_28px_rgba(49,78,255,0.4)] transition hover:brightness-110 min-[640px]:mt-10 min-[640px]:max-w-sm min-[640px]:py-4 min-[640px]:text-base"
+                >
+                  Мы на Avito
+                </a>
               </div>
 
-              <a
-                href={SOTIK_AVITO_REVIEWS_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative z-10 mx-auto mt-6 inline-flex h-12 w-full items-center justify-center rounded-2xl bg-gradient-to-r from-[#6f89ff] via-[#4c7dff] to-[#1f63ff] px-4 text-sm font-semibold uppercase tracking-[0.08em] transition hover:brightness-110 min-[640px]:mt-8 min-[640px]:max-w-[18rem]"
-              >
-                Мы на Avito
-              </a>
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/35 to-transparent" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/avito.png"
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-4 -bottom-6 h-36 w-36 rotate-[-12deg] object-contain opacity-30 blur-[0.3px] min-[640px]:-right-6 min-[640px]:-bottom-8 min-[640px]:h-44 min-[640px]:w-44"
+              />
+              <div className="pointer-events-none absolute -left-10 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-[#00d19b]/18 blur-3xl" />
+              <div className="pointer-events-none absolute right-0 top-0 h-48 w-48 rounded-full bg-[#6f89ff]/28 blur-3xl" />
+              <div className="pointer-events-none absolute bottom-0 right-1/4 h-36 w-36 rounded-full bg-[#ff6f4b]/22 blur-3xl" />
             </div>
           </div>
         );
