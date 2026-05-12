@@ -1,74 +1,74 @@
-# SOTIK77 (xstore-buy)
+# X:STORE
 
-Магазин и сервис выкупа техники. Прод: [https://sotik77.ru](https://sotik77.ru).
+Docker-deploy for the main storefront.
 
-Стек:
+## Production URL
 
-- **web** — Next.js (`web/`), слушает 3000 внутри контейнера.
-- **api** — NestJS + Prisma + SQLite (`api/`), слушает 4000 внутри
-  контейнера, БД хранится в docker-volume `api-data`.
-- Снаружи доступен только `web`, на хосте опубликован как
-  `127.0.0.1:8083`. Публичные 80/443 терминирует общий `infra-nginx`
-  на сервере (см. ниже).
+- Web: `https://xstore55.ru` (основной канонический домен; `www.xstore55.ru` редиректится на него).
+- API: proxied internally through `/api`
 
-## Локальный запуск
+Образ витрины и каталога совпадает с репозиторием **vegan-skupka** (SOTIK77): общий `storefront.tsx` и страницы каталога. Различаются только логотип/метаданные (сборка `NEXT_PUBLIC_STORE_BRAND` и `NEXT_PUBLIC_SITE_URL`).
+
+## Deploy
 
 ```bash
 docker compose up -d --build
 ```
 
-Web: http://localhost:8083 — туда зайдёт через тот же
-`infra-nginx`-настроенный proxy_pass, если ты деплоишь, либо
-напрямую при локальной разработке.
-
-## Прод-деплой
-
-Сайт `sotik77.ru` живёт на сервере `debian-for-tests` рядом с другими
-проектами (`xstore55.ru`, `playbetatool.ru`). Все они проходят через
-один общий реверс-прокси `infra-nginx`. Полное описание архитектуры,
-портов и SSL — в:
-
-- [`docs/SERVER_DEPLOYMENT.md`](./docs/SERVER_DEPLOYMENT.md) — как устроен сервер целиком.
-- [`docs/ADD_NEW_SITE.md`](./docs/ADD_NEW_SITE.md) — плэйбук «добавить новый домен на сервер».
-
-### Обновление этого сайта
+The web container is published on `127.0.0.1:8080`. Use nginx on the host as the public reverse proxy and issue SSL with certbot:
 
 ```bash
-ssh debian-for-tests
-cd /opt/xstore-buy
-git pull origin master
+sudo cp nginx/xstore55.ru.conf /etc/nginx/sites-available/xstore55.ru
+sudo ln -sf /etc/nginx/sites-available/xstore55.ru /etc/nginx/sites-enabled/xstore55.ru
+sudo nginx -t
+sudo systemctl reload nginx
+sudo certbot --nginx -d xstore55.ru -d www.xstore55.ru
+```
+
+## Update
+
+```bash
+git pull
 docker compose up -d --build
-docker compose ps
 ```
 
-Проверка: `curl -I https://sotik77.ru` → `200 OK`. В браузере открыть
-с hard refresh (`Ctrl+F5`), чтобы исключить кеш.
+## Каталог в админке (как локально)
 
-### Если разворачиваешь с нуля на новом сервере
+JSON после сниффера: `snifer/output/*.json`. Заливка теми же скриптами, что и локально.
 
-1. Поднять стек `infra-proxy` (см. [`docs/SERVER_DEPLOYMENT.md`](./docs/SERVER_DEPLOYMENT.md#41-optinfra-proxy--реверс-прокси)).
-2. Выпустить сертификат для `sotik77.ru` и `www.sotik77.ru`
-   (см. [`docs/SERVER_DEPLOYMENT.md` → раздел 5](./docs/SERVER_DEPLOYMENT.md#5-ssl-сертификаты)).
-3. Склонировать репо в `/opt/xstore-buy` и поднять `docker compose up -d --build`.
-4. Добавить vhost — готовый блок лежит в [`nginx/sotik77.ru.conf`](./nginx/sotik77.ru.conf) — в
-   `/opt/infra-proxy/conf.d/sites.conf`, выполнить
-   `docker exec infra-nginx nginx -t && docker exec infra-nginx nginx -s reload`.
+### С вашего ПК (проще всего)
 
-## Структура каталога
+Из корня репозитория, с установленным Node 18+:
 
-```
-.
-├── api/                       # NestJS + Prisma
-├── web/                       # Next.js
-├── nginx/                     # vhost-шаблоны (sotik77.ru.conf, xstore55.ru.conf)
-├── docs/
-│   ├── SERVER_DEPLOYMENT.md   # архитектура, порты, SSL, troubleshooting
-│   └── ADD_NEW_SITE.md        # плэйбук для нового домена
-├── docker-compose.yml         # api + web (web → 127.0.0.1:8083)
-└── README.md
+```bash
+cd api
+API_URL=https://xstore55.ru/api npm run seed:catalog
+API_URL=https://sotik77.ru/api npm run seed:catalog
 ```
 
-## Данные
+(Пароль/фаервол не мешают `POST` с машины — CORS только для браузеров.)
 
-API использует SQLite в docker-volume `api-data`. Prisma-миграции
-накатываются автоматически при старте контейнера `api`.
+Если JSON лежат не в `../snifer/output`:
+
+```bash
+CATALOG_ROOT=/полный/путь/к/output API_URL=https://xstore55.ru/api npm run seed:catalog
+```
+
+### На сервере после `docker compose up`
+
+Скрипты входят в образ `api`. Скопируйте каталог JSON в контейнер и выполните заливку **на localhost API внутри контейнера**:
+
+```bash
+cd /opt/xstore   # или ваш каталог стека
+docker compose up -d --build
+CID=$(docker compose ps -q api)
+docker cp ./snifer/output/. "$CID:/tmp/catalog"
+docker compose exec api sh -c 'API_URL=http://127.0.0.1:4000/api CATALOG_ROOT=/tmp/catalog npm run seed:catalog'
+```
+
+Повторите для `/opt/xstore-buy` (другой контейнер `api`), подставив свой путь к JSON.
+
+## Data
+
+The API uses SQLite in the Docker volume `api-data`.
+Prisma migrations run automatically when the API container starts.

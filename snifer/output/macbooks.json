@@ -1,0 +1,2180 @@
+[
+  {
+    "model": "MacBook Air M4",
+    "slug": "macbook_air_m4",
+    "variants": [
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 1TB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_1613_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 1TB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_1613_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 1TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_1613_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 1TB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_1613_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 1TB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_1615_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 1TB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_1615_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 1TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_1615_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 1TB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_1615_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 1TB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_2413_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 1TB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_2413_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 1TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_2413_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 1TB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_2413_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 1TB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_2415_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 1TB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_2415_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 1TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_2415_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 1TB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_2415_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 1TB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_3213_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 1TB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_3213_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 1TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_3213_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 1TB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_3213_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 1TB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_3215_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 1TB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_3215_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 1TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_3215_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 1TB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_1tb_3215_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 256GB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_1613_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 256GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_1613_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 256GB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 105990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_1615_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 256GB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_1615_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 256GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 105990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_1615_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 256GB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 105990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_1615_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 256GB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_2413_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 256GB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_2413_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 256GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_2413_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 256GB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_2413_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 256GB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_2415_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 256GB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_2415_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 256GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_2415_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 256GB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_2415_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 256GB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_3213_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 256GB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_3213_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 256GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_3213_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 256GB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_3213_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 256GB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_3215_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 256GB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_3215_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 256GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_3215_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 256GB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_256_3215_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 2TB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_1613_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 2TB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_1613_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 2TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_1613_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 2TB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_1613_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 2TB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_1615_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 2TB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_1615_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 2TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_1615_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 2TB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_1615_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 2TB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_2413_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 2TB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_2413_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 2TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_2413_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 2TB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_2413_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 2TB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_2415_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 2TB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_2415_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 2TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_2415_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 2TB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_2415_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 2TB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_3213_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 2TB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_3213_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 2TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_3213_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 2TB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_3213_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 2TB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_3215_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 2TB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_3215_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 2TB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_3215_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 2TB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_2tb_3215_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 512GB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 134990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_1613_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 512GB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 102990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_1613_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 512GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 102990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_1613_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 512GB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_1613_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 512GB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 119990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_1615_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 512GB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_1615_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 512GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 119990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_1615_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 16GB 512GB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 119990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_1615_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 512GB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_2413_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 512GB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_2413_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 512GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_2413_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 24GB 512GB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_2413_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 512GB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_2415_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 512GB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_2415_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 512GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 131990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_2415_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 24GB 512GB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 131990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_2415_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 512GB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_3213_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 512GB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_3213_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 512GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_3213_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 32GB 512GB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_3213_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 512GB Midnight",
+        "color": "Midnight",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_3215_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 512GB Silver",
+        "color": "Silver",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_3215_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 512GB Sky Blue",
+        "color": "Sky Blue",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_3215_skyblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 15\" 32GB 512GB Starlight",
+        "color": "Starlight",
+        "screen": "15\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4_512_3215_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 256GB Midnight",
+        "color": "Midnight",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4__256_1613_midnight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Air M4",
+        "title": "MacBook Air M4 13\" 16GB 256GB Starlight",
+        "color": "Starlight",
+        "screen": "13\"",
+        "ram": "16 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_air_m4/macbook_air_m4__256_1613_starlight",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/air_m4/starlight/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "MacBook Neo",
+    "slug": "macbook_neo",
+    "variants": [
+      {
+        "model": "MacBook Neo",
+        "title": "MacBook Neo 13\" 8GB 256GB Blush",
+        "color": "Blush",
+        "screen": "13\"",
+        "ram": "8 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 64990,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_neo/macbook_neo_256gb_8gb_13_blush",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/neo/blush/front.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/blush/1.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/blush/2.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/blush/3.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/blush/4.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Neo",
+        "title": "MacBook Neo 13\" 8GB 256GB Citrus",
+        "color": "Citrus",
+        "screen": "13\"",
+        "ram": "8 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 64990,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_neo/macbook_neo_256gb_8gb_13_citrus",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/neo/citrus/front.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/citrus/1.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/citrus/2.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/citrus/3.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/citrus/4.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Neo",
+        "title": "MacBook Neo 13\" 8GB 256GB Indigo",
+        "color": "Indigo",
+        "screen": "13\"",
+        "ram": "8 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 64990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_neo/macbook_neo_256gb_8gb_13_indigo",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/neo/indigo/front.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/indigo/1.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/indigo/2.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/indigo/3.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/indigo/4.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Neo",
+        "title": "MacBook Neo 13\" 8GB 256GB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "8 ГБ",
+        "storage": "256 ГБ",
+        "price_rub": 64990,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_neo/macbook_neo_256gb_8gb_13_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/neo/silver/front.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/silver/1.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/silver/2.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/silver/3.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/silver/4.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Neo",
+        "title": "MacBook Neo 13\" 8GB 512GB Blush",
+        "color": "Blush",
+        "screen": "13\"",
+        "ram": "8 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 73990,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_neo/macbook_neo_512gb_8gb_13_blush",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/neo/blush/front.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/blush/1.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/blush/2.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/blush/3.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/blush/4.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Neo",
+        "title": "MacBook Neo 13\" 8GB 512GB Citrus",
+        "color": "Citrus",
+        "screen": "13\"",
+        "ram": "8 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 73990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_neo/macbook_neo_512gb_8gb_13_citrus",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/neo/citrus/front.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/citrus/1.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/citrus/2.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/citrus/3.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/citrus/4.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Neo",
+        "title": "MacBook Neo 13\" 8GB 512GB Indigo",
+        "color": "Indigo",
+        "screen": "13\"",
+        "ram": "8 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 73990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_neo/macbook_neo_512gb_8gb_13_indigo",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/neo/indigo/front.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/indigo/1.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/indigo/2.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/indigo/3.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/indigo/4.jpg"
+        ]
+      },
+      {
+        "model": "MacBook Neo",
+        "title": "MacBook Neo 13\" 8GB 512GB Silver",
+        "color": "Silver",
+        "screen": "13\"",
+        "ram": "8 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 73990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_neo/macbook_neo_512gb_8gb_13_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/neo/silver/front.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/silver/1.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/silver/2.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/silver/3.jpg",
+          "https://www.glushakov-official.ru/img/macbook/neo/silver/4.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "MacBook Pro M5",
+    "slug": "macbook_pro_m5",
+    "variants": [
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 16GB 1TB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_1614_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 16GB 1TB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_1614_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 16GB 1TB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_1616_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 16GB 1TB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "16 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_1616_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 24GB 1TB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_2414_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 24GB 1TB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_2414_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 24GB 1TB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_2416_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 24GB 1TB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "24 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_2416_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 32GB 1TB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_3214_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 32GB 1TB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_3214_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 32GB 1TB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_3216_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 32GB 1TB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "32 ГБ",
+        "storage": "1 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_1tb_3216_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 16GB 2TB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_1614_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 16GB 2TB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_1614_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 16GB 2TB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_1616_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 16GB 2TB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "16 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_1616_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 24GB 2TB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_2414_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 24GB 2TB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_2414_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 24GB 2TB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_2416_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 24GB 2TB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "24 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_2416_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 32GB 2TB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_3214_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 32GB 2TB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_3214_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 32GB 2TB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_3216_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 32GB 2TB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "32 ГБ",
+        "storage": "2 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_2tb_3216_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 16GB 4TB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "16 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_1614_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 16GB 4TB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "16 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_1614_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 16GB 4TB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "16 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_1616_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 16GB 4TB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "16 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_1616_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 24GB 4TB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "24 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_2414_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 24GB 4TB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "24 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_2414_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 24GB 4TB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "24 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_2416_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 24GB 4TB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "24 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_2416_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 32GB 4TB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "32 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_3214_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 32GB 4TB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "32 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_3214_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 32GB 4TB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "32 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_3216_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 32GB 4TB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "32 ГБ",
+        "storage": "4 ТБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_4tb_3216_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 16GB 512GB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_1614_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 16GB 512GB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_1614_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 16GB 512GB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_1616_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 16GB 512GB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "16 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_1616_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 24GB 512GB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_2414_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 24GB 512GB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_2414_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 24GB 512GB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_2416_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 24GB 512GB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "24 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_2416_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 32GB 512GB Silver",
+        "color": "Silver",
+        "screen": "14\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_3214_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 14\" 32GB 512GB Space Black",
+        "color": "Space Black",
+        "screen": "14\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_3214_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 32GB 512GB Silver",
+        "color": "Silver",
+        "screen": "16\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_3216_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/silver/front.jpeg"
+        ]
+      },
+      {
+        "model": "MacBook Pro M5",
+        "title": "MacBook Pro M4 16\" 32GB 512GB Space Black",
+        "color": "Space Black",
+        "screen": "16\"",
+        "ram": "32 ГБ",
+        "storage": "512 ГБ",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/macbook/macbook_pro_m5/macbook_pro_m4_512_3216_spaceblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/macbook/pro_m5/spaceblack/front.jpeg"
+        ]
+      }
+    ]
+  }
+]

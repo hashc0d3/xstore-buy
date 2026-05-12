@@ -25,8 +25,11 @@ type StoreProduct = {
     color?: string;
     memory?: string;
     simType?: string;
+    screen?: string;
+    ram?: string;
     price: number;
     imageUrl?: string;
+    availability?: string;
   }>;
   imageUrl: string;
 };
@@ -56,37 +59,25 @@ export class StoreService {
       // The store must remain available even if the optional gallery table needs manual migration.
     }
 
-    const count = await this.prisma.category.count();
-    if (count === 0) {
-      const categories = [
-        { slug: "iphone", name: "iPhone", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
-        { slug: "iphone-used", name: "iPhone Б/У", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
-        { slug: "macbook", name: "MacBook", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
-        { slug: "apple-watch", name: "Apple Watch", memoryOptions: [] },
-        { slug: "ipad", name: "iPad", memoryOptions: ["128 ГБ", "256 ГБ", "512 ГБ"] },
-        { slug: "airpods", name: "AirPods", memoryOptions: [] },
-        { slug: "custom", name: "Под заказ", memoryOptions: [] }
-      ];
+    const defaultCategories: Array<{ slug: string; name: string; memoryOptions: string[] }> = [
+      { slug: "iphone", name: "iPhone", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
+      { slug: "iphone-used", name: "iPhone Б/У", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
+      { slug: "macbook", name: "MacBook", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
+      { slug: "apple-watch", name: "Apple Watch", memoryOptions: [] },
+      { slug: "ipad", name: "iPad", memoryOptions: ["128 ГБ", "256 ГБ", "512 ГБ"] },
+      { slug: "airpods", name: "AirPods", memoryOptions: [] },
+      { slug: "custom", name: "Под заказ", memoryOptions: [] }
+    ];
 
-      for (const category of categories) {
-        await this.prisma.category.create({
-          data: {
-            slug: category.slug,
-            name: category.name,
-            memoryOptions: category.memoryOptions.join("|")
-          }
-        });
-      }
-    }
-
-    const iphoneUsed = await this.prisma.category.findUnique({ where: { slug: "iphone-used" } });
-    if (!iphoneUsed) {
-      await this.prisma.category.create({
-        data: {
-          slug: "iphone-used",
-          name: "iPhone Б/У",
-          memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"].join("|")
-        }
+    for (const category of defaultCategories) {
+      await this.prisma.category.upsert({
+        where: { slug: category.slug },
+        create: {
+          slug: category.slug,
+          name: category.name,
+          memoryOptions: category.memoryOptions.join("|")
+        },
+        update: {}
       });
     }
 
@@ -356,18 +347,43 @@ export class StoreService {
     return map;
   }
 
-  private normalizeVariants(input?: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }>) {
-    const normalized: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }> = [];
+  private normalizeVariants(
+    input?: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+      availability?: string;
+    }>
+  ) {
+    const normalized: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+      availability?: string;
+    }> = [];
     if (!input?.length) return normalized;
     for (const item of input) {
       const price = Number(item.price);
       if (!Number.isFinite(price)) continue;
+      const av = item.availability?.trim().toLowerCase();
       normalized.push({
         color: item.color?.trim() || undefined,
         memory: item.memory?.trim() || undefined,
         simType: item.simType?.trim() || undefined,
+        screen: item.screen?.trim() || undefined,
+        ram: item.ram?.trim() || undefined,
         price,
-        imageUrl: item.imageUrl?.trim() || undefined
+        imageUrl: item.imageUrl?.trim() || undefined,
+        availability:
+          av && ["in_stock", "coming_soon", "out_of_stock", "unknown"].includes(av) ? av : undefined
       });
     }
     return normalized;
@@ -375,7 +391,16 @@ export class StoreService {
 
   private normalizePricingPayload(
     memoryPrices?: Record<string, number>,
-    variants?: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }>
+    variants?: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+      availability?: string;
+    }>
   ): Prisma.JsonValue | null {
     const normalizedVariants = this.normalizeVariants(variants);
     if (normalizedVariants.length) {
@@ -387,7 +412,16 @@ export class StoreService {
 
   private readPricingPayload(input: Prisma.JsonValue | null): {
     memoryPrices: Record<string, number>;
-    variants: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }>;
+    variants: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+      availability?: string;
+    }>;
   } {
     if (!input || typeof input !== "object" || Array.isArray(input)) {
       return { memoryPrices: {}, variants: [] };
@@ -403,19 +437,35 @@ export class StoreService {
       }
     }
 
-    const variants: Array<{ color?: string; memory?: string; simType?: string; price: number; imageUrl?: string }> = [];
+    const variants: Array<{
+      color?: string;
+      memory?: string;
+      simType?: string;
+      screen?: string;
+      ram?: string;
+      price: number;
+      imageUrl?: string;
+      availability?: string;
+    }> = [];
     if (Array.isArray(rawObject.variants)) {
       for (const item of rawObject.variants) {
         if (!item || typeof item !== "object") continue;
         const candidate = item as Record<string, unknown>;
         const parsedPrice = Number(candidate.price);
         if (!Number.isFinite(parsedPrice)) continue;
+        const avRaw = candidate.availability;
+        const av =
+          typeof avRaw === "string" ? avRaw.trim().toLowerCase() : undefined;
         variants.push({
           color: typeof candidate.color === "string" ? candidate.color.trim() || undefined : undefined,
           memory: typeof candidate.memory === "string" ? candidate.memory.trim() || undefined : undefined,
           simType: typeof candidate.simType === "string" ? candidate.simType.trim() || undefined : undefined,
+          screen: typeof candidate.screen === "string" ? candidate.screen.trim() || undefined : undefined,
+          ram: typeof candidate.ram === "string" ? candidate.ram.trim() || undefined : undefined,
           price: parsedPrice,
-          imageUrl: typeof candidate.imageUrl === "string" ? candidate.imageUrl.trim() || undefined : undefined
+          imageUrl: typeof candidate.imageUrl === "string" ? candidate.imageUrl.trim() || undefined : undefined,
+          availability:
+            av && ["in_stock", "coming_soon", "out_of_stock", "unknown"].includes(av) ? av : undefined
         });
       }
     }

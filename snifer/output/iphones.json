@@ -1,0 +1,2195 @@
+[
+  {
+    "model": "iPhone 15",
+    "slug": "iphone_15",
+    "variants": [
+      {
+        "model": "iPhone 15",
+        "title": "iPhone 15 128GB Black",
+        "color": "Black",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 54990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15/iphone15128black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15/black/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15",
+        "title": "iPhone 15 128GB Синий",
+        "color": "Синий",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 54990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15/iphone15128blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15/blue/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15",
+        "title": "iPhone 15 128GB Зеленый",
+        "color": "Зеленый",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 54990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15/iphone15128green",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15/green/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15",
+        "title": "iPhone 15 128GB Pink",
+        "color": "Pink",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 54990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15/iphone15128pink",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15/pink/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15",
+        "title": "iPhone 15 256GB Black",
+        "color": "Black",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 62990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15/iphone15256black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15/black/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15",
+        "title": "iPhone 15 256GB Голубой",
+        "color": "Голубой",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 62990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15/iphone15256blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15/blue/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15",
+        "title": "iPhone 15 256GB Зеленый",
+        "color": "Зеленый",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 62990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15/iphone15256green",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15/green/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15",
+        "title": "iPhone 15 256GB Pink",
+        "color": "Pink",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 62990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15/iphone15256pink",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15/pink/front.png"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "iPhone 15 Pro",
+    "slug": "iphone_15pro",
+    "variants": [
+      {
+        "model": "iPhone 15 Pro",
+        "title": "iPhone 15 Pro 128GB Голубой",
+        "color": "Голубой",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 84000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15pro/iphone15pro128blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15pro/blue/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro",
+        "title": "iPhone 15 Pro 128GB Natural",
+        "color": "Natural",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 87000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15pro/iphone15pro128natural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15pro/natural/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro",
+        "title": "iPhone 15 Pro 128GB White",
+        "color": "White",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 84000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15pro/iphone15pro128white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15pro/white/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro",
+        "title": "iPhone 15 Pro 1TB Black",
+        "color": "Black",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 118000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15pro/iphone15pro1tbblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15pro/black/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro",
+        "title": "iPhone 15 Pro 1TB Синий",
+        "color": "Синий",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 119700,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15pro/iphone15pro1tbblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15pro/blue/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro",
+        "title": "iPhone 15 Pro 1TB Natural",
+        "color": "Natural",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 119700,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15pro/iphone15pro1tbnatural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15pro/natural/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro",
+        "title": "iPhone 15 Pro 1TB White",
+        "color": "White",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 119500,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15pro/iphone15pro1tbwhite",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15pro/white/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro",
+        "title": "iPhone 15 Pro 256GB Синий",
+        "color": "Синий",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 97000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15pro/iphone15pro256blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15pro/blue/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro",
+        "title": "iPhone 15 Pro 256GB Natural",
+        "color": "Natural",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 97000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15pro/iphone15pro256natural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15pro/natural/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro",
+        "title": "iPhone 15 Pro 512GB Black",
+        "color": "Black",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 111000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15pro/iphone15pro512black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15pro/black/front.png"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro",
+        "title": "iPhone 15 Pro 512GB Синий",
+        "color": "Синий",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 110000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15pro/iphone15pro512blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15pro/blue/front.png"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "iPhone 15 Pro Max",
+    "slug": "iphone_15promax",
+    "variants": [
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 1TB Black",
+        "color": "Black",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 134000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax1tbblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 1TB Синий",
+        "color": "Синий",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 134000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax1tbblue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/blue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 1TB Natural",
+        "color": "Natural",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 134000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax1tbnatural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/natural/front.avif"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 1TB White",
+        "color": "White",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 134000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax1tbwhite",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/white/front.avif"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 256GB Black",
+        "color": "Black",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 109000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax256black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 256GB Синий",
+        "color": "Синий",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 109000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax256blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/blue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 256GB Natural",
+        "color": "Natural",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 109000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax256natural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/natural/front.avif"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 256GB White",
+        "color": "White",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 109000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax256white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/white/front.avif"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 512GB Black",
+        "color": "Black",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 122000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax512black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 512GB Синий",
+        "color": "Синий",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 122000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax512blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/blue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 512GB Natural",
+        "color": "Natural",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 122000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax512natural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/natural/front.avif"
+        ]
+      },
+      {
+        "model": "iPhone 15 Pro Max",
+        "title": "iPhone 15 Pro Max 512GB White",
+        "color": "White",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 122000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_15promax/iphone15promax512white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone15promax/white/front.avif"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "iPhone 16",
+    "slug": "iphone_16",
+    "variants": [
+      {
+        "model": "iPhone 16",
+        "title": "iPhone 16 128GB Black",
+        "color": "Black",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 61490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16/iphone16128black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16",
+        "title": "iPhone 16 128GB Pink",
+        "color": "Pink",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 61490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16/iphone16128pink",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16/pink/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16",
+        "title": "iPhone 16 128GB Teal",
+        "color": "Teal",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 61490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16/iphone16128teal",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16/teal/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16",
+        "title": "iPhone 16 128GB Ultramarine",
+        "color": "Ultramarine",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 61490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16/iphone16128ultramarine",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16/ultramarine/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16",
+        "title": "iPhone 16 128GB White",
+        "color": "White",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 61490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16/iphone16128white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16/white/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16",
+        "title": "iPhone 16 256GB Black",
+        "color": "Black",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 68990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16/iphone16256black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16",
+        "title": "iPhone 16 256GB Pink",
+        "color": "Pink",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 68990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16/iphone16256pink",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16/pink/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16",
+        "title": "iPhone 16 256GB Teal",
+        "color": "Teal",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 68990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16/iphone16256teal",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16/teal/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16",
+        "title": "iPhone 16 256GB Ultramarine",
+        "color": "Ultramarine",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 68990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16/iphone16256ultramarine",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16/ultramarine/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16",
+        "title": "iPhone 16 256GB White",
+        "color": "White",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 68990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16/iphone16256white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16/white/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "iPhone 16 Pro",
+    "slug": "iphone_16pro",
+    "variants": [
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 128GB Black",
+        "color": "Black",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 99990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro128black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 128GB Desert",
+        "color": "Desert",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 99990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro128desert",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/desert/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 128GB Natural",
+        "color": "Natural",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 99990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro128natural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/natural/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 128GB White",
+        "color": "White",
+        "memory": "128 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 99990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro128white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/white/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 1TB Black",
+        "color": "Black",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 144990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro1tbblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 1TB Desert",
+        "color": "Desert",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 144990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro1tbdesert",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/desert/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 1TB Natural",
+        "color": "Natural",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 144990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro1tbnatural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/natural/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 1TB White",
+        "color": "White",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 144990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro1tbwhite",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/white/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 256GB Black",
+        "color": "Black",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 110990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro256black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 256GB Desert",
+        "color": "Desert",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 110990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro256desert",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/desert/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 256GB Natural",
+        "color": "Natural",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 110990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro256natural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/natural/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 256GB White",
+        "color": "White",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 110990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro256white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/white/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 512GB Black",
+        "color": "Black",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 134990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro512black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 512GB Desert",
+        "color": "Desert",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 134990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro512desert",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/desert/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 512GB Natural",
+        "color": "Natural",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 134990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro512natural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/natural/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro",
+        "title": "iPhone 16 Pro 512GB White",
+        "color": "White",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 134990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16pro/iphone16pro512white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16pro/white/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "iPhone 16 Pro Max",
+    "slug": "iphone_16promax",
+    "variants": [
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 1TB Black",
+        "color": "Black",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 144990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax1tbblack",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 1TB Desert",
+        "color": "Desert",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 139990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax1tbdesert",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/desert/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 1TB Natural",
+        "color": "Natural",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 142990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax1tbnatural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/natural/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 1TB White",
+        "color": "White",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 148990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax1tbwhite",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/white/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 256GB Black",
+        "color": "Black",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 114990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax256black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 256GB Desert",
+        "color": "Desert",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 104990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax256desert",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/desert/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 256GB Natural",
+        "color": "Natural",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 124990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax256natural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/natural/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 256GB White",
+        "color": "White",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 114990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax256white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/white/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 512GB Black",
+        "color": "Black",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 129990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax512black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 512GB Desert",
+        "color": "Desert",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 124990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax512desert",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/desert/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 512GB Natural",
+        "color": "Natural",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 139990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax512natural",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/natural/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 16 Pro Max",
+        "title": "iPhone 16 Pro Max 512GB White",
+        "color": "White",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 134990,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_16promax/iphone16promax512white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone16promax/white/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "iPhone 17",
+    "slug": "iphone_17",
+    "variants": [
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 256GB Black",
+        "color": "Black",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 68490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_256gb_black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 256GB Black",
+        "color": "Black",
+        "memory": "256 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 64490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_256gb_black_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 256GB Lavender",
+        "color": "Lavender",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 70490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_256gb_lavender",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/lavender/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 256GB Lavender",
+        "color": "Lavender",
+        "memory": "256 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 64490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_256gb_lavender_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/lavender/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 256GB Mist Blue",
+        "color": "Mist Blue",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 66990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_256gb_mist_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/mistblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 256GB Mist Blue",
+        "color": "Mist Blue",
+        "memory": "256 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 64490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_256gb_mist_blue_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/mistblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 256GB Sage",
+        "color": "Sage",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 69990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_256gb_sage",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/sage/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 256GB Sage",
+        "color": "Sage",
+        "memory": "256 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 64490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_256gb_sage_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/sage/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 256GB White",
+        "color": "White",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 69990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_256gb_white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/white/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 256GB White",
+        "color": "White",
+        "memory": "256 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 63990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_256gb_white_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/white/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 512GB Black",
+        "color": "Black",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 87490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_512gb_black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 512GB Black",
+        "color": "Black",
+        "memory": "512 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 81490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_512gb_black_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/black/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 512GB Lavender",
+        "color": "Lavender",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 101490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_512gb_lavender",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/lavender/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 512GB Lavender",
+        "color": "Lavender",
+        "memory": "512 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 92490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_512gb_lavender_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/lavender/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 512GB Mist Blue",
+        "color": "Mist Blue",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 87490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_512gb_mist_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/mistblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 512GB Mist Blue",
+        "color": "Mist Blue",
+        "memory": "512 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 84490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_512gb_mist_blue_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/mistblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 512GB Sage",
+        "color": "Sage",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 87490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_512gb_sage",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/sage/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 512GB Sage",
+        "color": "Sage",
+        "memory": "512 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 83490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_512gb_sage_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/sage/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 512GB White",
+        "color": "White",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 90490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_512gb_white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/white/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17",
+        "title": "iPhone 17 512GB White",
+        "color": "White",
+        "memory": "512 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 82490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17/iphone_17_512gb_white_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17/white/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "iPhone 17 Pro",
+    "slug": "iphone_17pro",
+    "variants": [
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 1TB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 136490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_1tb_cosmic_orange",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/cosmicorange/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 1TB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "1 ТБ",
+        "sim": "Dual eSIM",
+        "price_rub": 125490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_1tb_cosmic_orange_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/cosmicorange/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 1TB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 139490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_1tb_deep_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/deepblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 1TB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "1 ТБ",
+        "sim": "Dual eSIM",
+        "price_rub": 126490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_1tb_deep_blue_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/deepblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 1TB Silver",
+        "color": "Silver",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 139490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_1tb_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 1TB Silver",
+        "color": "Silver",
+        "memory": "1 ТБ",
+        "sim": "Dual eSIM",
+        "price_rub": 128990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_1tb_silver_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 256GB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 103490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_256gb_cosmic_orange",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/cosmicorange/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 256GB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "256 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 99490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_256gb_cosmic_orange_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/cosmicorange/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 256GB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 105990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_256gb_deep_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/deepblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 256GB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "256 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 99490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_256gb_deep_blue_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/deepblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 256GB Silver",
+        "color": "Silver",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 105990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_256gb_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 256GB Silver",
+        "color": "Silver",
+        "memory": "256 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 100490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_256gb_silver_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 512GB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 120490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_512gb_cosmic_orange",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/cosmicorange/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 512GB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "512 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 111990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_512gb_cosmic_orange_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/cosmicorange/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 512GB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 123490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_512gb_deep_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/deepblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 512GB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "512 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 116490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_512gb_deep_blue_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/deepblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 512GB Silver",
+        "color": "Silver",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 123990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_512gb_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro",
+        "title": "iPhone 17 Pro 512GB Silver",
+        "color": "Silver",
+        "memory": "512 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 120490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17pro/iphone_17pro_512gb_silver_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17pro/silver/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "iPhone 17 Pro Max",
+    "slug": "iphone_17promax",
+    "variants": [
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 1TB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 151490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_1tb_cosmic_orange",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 1TB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "1 ТБ",
+        "sim": "Dual eSIM",
+        "price_rub": 131490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_1tb_cosmic_orange_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 1TB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 150990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_1tb_deep_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 1TB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "1 ТБ",
+        "sim": "Dual eSIM",
+        "price_rub": 138490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_1tb_deep_blue_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 1TB Silver",
+        "color": "Silver",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 151990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_1tb_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/3.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 1TB Silver",
+        "color": "Silver",
+        "memory": "1 ТБ",
+        "sim": "Dual eSIM",
+        "price_rub": 151990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_1tb_silver_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/3.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 256GB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 112990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_256gb_cosmic_orange",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 256GB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "256 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 108490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_256gb_cosmic_orange_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 256GB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 114990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_256gb_deep_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 256GB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "256 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 107990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_256gb_deep_blue_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 256GB Silver",
+        "color": "Silver",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 117990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_256gb_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/3.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 256GB Silver",
+        "color": "Silver",
+        "memory": "256 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 108490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_256gb_silver_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/3.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 2TB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "2 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 174990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_2tb_cosmic_orange",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 2TB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "2 ТБ",
+        "sim": "Dual eSIM",
+        "price_rub": 149990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_2tb_cosmic_orange_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 2TB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "2 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 174990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_2tb_deep_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 2TB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "2 ТБ",
+        "sim": "Dual eSIM",
+        "price_rub": 154990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_2tb_deep_blue_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 2TB Silver",
+        "color": "Silver",
+        "memory": "2 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 179990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_2tb_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/3.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 2TB Silver",
+        "color": "Silver",
+        "memory": "2 ТБ",
+        "sim": "Dual eSIM",
+        "price_rub": 171990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_2tb_silver_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/3.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 512GB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 129490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_512gb_cosmic_orange",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 512GB Cosmic Orange",
+        "color": "Cosmic Orange",
+        "memory": "512 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 120490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_512gb_cosmic_orange_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/cosmicorange/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 512GB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 136490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_512gb_deep_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 512GB Deep Blue",
+        "color": "Deep Blue",
+        "memory": "512 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 127490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_512gb_deep_blue_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/3.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/deepblue/4.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 512GB Silver",
+        "color": "Silver",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 140990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_512gb_silver",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/3.jpg"
+        ]
+      },
+      {
+        "model": "iPhone 17 Pro Max",
+        "title": "iPhone 17 Pro Max 512GB Silver",
+        "color": "Silver",
+        "memory": "512 ГБ",
+        "sim": "Dual eSIM",
+        "price_rub": 134990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17promax/iphone_17promax_512gb_silver_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/front.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/1.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/2.jpg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17promax/silver/3.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "iPhone 17e",
+    "slug": "iphone_17e",
+    "variants": [
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 256GB Black",
+        "color": "Black",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 49490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_256gb_black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/2.jpeg"
+        ]
+      },
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 256GB Black NanoSIM + eSIM",
+        "color": "Black NanoSIM + eSIM",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 53490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_256gb_black_nanosim_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/2.jpeg"
+        ]
+      },
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 256GB Soft Pink",
+        "color": "Soft Pink",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 48990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_256gb_soft_pink",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/2.jpeg"
+        ]
+      },
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 256GB Soft Pink NanoSIM + eSIM",
+        "color": "Soft Pink NanoSIM + eSIM",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 53490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_256gb_soft_pink_nanosim_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/2.jpeg"
+        ]
+      },
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 256GB White",
+        "color": "White",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 48990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_256gb_white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/2.jpeg"
+        ]
+      },
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 256GB White NanoSIM + eSIM",
+        "color": "White NanoSIM + eSIM",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 53490,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_256gb_white_nanosim_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/2.jpeg"
+        ]
+      },
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 512GB Black",
+        "color": "Black",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_512gb_black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/2.jpeg"
+        ]
+      },
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 512GB Black NanoSIM + eSIM",
+        "color": "Black NanoSIM + eSIM",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_512gb_black_nanosim_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/black/2.jpeg"
+        ]
+      },
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 512GB Soft Pink",
+        "color": "Soft Pink",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_512gb_soft_pink",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/2.jpeg"
+        ]
+      },
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 512GB Soft Pink NanoSIM + eSIM",
+        "color": "Soft Pink NanoSIM + eSIM",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_512gb_soft_pink_nanosim_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/softpink/2.jpeg"
+        ]
+      },
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 512GB White",
+        "color": "White",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_512gb_white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/2.jpeg"
+        ]
+      },
+      {
+        "model": "iPhone 17e",
+        "title": "iPhone 17e 512GB White NanoSIM + eSIM",
+        "color": "White NanoSIM + eSIM",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_17e/iphone_17e_512gb_white_nanosim_esim",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/front.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/1.jpeg",
+          "https://www.glushakov-official.ru/img/iphone/iphone17e/white/2.jpeg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "iPhone Air",
+    "slug": "iphone_air",
+    "variants": [
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 1TB Cloud White",
+        "color": "Cloud White",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_1tb_cloud_white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/cloudwhite/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 1TB Light Gold",
+        "color": "Light Gold",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_1tb_light_gold",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/lightgold/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 1TB Sky Blue",
+        "color": "Sky Blue",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_1tb_sky_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 1TB Space Black",
+        "color": "Space Black",
+        "memory": "1 ТБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_1tb_space_black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/spaceblack/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 256GB Cloud White",
+        "color": "Cloud White",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 80990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_256gb_cloud_white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/cloudwhite/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 256GB Light Gold",
+        "color": "Light Gold",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 74990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_256gb_light_gold",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/lightgold/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 256GB Sky Blue",
+        "color": "Sky Blue",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 73990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_256gb_sky_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 256GB Space Black",
+        "color": "Space Black",
+        "memory": "256 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 77990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_256gb_space_black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/spaceblack/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 512GB Cloud White",
+        "color": "Cloud White",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 89990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_512gb_cloud_white",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/cloudwhite/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 512GB Light Gold",
+        "color": "Light Gold",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 85990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_512gb_light_gold",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/lightgold/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 512GB Sky Blue",
+        "color": "Sky Blue",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 82990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_512gb_sky_blue",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/skyblue/front.jpg"
+        ]
+      },
+      {
+        "model": "iPhone Air",
+        "title": "iPhone Air 512GB Space Black",
+        "color": "Space Black",
+        "memory": "512 ГБ",
+        "sim": "NanoSIM + eSIM",
+        "price_rub": 85990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/iphone/iphone_air/iphone_air_512gb_space_black",
+        "images": [
+          "https://www.glushakov-official.ru/img/iphone/air/spaceblack/front.jpg"
+        ]
+      }
+    ]
+  }
+]
