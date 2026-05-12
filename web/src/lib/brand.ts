@@ -16,6 +16,15 @@ export const SITE_DESCRIPTION = IS_SOTIK_BRAND
 /** SOTIK — общая ссылка на сообщество; X:STORE — официальная группа. */
 export const VK_HREF = IS_SOTIK_BRAND ? "https://vk.com" : "https://vk.ru/xstore_55";
 
+/** Главная витрина (storefront): до унификации с xstore (vegan 15309b3) / vegan-skupka ~f95cfa6 */
+export const SOTIK_TELEGRAM_HREF = "https://t.me/yaroslav_g77";
+export const SOTIK_PHONE_DISPLAY = "+7 (923) 696-96-82";
+export const SOTIK_PHONE_HREF = "tel:+79236969682";
+export const SOTIK_HEADER_ADDRESS = "Г.Москва 2 Ямская 2с1";
+export const SOTIK_OPEN_HOURS_BADGE = "Сейчас открыто · 12:00–20:00";
+export const SOTIK_HOURS_DETAIL = "Время работы: 12:00 - 20:00";
+export const SOTIK_BUYBACK_NOTE = "Выкуп техники: круглосуточно";
+
 /**
  * Разные ключи localStorage, чтобы корзины двух магазинов не пересекались в одном браузере.
  */
