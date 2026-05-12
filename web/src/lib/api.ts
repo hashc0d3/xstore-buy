@@ -33,7 +33,7 @@ export async function fetchStoreData(): Promise<StoreData> {
   }
 }
 
-export async function createCategory(input: { name: string; memoryOptions?: string[] }): Promise<void> {
+export async function createCategory(input: { name: string; imageUrl?: string; memoryOptions?: string[] }): Promise<void> {
   await request("/store/categories", {
     method: "POST",
     body: JSON.stringify(input)
@@ -68,6 +68,12 @@ export async function upsertProduct(input: {
 
 export async function deleteProduct(id: string): Promise<void> {
   await request(`/store/products/${id}`, {
+    method: "DELETE"
+  });
+}
+
+export async function deleteCategory(id: string): Promise<void> {
+  await request(`/store/categories/${id}`, {
     method: "DELETE"
   });
 }

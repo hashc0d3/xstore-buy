@@ -10,6 +10,7 @@ type StoreCategory = {
   id: string;
   slug: string;
   name: string;
+  imageUrl?: string;
   memoryOptions: string[];
 };
 
@@ -154,6 +155,7 @@ export class StoreService {
       data: {
         name,
         slug,
+        imageUrl: dto.imageUrl?.trim() || null,
         memoryOptions: (dto.memoryOptions ?? []).filter(Boolean).join("|")
       }
     });
@@ -198,6 +200,28 @@ export class StoreService {
     await this.prisma.product.delete({ where: { id } });
   }
 
+  /** Slug'и из ensureSeedData — удаление запрещено, чтобы не сломать витрину. */
+  private static readonly protectedCategorySlugs = new Set([
+    "iphone",
+    "iphone-used",
+    "macbook",
+    "apple-watch",
+    "ipad",
+    "airpods",
+    "custom"
+  ]);
+
+  async removeCategory(id: string): Promise<void> {
+    const category = await this.prisma.category.findUnique({ where: { id } });
+    if (!category) {
+      throw new NotFoundException("Категория не найдена");
+    }
+    if (StoreService.protectedCategorySlugs.has(category.slug)) {
+      throw new BadRequestException("Эту категорию нельзя удалить");
+    }
+    await this.prisma.category.delete({ where: { id } });
+  }
+
   async upsertSliderPhotos(dto: UpsertSliderPhotosDto): Promise<StoreSliderPhoto[]> {
     await this.ensureSliderPhotoTable();
 
@@ -224,11 +248,12 @@ export class StoreService {
     return this.getSliderPhotos();
   }
 
-  private toCategory(item: { id: string; slug: string; name: string; memoryOptions: string | null }): StoreCategory {
+  private toCategory(item: { id: string; slug: string; name: string; imageUrl: string | null; memoryOptions: string | null }): StoreCategory {
     return {
       id: item.id,
       slug: item.slug,
       name: item.name,
+      imageUrl: item.imageUrl?.trim() || undefined,
       memoryOptions: item.memoryOptions ? item.memoryOptions.split("|").filter(Boolean) : []
     };
   }

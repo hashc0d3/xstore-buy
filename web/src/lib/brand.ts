@@ -25,6 +25,10 @@ export const SOTIK_OPEN_HOURS_BADGE = "Сейчас открыто · 12:00–20
 export const SOTIK_HOURS_DETAIL = "Время работы: 12:00 - 20:00";
 export const SOTIK_BUYBACK_NOTE = "Выкуп техники: круглосуточно";
 
+/** Отзывы sotik77 на Авито (переопределяется через NEXT_PUBLIC_SOTIK_AVITO_REVIEWS_URL). */
+export const SOTIK_AVITO_REVIEWS_HREF =
+  (process.env.NEXT_PUBLIC_SOTIK_AVITO_REVIEWS_URL ?? "").trim() || "https://www.avito.ru/brands/i131720364";
+
 /**
  * Разные ключи localStorage, чтобы корзины двух магазинов не пересекались в одном браузере.
  */

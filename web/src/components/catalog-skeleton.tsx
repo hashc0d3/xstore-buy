@@ -2,10 +2,10 @@
 export function CategoryStripSkeleton() {
   return (
     <>
-      {Array.from({ length: 7 }, (_, i) => (
+      {Array.from({ length: 8 }, (_, i) => (
         <div
           key={i}
-          className="h-[74px] min-[480px]:h-[88px] min-[640px]:h-[108px] min-[960px]:h-[132px] animate-pulse rounded-xl border border-zinc-200/80 bg-zinc-100/90 min-[960px]:rounded-2xl"
+          className="h-[74px] w-[9rem] shrink-0 animate-pulse rounded-xl border border-zinc-200/80 bg-zinc-100/90 min-[480px]:h-[88px] min-[480px]:w-[10.25rem] min-[640px]:h-[108px] min-[640px]:w-[11.75rem] min-[960px]:h-[132px] min-[960px]:w-[13.25rem] min-[960px]:rounded-2xl"
         />
       ))}
     </>

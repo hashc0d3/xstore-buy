@@ -4,18 +4,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BrandMark } from "@/components/brand-mark";
-import { CART_STORAGE_KEY, VK_HREF } from "@/lib/brand";
+import { CART_STORAGE_KEY, IS_SOTIK_BRAND, VK_HREF } from "@/lib/brand";
 
 type StoredCartItem = {
   quantity?: number;
 };
 
-const navItems = [
-  { href: "/catalog", label: "Каталог" },
-  { href: "/assessment", label: "Выкуп" },
-  { href: "/cart", label: "Корзина" },
-  { href: "/info", label: "Информация" }
-];
+const navItems = IS_SOTIK_BRAND
+  ? [
+      { href: "/assessment", label: "Выкуп" },
+      { href: "/catalog", label: "Каталог" },
+      { href: "/cart", label: "Корзина" },
+      { href: "/info", label: "Информация" }
+    ]
+  : [
+      { href: "/catalog", label: "Каталог" },
+      { href: "/assessment", label: "Выкуп" },
+      { href: "/cart", label: "Корзина" },
+      { href: "/info", label: "Информация" }
+    ];
 
 function readCartCount() {
   if (typeof window === "undefined") return 0;
@@ -277,14 +284,23 @@ export function SiteHeader() {
 export function SiteFooter() {
   const [footerMenuOpen, setFooterMenuOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const footerLinks = [
-    { href: "/catalog", label: "Каталог" },
-    { href: "/assessment", label: "Выкуп" },
-    { href: "/cart", label: "Корзина" },
-    { href: "/info#delivery", label: "Доставка и оплата" },
-    { href: "/info#return", label: "Возврат и обмен" },
-    { href: "/info#warranty", label: "Гарантия и проверка" }
-  ];
+  const footerLinks = IS_SOTIK_BRAND
+    ? [
+        { href: "/assessment", label: "Выкуп" },
+        { href: "/catalog", label: "Каталог" },
+        { href: "/cart", label: "Корзина" },
+        { href: "/info#delivery", label: "Доставка и оплата" },
+        { href: "/info#return", label: "Возврат и обмен" },
+        { href: "/info#warranty", label: "Гарантия и проверка" }
+      ]
+    : [
+        { href: "/catalog", label: "Каталог" },
+        { href: "/assessment", label: "Выкуп" },
+        { href: "/cart", label: "Корзина" },
+        { href: "/info#delivery", label: "Доставка и оплата" },
+        { href: "/info#return", label: "Возврат и обмен" },
+        { href: "/info#warranty", label: "Гарантия и проверка" }
+      ];
 
   useEffect(() => {
     const onScroll = () => setShowScrollTop(window.scrollY > 240);

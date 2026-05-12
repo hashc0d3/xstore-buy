@@ -2,6 +2,8 @@ export type Category = {
   id: string;
   slug: string;
   name: string;
+  /** Обложка категории на витрине (URL или data URL); иначе — картинки по slug из /public */
+  imageUrl?: string;
   memoryOptions?: string[];
 };
 
@@ -173,6 +175,7 @@ function normalizeStoreData(input: StoreData): StoreData {
     id: item.id,
     slug: item.slug,
     name: item.name,
+    imageUrl: typeof item.imageUrl === "string" && item.imageUrl.trim() ? item.imageUrl.trim() : undefined,
     memoryOptions: Array.isArray(item.memoryOptions) ? item.memoryOptions.filter(Boolean) : []
   }));
 
