@@ -3,63 +3,117 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { BrandMark } from "@/components/brand-mark";
+import { CategoryStripSkeleton, ProductGridSkeleton } from "@/components/catalog-skeleton";
 import { createLead, fetchStoreData } from "@/lib/api";
-import { Category, Product, StoreData, defaultStoreData, toRub } from "@/lib/store";
+import { CART_STORAGE_KEY, IS_SOTIK_BRAND, SLIDER_PHOTO_ALT_FALLBACK, SOTIK_BUYBACK_NOTE, SOTIK_HEADER_ADDRESS, SOTIK_HOURS_DETAIL, SOTIK_OPEN_HOURS_BADGE, SOTIK_PHONE_DISPLAY, SOTIK_PHONE_HREF, SOTIK_TELEGRAM_HREF, VK_HREF } from "@/lib/brand";
+import { Category, Product, ProductVariant, StoreData, defaultStoreData, toRub } from "@/lib/store";
 
 const IPHONE_LIKE_SLUGS = new Set(["iphone", "iphone-used"]);
 const MACBOOK_LIKE_SLUGS = new Set(["macbook"]);
 const IPAD_LIKE_SLUGS = new Set(["ipad"]);
 const WATCH_LIKE_SLUGS = new Set(["apple-watch"]);
 
+function normalizeCategorySlug(slug: string | undefined): string | undefined {
+  if (!slug) return undefined;
+  const t = slug.trim().toLowerCase();
+  return t || undefined;
+}
+
 function isIphoneLikeSlug(slug: string | undefined): boolean {
-  return Boolean(slug && IPHONE_LIKE_SLUGS.has(slug));
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && IPHONE_LIKE_SLUGS.has(s));
 }
 
 function isMacbookLikeSlug(slug: string | undefined): boolean {
-  return Boolean(slug && MACBOOK_LIKE_SLUGS.has(slug));
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && MACBOOK_LIKE_SLUGS.has(s));
 }
 
 function isIpadLikeSlug(slug: string | undefined): boolean {
-  return Boolean(slug && IPAD_LIKE_SLUGS.has(slug));
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && IPAD_LIKE_SLUGS.has(s));
 }
 
 function isWatchLikeSlug(slug: string | undefined): boolean {
-  return Boolean(slug && WATCH_LIKE_SLUGS.has(slug));
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && WATCH_LIKE_SLUGS.has(s));
 }
 
-/** Сборка SOTIK77: `NEXT_PUBLIC_STORE_BRAND=sotik77`; иначе логотип X:STORE. */
-const IS_SOTIK_BRAND = process.env.NEXT_PUBLIC_STORE_BRAND === "sotik77";
+function memoryPriceEntries(product: Product): Array<[string, number]> {
+  const mp = product.memoryPrices;
+  if (!mp || typeof mp !== "object") return [];
+  const entries = Object.entries(mp).filter(([k, v]) => {
+    const n = Number(v);
+    return Boolean(k?.trim()) && Number.isFinite(n);
+  }) as Array<[string, number]>;
+  entries.sort((a, b) => Number(a[1]) - Number(b[1]));
+  return entries;
+}
 
-function StoreLogoMark() {
-  if (IS_SOTIK_BRAND) {
-    return (
-      <>
-        SOTIK<span className="text-red-500">77</span>
-      </>
-    );
+/**
+ * Старый формат БД: пустой variants → только memoryPrices.
+ * Частый прод-кейс: variants есть, но в каждой строке только color/price — без memory/screen;
+ * тогда без раскладки по memoryPrices селекторы «Накопитель» и т.д. не появляются.
+ */
+function effectiveVariantsForProduct(product: Product, categorySlug: string | undefined): ProductVariant[] {
+  const raw = product.variants ?? [];
+  const slug = normalizeCategorySlug(categorySlug);
+  const usesMemoryAxis =
+    Boolean(slug) &&
+    (isIphoneLikeSlug(slug) || isMacbookLikeSlug(slug) || isIpadLikeSlug(slug));
+
+  const entries = memoryPriceEntries(product);
+
+  if (!raw.length) {
+    if (!usesMemoryAxis || !entries.length) return [];
+    const color = product.color?.trim();
+    const imageUrl = product.imageUrl;
+    return entries.map(([memory, price]) => ({
+      ...(color ? { color } : {}),
+      memory,
+      price: Number(price),
+      imageUrl
+    }));
   }
-  return (
-    <>
-      <span className="text-red-500">X</span> : STORE
-    </>
-  );
-}
 
-const SLIDER_PHOTO_ALT_FALLBACK = IS_SOTIK_BRAND ? "Фото SOTIK77" : "Фото X:STORE";
+  if (usesMemoryAxis && entries.length > 0) {
+    const allLackMemory = raw.every((v) => !String(v.memory ?? "").trim());
+    if (allLackMemory) {
+      const expanded: ProductVariant[] = [];
+      for (const row of raw) {
+        for (const [memory, price] of entries) {
+          expanded.push({
+            ...row,
+            memory,
+            price: Number(price)
+          });
+        }
+      }
+      return expanded;
+    }
+  }
+
+  return raw;
+}
 
 function availabilityBadgeText(availability?: string, price?: number): string | null {
   const a = (availability || "").toLowerCase();
   if (a === "coming_soon") return "Скоро в продаже";
   if (a === "out_of_stock") return "Нет в наличии";
-  if (a === "unknown" && price !== undefined && price <= 0) return "Скоро в продаже";
+  // Цена 0 без явной метки в админке — не показываем «0 ₽», а «Скоро в продаже».
+  if (price !== undefined && price <= 0 && (a === "unknown" || !a || a === "in_stock")) {
+    return "Скоро в продаже";
+  }
   return null;
 }
 
 function variantCanAddToCart(variant: { availability?: string; price: number } | null | undefined): boolean {
   if (!variant) return false;
+  if (variant.price <= 0) return false;
   const a = (variant.availability || "").toLowerCase();
   if (a === "coming_soon" || a === "out_of_stock") return false;
-  return variant.price > 0;
+  return true;
 }
 
 type ModalType = "tradein" | "reviews" | "order" | "product" | "preorder" | null;
@@ -83,8 +137,6 @@ type CartItem = {
   imageUrl: string;
   quantity: number;
 };
-
-const CART_STORAGE_KEY = "xstore-cart-v1";
 
 function persistCartItems(items: CartItem[]) {
   window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
@@ -241,16 +293,17 @@ function ProductCard({
   ) => void;
   onOpenDetails: (selection: VariantSelection) => void;
 }) {
-  const isIphoneCategory = isIphoneLikeSlug(category?.slug);
-  const isMacbookCategory = isMacbookLikeSlug(category?.slug);
-  const isIpadCategory = isIpadLikeSlug(category?.slug);
-  const isWatchCategory = isWatchLikeSlug(category?.slug);
+  const categorySlug = category?.slug ?? product.categorySlug;
+  const isIphoneCategory = isIphoneLikeSlug(categorySlug);
+  const isMacbookCategory = isMacbookLikeSlug(categorySlug);
+  const isIpadCategory = isIpadLikeSlug(categorySlug);
+  const isWatchCategory = isWatchLikeSlug(categorySlug);
   const usesMemory = isIphoneCategory || isMacbookCategory || isIpadCategory;
   const usesScreen = isMacbookCategory || isIpadCategory || isWatchCategory;
   const usesRam = isMacbookCategory;
   const showSimSelector = isIphoneCategory || isIpadCategory || isWatchCategory;
   const simLabel = isIphoneCategory ? "SIM" : isIpadCategory ? "Связь" : isWatchCategory ? "Ремешок" : "SIM";
-  const variants = useMemo(() => product.variants ?? [], [product.variants]);
+  const variants = useMemo(() => effectiveVariantsForProduct(product, categorySlug), [product, categorySlug]);
   const hasVariants = variants.length > 0;
   const colorOptions = useMemo(
     () =>
@@ -349,8 +402,13 @@ function ProductCard({
   ]);
 
   const shownPrice = activeVariant?.price ?? product.basePrice;
-  const stockBadge = availabilityBadgeText(activeVariant?.availability, activeVariant?.price);
-  const canCart = variantCanAddToCart(activeVariant);
+  const stockBadge = availabilityBadgeText(
+    activeVariant?.availability,
+    activeVariant ? activeVariant.price : product.basePrice
+  );
+  const canCart = variantCanAddToCart(
+    activeVariant ?? { price: product.basePrice, availability: undefined }
+  );
   const currentImage = activeVariant?.imageUrl ?? product.imageUrl;
 
   const colorLabel = product.color ?? "";
@@ -641,7 +699,12 @@ function ProductCard({
   );
 }
 
-export default function Storefront() {
+export type StorefrontProps = {
+  /** SSR: данные с API сразу, без пустой витрины и лишнего ожидания. */
+  initialStoreData?: StoreData;
+};
+
+export default function Storefront({ initialStoreData }: StorefrontProps) {
   const pathname = usePathname();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -665,7 +728,8 @@ export default function Storefront() {
     ram?: string;
   } | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [storeData, setStoreData] = useState<StoreData>(defaultStoreData);
+  const [storeData, setStoreData] = useState<StoreData>(() => initialStoreData ?? defaultStoreData);
+  const [storeFetched, setStoreFetched] = useState(() => Boolean(initialStoreData));
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartHydrated, setCartHydrated] = useState(false);
   const [sendingLead, setSendingLead] = useState(false);
@@ -692,7 +756,10 @@ export default function Storefront() {
   }, [cartHydrated, cartItems]);
 
   useEffect(() => {
-    void fetchStoreData().then((remote) => setStoreData(remote));
+    void fetchStoreData().then((remote) => {
+      setStoreData(remote);
+      setStoreFetched(true);
+    });
   }, []);
 
   const reviewPhotos = useMemo(() => {
@@ -740,7 +807,7 @@ export default function Storefront() {
     return () => window.clearTimeout(timer);
   }, [leadNotice]);
 
-  const shouldSplitHeader = isHeaderFloating && isDesktopHeader;
+  const headerFloat = isHeaderFloating && isDesktopHeader && !IS_SOTIK_BRAND;
 
   const routeCategorySlug = useMemo(() => {
     const parts = pathname.split("/").filter(Boolean);
@@ -1175,16 +1242,17 @@ export default function Storefront() {
 
     if (activeModal === "product" && selectedProduct) {
       const selectedCategory = categoriesBySlug[selectedProduct.categorySlug];
-      const isIphoneCategory = isIphoneLikeSlug(selectedCategory?.slug);
-      const isMacbookCategory = isMacbookLikeSlug(selectedCategory?.slug);
-      const isIpadCategory = isIpadLikeSlug(selectedCategory?.slug);
-      const isWatchCategory = isWatchLikeSlug(selectedCategory?.slug);
+      const productCategorySlug = selectedCategory?.slug ?? selectedProduct.categorySlug;
+      const isIphoneCategory = isIphoneLikeSlug(productCategorySlug);
+      const isMacbookCategory = isMacbookLikeSlug(productCategorySlug);
+      const isIpadCategory = isIpadLikeSlug(productCategorySlug);
+      const isWatchCategory = isWatchLikeSlug(productCategorySlug);
       const usesMemory = isIphoneCategory || isMacbookCategory || isIpadCategory;
       const usesScreen = isMacbookCategory || isIpadCategory || isWatchCategory;
       const usesRam = isMacbookCategory;
       const showSimSelector = isIphoneCategory || isIpadCategory || isWatchCategory;
       const simLabelModal = isIphoneCategory ? "тип SIM" : isIpadCategory ? "связь" : isWatchCategory ? "ремешок" : "SIM";
-      const productVariants = selectedProduct.variants ?? [];
+      const productVariants = effectiveVariantsForProduct(selectedProduct, productCategorySlug);
       const hasVariants = productVariants.length > 0;
       const colorOptions = hasVariants
         ? Array.from(new Set(productVariants.map((item) => item.color).filter((item): item is string => Boolean(item))))
@@ -1231,8 +1299,13 @@ export default function Storefront() {
 
       const shownModalPrice = activeVariant?.price ?? selectedProduct.basePrice;
       const shownModalImage = activeVariant?.imageUrl ?? selectedProduct.imageUrl;
-      const modalStockBadge = availabilityBadgeText(activeVariant?.availability, activeVariant?.price);
-      const modalCanCart = variantCanAddToCart(activeVariant);
+      const modalStockBadge = availabilityBadgeText(
+        activeVariant?.availability,
+        activeVariant ? activeVariant.price : selectedProduct.basePrice
+      );
+      const modalCanCart = variantCanAddToCart(
+        activeVariant ?? { price: selectedProduct.basePrice, availability: undefined }
+      );
       return (
         <Modal
           title={selectedProduct.name}
@@ -1447,35 +1520,72 @@ export default function Storefront() {
 
   return (
     <div className="min-h-screen bg-[#f4f4f6] text-zinc-900">
-      <div className="hidden border-b border-zinc-200 bg-white min-[960px]:block">
-        <div className="mx-auto flex w-full max-w-[1920px] items-center justify-between gap-6 px-8 py-3 text-[13px] font-medium tracking-[0.01em] text-zinc-500 min-[1440px]:px-12 min-[1920px]:px-16">
+      <div
+        className={`hidden min-[960px]:block ${
+          IS_SOTIK_BRAND ? "border-b border-white/5 bg-[#111112]" : "border-b border-zinc-200 bg-white"
+        }`}
+      >
+        <div
+          className={`mx-auto flex w-full max-w-[1920px] items-center justify-between gap-6 px-8 py-3 text-[13px] font-medium tracking-[0.01em] min-[1440px]:px-12 min-[1920px]:px-16 ${
+            IS_SOTIK_BRAND ? "text-zinc-400" : "text-zinc-500"
+          }`}
+        >
           <div className="flex items-center gap-4">
-            <Link href="/info#delivery" className="transition hover:text-zinc-900">
+            <Link
+              href="/info#delivery"
+              className={IS_SOTIK_BRAND ? "transition hover:text-white" : "transition hover:text-zinc-900"}
+            >
               Доставка и оплата
             </Link>
-            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-zinc-300" />
-            <Link href="/info#return" className="transition hover:text-zinc-900">
+            <span
+              aria-hidden="true"
+              className={`h-1 w-1 rounded-full ${IS_SOTIK_BRAND ? "bg-white/20" : "bg-zinc-300"}`}
+            />
+            <Link href="/info#return" className={IS_SOTIK_BRAND ? "transition hover:text-white" : "transition hover:text-zinc-900"}>
               Возврат и обмен
             </Link>
-            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-zinc-300" />
-            <Link href="/info#warranty" className="transition hover:text-zinc-900">
+            <span
+              aria-hidden="true"
+              className={`h-1 w-1 rounded-full ${IS_SOTIK_BRAND ? "bg-white/20" : "bg-zinc-300"}`}
+            />
+            <Link href="/info#warranty" className={IS_SOTIK_BRAND ? "transition hover:text-white" : "transition hover:text-zinc-900"}>
               Гарантия и проверка
             </Link>
           </div>
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-red-600 ring-1 ring-inset ring-red-200">
-              <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
-                <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
-              </svg>
-              Омск, ул. Гагарина 3
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 ring-1 ring-inset ring-emerald-200">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              Сейчас открыто · 11:00–20:00
-            </span>
+            {IS_SOTIK_BRAND ? (
+              <>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-red-500/10 px-3 py-1 text-red-300 ring-1 ring-inset ring-red-500/20">
+                  <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
+                    <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+                  </svg>
+                  {SOTIK_HEADER_ADDRESS}
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-emerald-300 ring-1 ring-inset ring-emerald-500/20">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                  </span>
+                  {SOTIK_OPEN_HOURS_BADGE}
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-3 py-1 text-red-600 ring-1 ring-inset ring-red-200">
+                  <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
+                    <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+                  </svg>
+                  Омск, ул. Гагарина 3
+                </span>
+                <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 ring-1 ring-inset ring-emerald-200">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  </span>
+                  Сейчас открыто · 11:00–20:00
+                </span>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -1483,29 +1593,43 @@ export default function Storefront() {
       <header className="sticky top-0 z-40">
         <div
           className={`mx-auto flex w-full max-w-[1920px] items-center justify-between gap-3 px-4 transition-all duration-300 min-[640px]:px-6 min-[960px]:px-8 min-[1440px]:px-12 min-[1920px]:px-16 ${
-            shouldSplitHeader
+            headerFloat
               ? "mt-3 rounded-full border border-white/70 bg-white/88 py-2 shadow-[0_16px_40px_rgba(24,24,27,0.12)] backdrop-blur-2xl"
-              : "border-b border-white/50 liquid-glass py-4 min-[640px]:py-5 min-[960px]:py-6"
+              : IS_SOTIK_BRAND
+                ? "border-b border-white/5 bg-[#111112] py-4 text-zinc-100 shadow-[0_8px_24px_rgba(0,0,0,0.35)] min-[640px]:py-5 min-[960px]:py-6"
+                : "border-b border-white/50 liquid-glass py-4 min-[640px]:py-5 min-[960px]:py-6"
           }`}
         >
           <Link
             href="/"
-            className={`inline-flex shrink-0 items-center font-bold tracking-tight text-zinc-950 transition-all duration-300 ${
-              shouldSplitHeader ? "text-xl min-[1200px]:text-2xl min-[1440px]:text-3xl" : "text-2xl min-[640px]:text-3xl min-[1440px]:text-4xl min-[1920px]:text-5xl"
+            className={`inline-flex shrink-0 items-center font-bold tracking-tight transition-all duration-300 ${
+              headerFloat
+                ? "text-xl text-zinc-950 min-[1200px]:text-2xl min-[1440px]:text-3xl"
+                : IS_SOTIK_BRAND
+                  ? "text-2xl text-white min-[640px]:text-3xl min-[1440px]:text-4xl min-[1920px]:text-5xl"
+                  : "text-2xl text-zinc-950 min-[640px]:text-3xl min-[1440px]:text-4xl min-[1920px]:text-5xl"
             }`}
           >
-            <StoreLogoMark />
+            <BrandMark />
           </Link>
           <nav
-            className={`hidden h-11 items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-1.5 text-sm font-medium text-zinc-700 backdrop-blur-xl transition-all duration-300 min-[960px]:flex min-[1920px]:text-base ${
-              shouldSplitHeader ? "ring-1 ring-white/60" : ""
+            className={`hidden h-11 items-center gap-1 rounded-full px-1.5 text-sm font-medium backdrop-blur-xl transition-all duration-300 min-[960px]:flex min-[1920px]:text-base ${
+              headerFloat
+                ? "border border-zinc-200 bg-zinc-50 text-zinc-700 ring-1 ring-white/60"
+                : IS_SOTIK_BRAND
+                  ? "border border-white/10 bg-white/[0.04] text-zinc-300"
+                  : "border border-zinc-200 bg-zinc-50 text-zinc-700"
             }`}
           >
             <Link
               className={`inline-flex h-9 items-center gap-2 rounded-full px-3 transition min-[1440px]:px-4 ${
                 pathname === "/catalog"
-                  ? "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
-                  : "hover:bg-white hover:text-zinc-950"
+                  ? IS_SOTIK_BRAND
+                    ? "bg-red-500/15 text-red-300 ring-1 ring-inset ring-red-500/30"
+                    : "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
+                  : IS_SOTIK_BRAND
+                    ? "hover:bg-white/10 hover:text-white"
+                    : "hover:bg-white hover:text-zinc-950"
               }`}
               href="/catalog"
             >
@@ -1514,7 +1638,9 @@ export default function Storefront() {
               Каталог
             </Link>
             <button
-              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white hover:text-zinc-950 min-[1440px]:px-4"
+              className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
+                IS_SOTIK_BRAND ? "hover:bg-white/10 hover:text-white" : "hover:bg-white hover:text-zinc-950"
+              }`}
               type="button"
               onClick={() => setActiveModal("tradein")}
             >
@@ -1523,22 +1649,30 @@ export default function Storefront() {
             <Link
               className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
                 pathname === "/assessment"
-                  ? "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
-                  : "hover:bg-white hover:text-zinc-950"
+                  ? IS_SOTIK_BRAND
+                    ? "bg-red-500/15 text-red-300 ring-1 ring-inset ring-red-500/30"
+                    : "bg-red-50 text-red-600 ring-1 ring-inset ring-red-200"
+                  : IS_SOTIK_BRAND
+                    ? "hover:bg-white/10 hover:text-white"
+                    : "hover:bg-white hover:text-zinc-950"
               }`}
               href="/assessment"
             >
               Выкуп
             </Link>
             <button
-              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white hover:text-zinc-950 min-[1440px]:px-4"
+              className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
+                IS_SOTIK_BRAND ? "hover:bg-white/10 hover:text-white" : "hover:bg-white hover:text-zinc-950"
+              }`}
               type="button"
               onClick={() => setActiveModal("reviews")}
             >
               Отзывы
             </button>
             <a
-              className="inline-flex h-9 items-center rounded-full px-3 transition hover:bg-white hover:text-zinc-950 min-[1440px]:px-4"
+              className={`inline-flex h-9 items-center rounded-full px-3 transition min-[1440px]:px-4 ${
+                IS_SOTIK_BRAND ? "hover:bg-white/10 hover:text-white" : "hover:bg-white hover:text-zinc-950"
+              }`}
               href="#"
             >
               Статьи
@@ -1547,9 +1681,11 @@ export default function Storefront() {
           <div className="flex shrink-0 items-center gap-2 min-[960px]:hidden">
             <Link
               href="/cart"
-              className={`relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-900 shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:w-12 ${
-                shouldSplitHeader ? "ring-1 ring-white/60" : ""
-              }`}
+              className={`relative inline-flex h-11 w-11 items-center justify-center rounded-full shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:w-12 ${
+                IS_SOTIK_BRAND
+                  ? "border border-white/10 bg-white/5 text-zinc-100 hover:border-white/20 hover:bg-white/10"
+                  : "border border-zinc-300 bg-white text-zinc-900"
+              } ${headerFloat ? "ring-1 ring-white/60" : ""}`}
               aria-label="Корзина"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-5.5 w-5.5">
@@ -1564,9 +1700,11 @@ export default function Storefront() {
             </Link>
             <button
               type="button"
-              className={`inline-flex h-11 items-center gap-2 rounded-[1.2rem] border border-zinc-300 bg-[#f2ecec] px-3 text-sm font-semibold leading-none text-[#3f2430] shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:text-base ${
-                shouldSplitHeader ? "ring-1 ring-white/60" : ""
-              }`}
+              className={`inline-flex h-11 items-center gap-2 rounded-[1.2rem] px-3 text-sm font-semibold leading-none shadow-sm transition-all duration-300 min-[640px]:h-12 min-[640px]:gap-2.5 min-[640px]:rounded-[1.4rem] min-[640px]:px-4 min-[640px]:text-base ${
+                IS_SOTIK_BRAND
+                  ? "border border-white/10 bg-white/5 text-zinc-100 hover:border-white/20 hover:bg-white/10"
+                  : "border border-zinc-300 bg-[#f2ecec] text-[#3f2430]"
+              } ${headerFloat ? "ring-1 ring-white/60" : ""}`}
               aria-label={mobileMenuOpen ? "Закрыть меню" : "Открыть меню"}
               aria-expanded={mobileMenuOpen}
               onClick={() => setMobileMenuOpen((open) => !open)}
@@ -1596,34 +1734,56 @@ export default function Storefront() {
           >
             <Link
               href="/cart"
-              className="inline-flex h-10 items-center gap-2 rounded-full border border-zinc-200 bg-zinc-50 px-3 text-xs font-semibold min-[1200px]:text-sm text-zinc-800 transition hover:border-zinc-300 hover:bg-white"
+              className={`inline-flex h-10 items-center gap-2 rounded-full border px-3 text-xs font-semibold transition min-[1200px]:text-sm ${
+                IS_SOTIK_BRAND
+                  ? "border-white/10 bg-white/5 text-zinc-100 hover:border-white/20 hover:bg-white/10"
+                  : "border-zinc-200 bg-zinc-50 text-zinc-800 hover:border-zinc-300 hover:bg-white"
+              }`}
             >
               Корзина
-              <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-zinc-900 px-1.5 py-0.5 text-[10px] text-white">
+              <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] text-white">
                 {cartCount}
               </span>
             </Link>
             <a
-              href="https://vk.com"
+              href={VK_HREF}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white"
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition ${
+                IS_SOTIK_BRAND
+                  ? "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10"
+                  : "border-zinc-200 bg-zinc-50 hover:border-zinc-300 hover:bg-white"
+              }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icon/vk.svg" alt="VK" className="h-4.5 w-4.5" />
             </a>
             <a
-              href="https://t.me"
+              href={IS_SOTIK_BRAND ? SOTIK_TELEGRAM_HREF : "https://t.me"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white"
+              className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition ${
+                IS_SOTIK_BRAND
+                  ? "border-white/10 bg-white/5 hover:border-white/20 hover:bg-white/10"
+                  : "border-zinc-200 bg-zinc-50 hover:border-zinc-300 hover:bg-white"
+              }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icon/telegram.svg" alt="Telegram" className="h-4.5 w-4.5" />
             </a>
-            <div className="text-right text-[11px] font-medium leading-tight text-zinc-700 min-[1200px]:text-xs min-[1440px]:text-sm">
-              <p>+7 (923) 696-93-77</p>
-              <p>+7 (923) 686-93-77</p>
+            <div
+              className={`text-right text-[11px] font-medium leading-tight min-[1200px]:text-xs min-[1440px]:text-sm ${
+                IS_SOTIK_BRAND ? "text-zinc-300" : "text-zinc-700"
+              }`}
+            >
+              {IS_SOTIK_BRAND ? (
+                <p>{SOTIK_PHONE_DISPLAY}</p>
+              ) : (
+                <>
+                  <p>+7 (923) 696-93-77</p>
+                  <p>+7 (923) 686-93-77</p>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -1785,13 +1945,15 @@ export default function Storefront() {
             isHomePage ? "rounded-2xl border border-white/60 liquid-glass p-2 min-[640px]:p-3" : ""
           } grid grid-cols-4 gap-1.5 min-[480px]:gap-2 min-[640px]:gap-2.5 min-[900px]:grid-cols-7 min-[960px]:gap-3 min-[1440px]:gap-4`}
         >
-          {displayCategories.map((category) => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              onPodZakaz={category.slug === "custom" ? () => setActiveModal("preorder") : undefined}
-            />
-          ))}
+          {storeFetched
+            ? displayCategories.map((category) => (
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  onPodZakaz={category.slug === "custom" ? () => setActiveModal("preorder") : undefined}
+                />
+              ))
+            : <CategoryStripSkeleton />}
         </section>
 
         {isHomePage ? (
@@ -2027,7 +2189,9 @@ export default function Storefront() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            {filteredProducts.length ? (
+            {!storeFetched ? (
+              <ProductGridSkeleton />
+            ) : filteredProducts.length ? (
               <div className="grid grid-cols-2 gap-2 min-[640px]:grid-cols-2 min-[640px]:gap-3 min-[960px]:grid-cols-5 min-[1440px]:grid-cols-6 min-[1920px]:grid-cols-7 min-[1920px]:gap-4">
                 {filteredProducts.map((product) => (
                   <ProductCard
@@ -2047,9 +2211,12 @@ export default function Storefront() {
                     }}
                     onAddToCart={(selection) => addToCart(product, selection)}
                     onOpenDetails={(selection) => {
-                      const variants = product.variants ?? [];
-                      const isIphoneCategory = isIphoneLikeSlug(product.categorySlug);
-                      const isMacbookCategory = isMacbookLikeSlug(product.categorySlug);
+                      const variants = effectiveVariantsForProduct(product, product.categorySlug);
+                      const slug = product.categorySlug;
+                      const isIphoneCategory = isIphoneLikeSlug(slug);
+                      const isMacbookCategory = isMacbookLikeSlug(slug);
+                      const isIpadCategory = isIpadLikeSlug(slug);
+                      const isWatchCategory = isWatchLikeSlug(slug);
                       if (variants.length) {
                         setSelectedProductColor(selection.color ?? variants[0]?.color ?? "");
                         if (isIphoneCategory) {
@@ -2062,8 +2229,18 @@ export default function Storefront() {
                           setSelectedProductScreen(selection.screen ?? variants[0]?.screen ?? "");
                           setSelectedProductRam(selection.ram ?? variants[0]?.ram ?? "");
                           setSelectedProductSim("");
-                        } else {
+                        } else if (isIpadCategory) {
+                          setSelectedProductMemory(selection.memory ?? variants[0]?.memory ?? "");
+                          setSelectedProductSim(selection.simType ?? variants[0]?.simType ?? "");
+                          setSelectedProductScreen(selection.screen ?? variants[0]?.screen ?? "");
+                          setSelectedProductRam("");
+                        } else if (isWatchCategory) {
                           setSelectedProductMemory("");
+                          setSelectedProductSim(selection.simType ?? variants[0]?.simType ?? "");
+                          setSelectedProductScreen(selection.screen ?? variants[0]?.screen ?? "");
+                          setSelectedProductRam("");
+                        } else {
+                          setSelectedProductMemory(selection.memory ?? variants[0]?.memory ?? "");
                           setSelectedProductSim("");
                           setSelectedProductScreen("");
                           setSelectedProductRam("");
@@ -2095,7 +2272,7 @@ export default function Storefront() {
       <footer className="mt-14 bg-[#111112] text-zinc-300">
         <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-10 text-center min-[640px]:max-w-xl min-[960px]:max-w-5xl min-[960px]:py-14">
           <Link href="/" className="mb-8 inline-flex items-center text-2xl font-bold tracking-tight text-white min-[640px]:text-3xl">
-            <StoreLogoMark />
+            <BrandMark />
           </Link>
 
           <div className="w-full max-w-lg">
@@ -2144,23 +2321,40 @@ export default function Storefront() {
           </div>
 
           <div className="mt-10 flex w-full max-w-lg flex-wrap items-center justify-center gap-4">
-            <a href="tel:+79236969377" className="inline-flex h-12 items-center gap-2 rounded-xl border border-white/10 px-4 text-sm font-semibold text-zinc-100">
+            <a
+              href={IS_SOTIK_BRAND ? SOTIK_PHONE_HREF : "tel:+79236969377"}
+              className="inline-flex h-12 items-center gap-2 rounded-xl border border-white/10 px-4 text-sm font-semibold text-zinc-100"
+            >
               <span aria-hidden="true">☎</span>
-              +7 (923) 696-93-77
+              {IS_SOTIK_BRAND ? SOTIK_PHONE_DISPLAY : "+7 (923) 696-93-77"}
             </a>
-            <a href="https://vk.com" target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="VK">
+            <a href={VK_HREF} target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="VK">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icon/vk.svg" alt="" className="h-5 w-5" />
             </a>
-            <a href="https://t.me" target="_blank" rel="noopener noreferrer" className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10" aria-label="Telegram">
+            <a
+              href={IS_SOTIK_BRAND ? SOTIK_TELEGRAM_HREF : "https://t.me"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/10"
+              aria-label="Telegram"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icon/telegram.svg" alt="" className="h-5 w-5" />
             </a>
           </div>
 
-          <div className="mt-4 flex w-full max-w-lg items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-sm text-zinc-300">
-            <span aria-hidden="true">⌖</span>
-            Омск, ул. Гагарина 3
+          <div className="mt-4 flex w-full max-w-lg flex-col items-center justify-center gap-1 rounded-xl border border-white/10 px-4 py-3 text-sm text-zinc-300">
+            <span className="inline-flex items-center gap-2">
+              <span aria-hidden="true">⌖</span>
+              {IS_SOTIK_BRAND ? SOTIK_HEADER_ADDRESS : "Омск, ул. Гагарина 3"}
+            </span>
+            {IS_SOTIK_BRAND ? (
+              <>
+                <span className="text-zinc-400">{SOTIK_HOURS_DETAIL}</span>
+                <span className="text-zinc-400">{SOTIK_BUYBACK_NOTE}</span>
+              </>
+            ) : null}
           </div>
 
           <p className="mt-10 text-sm text-zinc-500">© 2026 Все права защищены.</p>
@@ -2197,7 +2391,7 @@ export default function Storefront() {
                 className="text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <StoreLogoMark />
+                <BrandMark />
               </Link>
               <button
                 type="button"
@@ -2295,7 +2489,7 @@ export default function Storefront() {
             </div>
 
             <a
-              href="tel:+79236969377"
+              href={IS_SOTIK_BRAND ? SOTIK_PHONE_HREF : "tel:+79236969377"}
               className="mt-6 flex items-center gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 transition hover:border-zinc-300 hover:bg-white"
             >
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-red-50 text-red-500 ring-1 ring-inset ring-red-200">
@@ -2304,31 +2498,48 @@ export default function Storefront() {
                 </svg>
               </span>
               <span className="flex flex-col leading-tight">
-                <span className="text-lg font-semibold text-zinc-950 min-[640px]:text-xl">+7 (923) 696-93-77</span>
+                <span className="text-lg font-semibold text-zinc-950 min-[640px]:text-xl">
+                  {IS_SOTIK_BRAND ? SOTIK_PHONE_DISPLAY : "+7 (923) 696-93-77"}
+                </span>
                 <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">Позвонить</span>
               </span>
             </a>
 
             <div className="mt-4 flex flex-col gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm">
-              <span className="inline-flex items-center gap-2 text-red-600">
-                <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
-                  <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
-                </svg>
-                Омск, ул. Гагарина 3
-              </span>
-              <span className="inline-flex items-center gap-2 text-emerald-700">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                </span>
-                Сейчас открыто · 11:00–20:00
-              </span>
-              <span className="text-zinc-500">+7 (923) 686-93-77</span>
+              {IS_SOTIK_BRAND ? (
+                <>
+                  <span className="inline-flex items-center gap-2 text-red-600">
+                    <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
+                      <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+                    </svg>
+                    {SOTIK_HEADER_ADDRESS}
+                  </span>
+                  <span className="text-zinc-700">{SOTIK_HOURS_DETAIL}</span>
+                  <span className="text-zinc-700">{SOTIK_BUYBACK_NOTE}</span>
+                </>
+              ) : (
+                <>
+                  <span className="inline-flex items-center gap-2 text-red-600">
+                    <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
+                      <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
+                    </svg>
+                    Омск, ул. Гагарина 3
+                  </span>
+                  <span className="inline-flex items-center gap-2 text-emerald-700">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                    </span>
+                    Сейчас открыто · 11:00–20:00
+                  </span>
+                  <span className="text-zinc-500">+7 (923) 686-93-77</span>
+                </>
+              )}
             </div>
 
             <div className="mt-6 flex gap-3 min-[640px]:mt-8 min-[640px]:gap-4">
               <a
-                href="https://vk.com"
+                href={VK_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white min-[640px]:h-14 min-[640px]:w-14"
@@ -2337,7 +2548,7 @@ export default function Storefront() {
                 <img src="/icon/vk.svg" alt="VK" className="h-5.5 w-5.5 min-[640px]:h-6 min-[640px]:w-6" />
               </a>
               <a
-                href="https://t.me"
+                href={IS_SOTIK_BRAND ? SOTIK_TELEGRAM_HREF : "https://t.me"}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-zinc-200 bg-zinc-50 transition hover:border-zinc-300 hover:bg-white min-[640px]:h-14 min-[640px]:w-14"
