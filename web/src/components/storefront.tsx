@@ -294,7 +294,7 @@ function CategoryCard({ category, onPodZakaz }: { category: Category; onPodZakaz
 
   if (category.slug === "custom" && onPodZakaz) {
     return (
-      <button type="button" onClick={onPodZakaz} className={`${cardClass} block w-full cursor-pointer text-left`}>
+      <button type="button" onClick={onPodZakaz} className={`${cardClass} block cursor-pointer text-left`}>
         {inner}
       </button>
     );
