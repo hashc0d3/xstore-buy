@@ -82,6 +82,12 @@ export async function updateCategory(
   });
 }
 
+export async function deleteCategory(id: string): Promise<void> {
+  await request(`/store/categories/${id}`, {
+    method: "DELETE"
+  });
+}
+
 export async function createLead(input: {
   type: "tradein" | "assessment" | "order";
   phone: string;
