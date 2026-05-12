@@ -227,6 +227,10 @@ function CategoryCard({ category, onPodZakaz }: { category: Category; onPodZakaz
     "apple-watch": ["/applewatch.png", "/watch.png", "/watch.jpg", "/watch.webp"],
     ipad: ["/ipad.png", "/ipad.jpg", "/ipad.webp"],
     airpods: ["/airpods.png", "/airpods.jpg", "/airpods.webp"],
+    dyson: [
+      "https://www.glushakov-official.ru/img/dyson/styler_hs08/vinca_blue_topaz/front.webp"
+    ],
+    consoles: ["https://www.glushakov-official.ru/img/consoles/ps5/1.jpg"],
     custom: ["/zakaz.png", "/custom.png", "/custom.jpg", "/custom.webp"]
   };
   const slugFallback = imageCandidatesBySlug[category.slug] ?? [];
@@ -245,6 +249,8 @@ function CategoryCard({ category, onPodZakaz }: { category: Category; onPodZakaz
     "apple-watch": "right-[-4%] top-1/2 h-[86%] -translate-y-1/2",
     ipad: "right-[-4%] top-1/2 h-[96%] -translate-y-1/2",
     airpods: "right-[-4%] top-1/2 h-[86%] -translate-y-1/2",
+    dyson: "right-[-4%] top-1/2 h-[88%] -translate-y-1/2",
+    consoles: "right-[-4%] top-1/2 h-[88%] -translate-y-1/2",
     custom: "right-[-4%] top-1/2 h-[94%] -translate-y-1/2"
   };
   const imagePlacement = imagePlacementBySlug[category.slug] ?? "right-[-4%] top-1/2 h-[90%] -translate-y-1/2";
