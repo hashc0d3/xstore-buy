@@ -37,31 +37,61 @@ function isWatchLikeSlug(slug: string | undefined): boolean {
   return Boolean(s && WATCH_LIKE_SLUGS.has(s));
 }
 
-/** Старый формат админки: только memoryPrices без массива variants — собираем варианты для карточек/модалки. */
-function effectiveVariantsForProduct(product: Product, categorySlug: string | undefined): ProductVariant[] {
-  const raw = product.variants ?? [];
-  if (raw.length > 0) return raw;
-  const slug = normalizeCategorySlug(categorySlug);
-  if (!slug) return [];
-  const fromMemoryPrices =
-    isIphoneLikeSlug(slug) || isMacbookLikeSlug(slug) || isIpadLikeSlug(slug);
-  if (!fromMemoryPrices) return [];
+function memoryPriceEntries(product: Product): Array<[string, number]> {
   const mp = product.memoryPrices;
   if (!mp || typeof mp !== "object") return [];
   const entries = Object.entries(mp).filter(([k, v]) => {
     const n = Number(v);
     return Boolean(k?.trim()) && Number.isFinite(n);
-  });
-  if (!entries.length) return [];
+  }) as Array<[string, number]>;
   entries.sort((a, b) => Number(a[1]) - Number(b[1]));
-  const color = product.color?.trim();
-  const imageUrl = product.imageUrl;
-  return entries.map(([memory, price]) => ({
-    ...(color ? { color } : {}),
-    memory,
-    price: Number(price),
-    imageUrl
-  }));
+  return entries;
+}
+
+/**
+ * Старый формат БД: пустой variants → только memoryPrices.
+ * Частый прод-кейс: variants есть, но в каждой строке только color/price — без memory/screen;
+ * тогда без раскладки по memoryPrices селекторы «Накопитель» и т.д. не появляются.
+ */
+function effectiveVariantsForProduct(product: Product, categorySlug: string | undefined): ProductVariant[] {
+  const raw = product.variants ?? [];
+  const slug = normalizeCategorySlug(categorySlug);
+  const usesMemoryAxis =
+    Boolean(slug) &&
+    (isIphoneLikeSlug(slug) || isMacbookLikeSlug(slug) || isIpadLikeSlug(slug));
+
+  const entries = memoryPriceEntries(product);
+
+  if (!raw.length) {
+    if (!usesMemoryAxis || !entries.length) return [];
+    const color = product.color?.trim();
+    const imageUrl = product.imageUrl;
+    return entries.map(([memory, price]) => ({
+      ...(color ? { color } : {}),
+      memory,
+      price: Number(price),
+      imageUrl
+    }));
+  }
+
+  if (usesMemoryAxis && entries.length > 0) {
+    const allLackMemory = raw.every((v) => !String(v.memory ?? "").trim());
+    if (allLackMemory) {
+      const expanded: ProductVariant[] = [];
+      for (const row of raw) {
+        for (const [memory, price] of entries) {
+          expanded.push({
+            ...row,
+            memory,
+            price: Number(price)
+          });
+        }
+      }
+      return expanded;
+    }
+  }
+
+  return raw;
 }
 
 /** Сборка SOTIK77: `NEXT_PUBLIC_STORE_BRAND=sotik77`; иначе логотип X:STORE. */
