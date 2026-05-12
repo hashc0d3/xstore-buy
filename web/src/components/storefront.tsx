@@ -916,6 +916,8 @@ export default function Storefront() {
     color?: string;
     memory?: string;
     simType?: string;
+    screen?: string;
+    ram?: string;
     customerName?: string;
     telegram?: string;
   }) => {

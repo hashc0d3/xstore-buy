@@ -33,7 +33,7 @@ services:
       HOSTNAME: "0.0.0.0"
       API_INTERNAL_URL: "${API_INTERNAL_URL:-http://api:4000}"
     ports:
-      - "${WEB_PUBLISH:-127.0.0.1:8083:3000}"
+      - "127.0.0.1:${WEB_HOST_PORT:-8083}:3000"
     depends_on:
       - api
     restart: unless-stopped
