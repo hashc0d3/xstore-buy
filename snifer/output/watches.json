@@ -1,0 +1,582 @@
+[
+  {
+    "model": "Apple Watch SE 2024",
+    "slug": "apple_watch_se2024",
+    "variants": [
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Midnight 40mm M/L",
+        "color": "Midnight",
+        "screen": "40 mm",
+        "band": "M/L",
+        "price_rub": 19000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202440midnightml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/midnight/front.webp"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Midnight 40mm S/M",
+        "color": "Midnight",
+        "screen": "40 mm",
+        "band": "S/M",
+        "price_rub": 19000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202440midnightsm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/midnight/front.webp"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Silver 40mm M/L",
+        "color": "Silver",
+        "screen": "40 mm",
+        "band": "M/L",
+        "price_rub": 19000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202440silverml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Silver 40mm S/M",
+        "color": "Silver",
+        "screen": "40 mm",
+        "band": "S/M",
+        "price_rub": 19000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202440silversm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Starlight 40mm M/L",
+        "color": "Starlight",
+        "screen": "40 mm",
+        "band": "M/L",
+        "price_rub": 19000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202440starlightml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/starlight/front.webp"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Starlight 40mm S/M",
+        "color": "Starlight",
+        "screen": "40 mm",
+        "band": "S/M",
+        "price_rub": 19000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202440starlightsm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/starlight/front.webp"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Midnight 44mm M/L",
+        "color": "Midnight",
+        "screen": "44 mm",
+        "band": "M/L",
+        "price_rub": 22500,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202444midnightml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/midnight/front.webp"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Midnight 44mm S/M",
+        "color": "Midnight",
+        "screen": "44 mm",
+        "band": "S/M",
+        "price_rub": 22500,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202444midnightsm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/midnight/front.webp"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Silver 44mm M/L",
+        "color": "Silver",
+        "screen": "44 mm",
+        "band": "M/L",
+        "price_rub": 22500,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202444silverml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Silver 44mm S/M",
+        "color": "Silver",
+        "screen": "44 mm",
+        "band": "S/M",
+        "price_rub": 22500,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202444silversm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Starlight 44mm M/L",
+        "color": "Starlight",
+        "screen": "44 mm",
+        "band": "M/L",
+        "price_rub": 22500,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202444starlightml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/starlight/front.webp"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 2024",
+        "title": "Apple Watch SE 2024 Starlight 44mm S/M",
+        "color": "Starlight",
+        "screen": "44 mm",
+        "band": "S/M",
+        "price_rub": 22500,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024/awse202444starlightsm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024/starlight/front.webp"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "Apple Watch SE 3",
+    "slug": "apple_watch_se3",
+    "variants": [
+      {
+        "model": "Apple Watch SE 3",
+        "title": "Apple Watch SE 3 Midnight 40mm M/L",
+        "color": "Midnight",
+        "screen": "40 mm",
+        "band": "M/L",
+        "price_rub": 29990,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se3/se3_40_midnight_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se3/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 3",
+        "title": "Apple Watch SE 3 Midnight 40mm S/M",
+        "color": "Midnight",
+        "screen": "40 mm",
+        "band": "S/M",
+        "price_rub": 23490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se3/se3_40_midnight_sm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se3/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 3",
+        "title": "Apple Watch SE 3 Starlight 40mm M/L",
+        "color": "Starlight",
+        "screen": "40 mm",
+        "band": "M/L",
+        "price_rub": 29990,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se3/se3_40_starlight_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se3/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 3",
+        "title": "Apple Watch SE 3 Starlight 40mm S/M",
+        "color": "Starlight",
+        "screen": "40 mm",
+        "band": "S/M",
+        "price_rub": 23990,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se3/se3_40_starlight_sm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se3/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 3",
+        "title": "Apple Watch SE 3 Midnight 44mm M/L",
+        "color": "Midnight",
+        "screen": "44 mm",
+        "band": "M/L",
+        "price_rub": 24490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se3/se3_44_midnight_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se3/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 3",
+        "title": "Apple Watch SE 3 Midnight 44mm S/M",
+        "color": "Midnight",
+        "screen": "44 mm",
+        "band": "S/M",
+        "price_rub": 50000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se3/se3_44_midnight_sm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se3/midnight/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 3",
+        "title": "Apple Watch SE 3 Starlight 44mm M/L",
+        "color": "Starlight",
+        "screen": "44 mm",
+        "band": "M/L",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se3/se3_44_starlight_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se3/starlight/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch SE 3",
+        "title": "Apple Watch SE 3 Starlight 44mm S/M",
+        "color": "Starlight",
+        "screen": "44 mm",
+        "band": "S/M",
+        "price_rub": 50000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se3/se3_44_starlight_sm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se3/starlight/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "Apple Watch SE with SL",
+    "slug": "apple_watch_se2024_SL",
+    "variants": [
+      {
+        "model": "Apple Watch SE with SL",
+        "title": "Apple Watch SE with SL",
+        "color": "Midnight",
+        "screen": "",
+        "band": "",
+        "price_rub": 18000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_se2024_SL",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/se2024_sl/midnight/front.webp",
+          "https://www.glushakov-official.ru/img/watch/se2024_sl/silver/front.jpg",
+          "https://www.glushakov-official.ru/img/watch/se2024_sl/starlight/front.webp"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "Apple Watch Series 10",
+    "slug": "apple_watch_10",
+    "variants": [
+      {
+        "model": "Apple Watch Series 10",
+        "title": "Apple Watch Series 10 Black 42mm",
+        "color": "Black",
+        "screen": "42 mm",
+        "band": "",
+        "price_rub": 34990,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_10/aw10_42mm_black",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s10/42/black/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 10",
+        "title": "Apple Watch Series 10 Black 46mm",
+        "color": "Black",
+        "screen": "46 mm",
+        "band": "",
+        "price_rub": 35490,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_10/aw10_46mm_black",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s10/46/black/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "Apple Watch Series 11",
+    "slug": "apple_watch11",
+    "variants": [
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Rose Gold 42mm M/L",
+        "color": "Rose Gold",
+        "screen": "42 mm",
+        "band": "M/L",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_42_rosegold_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/rosegold/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Rose Gold 42mm S/M",
+        "color": "Rose Gold",
+        "screen": "42 mm",
+        "band": "S/M",
+        "price_rub": 34990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_42_rosegold_sm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/rosegold/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Silver 42mm M/L",
+        "color": "Silver",
+        "screen": "42 mm",
+        "band": "M/L",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_42_silver_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Silver 42mm S/M",
+        "color": "Silver",
+        "screen": "42 mm",
+        "band": "S/M",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_42_silver_sm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Space Gray 42mm M/L",
+        "color": "Space Gray",
+        "screen": "42 mm",
+        "band": "M/L",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_42_spacegray_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/spacegray/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Space Gray 42mm S/M",
+        "color": "Space Gray",
+        "screen": "42 mm",
+        "band": "S/M",
+        "price_rub": 34990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_42_spacegray_sm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/spacegray/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Rose Gold 46mm M/L",
+        "color": "Rose Gold",
+        "screen": "46 mm",
+        "band": "M/L",
+        "price_rub": 36990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_46_rosegold_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/rosegold/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Rose Gold 46mm S/M",
+        "color": "Rose Gold",
+        "screen": "46 mm",
+        "band": "S/M",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_46_rosegold_sm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/rosegold/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Silver 46mm M/L",
+        "color": "Silver",
+        "screen": "46 mm",
+        "band": "M/L",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_46_silver_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Silver 46mm S/M",
+        "color": "Silver",
+        "screen": "46 mm",
+        "band": "S/M",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_46_silver_sm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/silver/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Space Gray 46mm M/L",
+        "color": "Space Gray",
+        "screen": "46 mm",
+        "band": "M/L",
+        "price_rub": 36990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_46_spacegray_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/spacegray/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Series 11",
+        "title": "Apple Watch Series 11 Space Gray 46mm S/M",
+        "color": "Space Gray",
+        "screen": "46 mm",
+        "band": "S/M",
+        "price_rub": 0,
+        "availability": "coming_soon",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch11/watch11_46_spacegray_sm",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/s11/spacegray/front.jpg"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "Apple Watch Ultra 2",
+    "slug": "apple_watch_ultra",
+    "variants": [
+      {
+        "model": "Apple Watch Ultra 2",
+        "title": "Apple Watch Ultra Black",
+        "color": "Black",
+        "screen": "",
+        "band": "",
+        "price_rub": 55990,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_ultra/awultra2black",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/ultra2/black/front.jpg",
+          "https://www.glushakov-official.ru/img/watch/ultra2/black/1.jpg",
+          "https://www.glushakov-official.ru/img/watch/ultra2/black/2.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Ultra 2",
+        "title": "Apple Watch Ultra Natural",
+        "color": "Natural",
+        "screen": "",
+        "band": "",
+        "price_rub": 68000,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_ultra/awultra2natural",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/ultra2/natural/front.png",
+          "https://www.glushakov-official.ru/img/watch/ultra2/natural/1.png"
+        ]
+      }
+    ]
+  },
+  {
+    "model": "Apple Watch Ultra 3",
+    "slug": "apple_watch_ultra3",
+    "variants": [
+      {
+        "model": "Apple Watch Ultra 3",
+        "title": "Apple Watch Ultra 3 Black 49mm M",
+        "color": "Black",
+        "screen": "49 mm",
+        "band": "M/L",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_ultra3/ultra3_49_black_m",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/ultra3/black/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Ultra 3",
+        "title": "Apple Watch Ultra 3 Black 49mm M/L",
+        "color": "Black",
+        "screen": "49 mm",
+        "band": "M/L",
+        "price_rub": 66990,
+        "availability": "in_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_ultra3/ultra3_49_black_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/ultra3/black/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Ultra 3",
+        "title": "Apple Watch Ultra 3 Natural 49mm M",
+        "color": "Natural",
+        "screen": "49 mm",
+        "band": "M/L",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_ultra3/ultra3_49_natural_m",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/ultra3/natural/front.jpg"
+        ]
+      },
+      {
+        "model": "Apple Watch Ultra 3",
+        "title": "Apple Watch Ultra 3 Natural 49mm M/L",
+        "color": "Natural",
+        "screen": "49 mm",
+        "band": "M/L",
+        "price_rub": 0,
+        "availability": "out_of_stock",
+        "url": "https://www.glushakov-official.ru/catalog/watch/apple_watch_ultra3/ultra3_49_natural_ml",
+        "images": [
+          "https://www.glushakov-official.ru/img/watch/ultra3/natural/front.jpg"
+        ]
+      }
+    ]
+  }
+]

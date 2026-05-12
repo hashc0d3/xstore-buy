@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { defaultStoreData } from "@/lib/store";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://xstore55.ru";
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://xstore55.ru").replace(/\/$/, "");
   const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -41,6 +41,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.3
+    },
+    {
+      url: `${baseUrl}/assessment`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.8
+    },
+    {
+      url: `${baseUrl}/cart`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.5
     }
   ];
 

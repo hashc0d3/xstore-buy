@@ -4,15 +4,109 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createLead, fetchStoreData } from "@/lib/api";
-import { Category, Product, StoreData, defaultStoreData, toRub } from "@/lib/store";
+import { Category, Product, ProductVariant, StoreData, defaultStoreData, toRub } from "@/lib/store";
 
 const IPHONE_LIKE_SLUGS = new Set(["iphone", "iphone-used"]);
+const MACBOOK_LIKE_SLUGS = new Set(["macbook"]);
+const IPAD_LIKE_SLUGS = new Set(["ipad"]);
+const WATCH_LIKE_SLUGS = new Set(["apple-watch"]);
+
+function normalizeCategorySlug(slug: string | undefined): string | undefined {
+  if (!slug) return undefined;
+  const t = slug.trim().toLowerCase();
+  return t || undefined;
+}
 
 function isIphoneLikeSlug(slug: string | undefined): boolean {
-  return Boolean(slug && IPHONE_LIKE_SLUGS.has(slug));
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && IPHONE_LIKE_SLUGS.has(s));
+}
+
+function isMacbookLikeSlug(slug: string | undefined): boolean {
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && MACBOOK_LIKE_SLUGS.has(s));
+}
+
+function isIpadLikeSlug(slug: string | undefined): boolean {
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && IPAD_LIKE_SLUGS.has(s));
+}
+
+function isWatchLikeSlug(slug: string | undefined): boolean {
+  const s = normalizeCategorySlug(slug);
+  return Boolean(s && WATCH_LIKE_SLUGS.has(s));
+}
+
+/** Старый формат админки: только memoryPrices без массива variants — собираем варианты для карточек/модалки. */
+function effectiveVariantsForProduct(product: Product, categorySlug: string | undefined): ProductVariant[] {
+  const raw = product.variants ?? [];
+  if (raw.length > 0) return raw;
+  const slug = normalizeCategorySlug(categorySlug);
+  if (!slug) return [];
+  const fromMemoryPrices =
+    isIphoneLikeSlug(slug) || isMacbookLikeSlug(slug) || isIpadLikeSlug(slug);
+  if (!fromMemoryPrices) return [];
+  const mp = product.memoryPrices;
+  if (!mp || typeof mp !== "object") return [];
+  const entries = Object.entries(mp).filter(([k, v]) => {
+    const n = Number(v);
+    return Boolean(k?.trim()) && Number.isFinite(n);
+  });
+  if (!entries.length) return [];
+  entries.sort((a, b) => Number(a[1]) - Number(b[1]));
+  const color = product.color?.trim();
+  const imageUrl = product.imageUrl;
+  return entries.map(([memory, price]) => ({
+    ...(color ? { color } : {}),
+    memory,
+    price: Number(price),
+    imageUrl
+  }));
+}
+
+/** Сборка SOTIK77: `NEXT_PUBLIC_STORE_BRAND=sotik77`; иначе логотип X:STORE. */
+const IS_SOTIK_BRAND = process.env.NEXT_PUBLIC_STORE_BRAND === "sotik77";
+
+function StoreLogoMark() {
+  if (IS_SOTIK_BRAND) {
+    return (
+      <>
+        SOTIK<span className="text-red-500">77</span>
+      </>
+    );
+  }
+  return (
+    <>
+      <span className="text-red-500">X</span> : STORE
+    </>
+  );
+}
+
+const SLIDER_PHOTO_ALT_FALLBACK = IS_SOTIK_BRAND ? "Фото SOTIK77" : "Фото X:STORE";
+
+function availabilityBadgeText(availability?: string, price?: number): string | null {
+  const a = (availability || "").toLowerCase();
+  if (a === "coming_soon") return "Скоро в продаже";
+  if (a === "out_of_stock") return "Нет в наличии";
+  if (a === "unknown" && price !== undefined && price <= 0) return "Скоро в продаже";
+  return null;
+}
+
+function variantCanAddToCart(variant: { availability?: string; price: number } | null | undefined): boolean {
+  if (!variant) return false;
+  const a = (variant.availability || "").toLowerCase();
+  if (a === "coming_soon" || a === "out_of_stock") return false;
+  return variant.price > 0;
 }
 
 type ModalType = "tradein" | "reviews" | "order" | "product" | "preorder" | null;
+type VariantSelection = {
+  color?: string;
+  memory?: string;
+  simType?: string;
+  screen?: string;
+  ram?: string;
+};
 type CartItem = {
   key: string;
   productId: string;
@@ -20,6 +114,8 @@ type CartItem = {
   color?: string;
   memory?: string;
   simType?: string;
+  screen?: string;
+  ram?: string;
   price: number;
   imageUrl: string;
   quantity: number;
@@ -176,12 +272,23 @@ function ProductCard({
 }: {
   product: Product;
   category?: Category;
-  onOrder: (selection: { color?: string; memory?: string; simType?: string }) => void;
-  onAddToCart: (selection: { color?: string; memory?: string; simType?: string; price: number; imageUrl: string }) => void;
-  onOpenDetails: (selection: { color?: string; memory?: string; simType?: string }) => void;
+  onOrder: (selection: VariantSelection) => void;
+  onAddToCart: (
+    selection: VariantSelection & { price: number; imageUrl: string }
+  ) => void;
+  onOpenDetails: (selection: VariantSelection) => void;
 }) {
-  const isIphoneCategory = isIphoneLikeSlug(category?.slug);
-  const variants = useMemo(() => product.variants ?? [], [product.variants]);
+  const categorySlug = category?.slug ?? product.categorySlug;
+  const isIphoneCategory = isIphoneLikeSlug(categorySlug);
+  const isMacbookCategory = isMacbookLikeSlug(categorySlug);
+  const isIpadCategory = isIpadLikeSlug(categorySlug);
+  const isWatchCategory = isWatchLikeSlug(categorySlug);
+  const usesMemory = isIphoneCategory || isMacbookCategory || isIpadCategory;
+  const usesScreen = isMacbookCategory || isIpadCategory || isWatchCategory;
+  const usesRam = isMacbookCategory;
+  const showSimSelector = isIphoneCategory || isIpadCategory || isWatchCategory;
+  const simLabel = isIphoneCategory ? "SIM" : isIpadCategory ? "Связь" : isWatchCategory ? "Ремешок" : "SIM";
+  const variants = useMemo(() => effectiveVariantsForProduct(product, categorySlug), [product, categorySlug]);
   const hasVariants = variants.length > 0;
   const colorOptions = useMemo(
     () =>
@@ -200,52 +307,88 @@ function ProductCard({
   const colorScopedVariants = hasVariants
     ? variants.filter((item) => !selectedColor || item.color === selectedColor)
     : [];
-  const allMemoryOptions = hasVariants && isIphoneCategory
+  const allMemoryOptions = hasVariants && usesMemory
     ? Array.from(new Set(colorScopedVariants.map((item) => item.memory).filter((item): item is string => Boolean(item))))
     : [];
-  const allSimOptions = hasVariants && isIphoneCategory
+  const allSimOptions = hasVariants && showSimSelector
     ? Array.from(new Set(colorScopedVariants.map((item) => item.simType).filter((item): item is string => Boolean(item))))
     : [];
+  const allScreenOptions = hasVariants && usesScreen
+    ? Array.from(new Set(colorScopedVariants.map((item) => item.screen).filter((item): item is string => Boolean(item))))
+    : [];
+  const allRamOptions = hasVariants && usesRam
+    ? Array.from(new Set(colorScopedVariants.map((item) => item.ram).filter((item): item is string => Boolean(item))))
+    : [];
   const [selectedMemory, setSelectedMemory] = useState<string>(() => {
-    if (hasVariants && isIphoneCategory) return allMemoryOptions[0] ?? "";
+    if (hasVariants && usesMemory) return allMemoryOptions[0] ?? "";
     return "";
   });
   const [selectedSim, setSelectedSim] = useState<string>(() => allSimOptions[0] ?? "");
-  const memoryScopedVariants = hasVariants && isIphoneCategory
-    ? colorScopedVariants.filter((item) => !selectedSim || item.simType === selectedSim)
-    : colorScopedVariants;
-  const simScopedVariants = hasVariants && isIphoneCategory
-    ? colorScopedVariants.filter((item) => !selectedMemory || item.memory === selectedMemory)
-    : colorScopedVariants;
-  const memoryOptions = hasVariants && isIphoneCategory
-    ? Array.from(new Set(memoryScopedVariants.map((item) => item.memory).filter((item): item is string => Boolean(item))))
+  const [selectedScreen, setSelectedScreen] = useState<string>(() => allScreenOptions[0] ?? "");
+  const [selectedRam, setSelectedRam] = useState<string>(() => allRamOptions[0] ?? "");
+  const matches = (
+    item: typeof variants[number],
+    excludeKey: keyof VariantSelection
+  ) =>
+    (!selectedColor || item.color === selectedColor) &&
+    (excludeKey === "memory" || !usesMemory || !selectedMemory || item.memory === selectedMemory) &&
+    (excludeKey === "simType" || !showSimSelector || !selectedSim || item.simType === selectedSim) &&
+    (excludeKey === "screen" || !usesScreen || !selectedScreen || item.screen === selectedScreen) &&
+    (excludeKey === "ram" || !usesRam || !selectedRam || item.ram === selectedRam);
+
+  const memoryOptions = hasVariants && usesMemory
+    ? Array.from(new Set(variants.filter((item) => matches(item, "memory")).map((item) => item.memory).filter((item): item is string => Boolean(item))))
     : [];
-  const simOptions = hasVariants && isIphoneCategory
-    ? Array.from(new Set(simScopedVariants.map((item) => item.simType).filter((item): item is string => Boolean(item))))
+  const simOptions = hasVariants && showSimSelector
+    ? Array.from(new Set(variants.filter((item) => matches(item, "simType")).map((item) => item.simType).filter((item): item is string => Boolean(item))))
+    : [];
+  const screenOptions = hasVariants && usesScreen
+    ? Array.from(new Set(variants.filter((item) => matches(item, "screen")).map((item) => item.screen).filter((item): item is string => Boolean(item))))
+    : [];
+  const ramOptions = hasVariants && usesRam
+    ? Array.from(new Set(variants.filter((item) => matches(item, "ram")).map((item) => item.ram).filter((item): item is string => Boolean(item))))
     : [];
 
   const activeVariant = useMemo(() => {
     if (!hasVariants) return null;
-    if (!isIphoneCategory) {
+    if (!isIphoneCategory && !isMacbookCategory && !isIpadCategory && !isWatchCategory) {
       return (
         variants.find((item) => (!selectedColor || item.color === selectedColor)) ??
         variants[0]
       );
     }
+    const matchesAll = (item: typeof variants[number]) =>
+      (!selectedColor || item.color === selectedColor) &&
+      (!usesMemory || !selectedMemory || item.memory === selectedMemory) &&
+      (!showSimSelector || !selectedSim || item.simType === selectedSim) &&
+      (!usesScreen || !selectedScreen || item.screen === selectedScreen) &&
+      (!usesRam || !selectedRam || item.ram === selectedRam);
     return (
-      variants.find(
-        (item) =>
-          (!selectedColor || item.color === selectedColor) &&
-          (!selectedMemory || item.memory === selectedMemory) &&
-          (!selectedSim || item.simType === selectedSim)
-      ) ??
-      variants.find((item) => (!selectedColor || item.color === selectedColor) && (!selectedMemory || item.memory === selectedMemory)) ??
-      variants.find((item) => (!selectedColor || item.color === selectedColor)) ??
+      variants.find(matchesAll) ??
+      variants.find((item) => !selectedColor || item.color === selectedColor) ??
       variants[0]
     );
-  }, [hasVariants, isIphoneCategory, selectedColor, selectedMemory, selectedSim, variants]);
+  }, [
+    hasVariants,
+    isIphoneCategory,
+    isMacbookCategory,
+    isIpadCategory,
+    isWatchCategory,
+    selectedColor,
+    selectedMemory,
+    selectedRam,
+    selectedScreen,
+    selectedSim,
+    showSimSelector,
+    usesMemory,
+    usesRam,
+    usesScreen,
+    variants
+  ]);
 
   const shownPrice = activeVariant?.price ?? product.basePrice;
+  const stockBadge = availabilityBadgeText(activeVariant?.availability, activeVariant?.price);
+  const canCart = variantCanAddToCart(activeVariant);
   const currentImage = activeVariant?.imageUrl ?? product.imageUrl;
 
   const colorLabel = product.color ?? "";
@@ -270,7 +413,9 @@ function ProductCard({
         onOpenDetails({
           color: selectedColor || undefined,
           memory: selectedMemory || undefined,
-          simType: selectedSim || undefined
+          simType: selectedSim || undefined,
+          screen: selectedScreen || undefined,
+          ram: selectedRam || undefined
         })
       }
       onKeyDown={(e) => {
@@ -279,7 +424,9 @@ function ProductCard({
           onOpenDetails({
             color: selectedColor || undefined,
             memory: selectedMemory || undefined,
-            simType: selectedSim || undefined
+            simType: selectedSim || undefined,
+            screen: selectedScreen || undefined,
+            ram: selectedRam || undefined
           });
         }
       }}
@@ -313,18 +460,22 @@ function ProductCard({
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedColor(color);
-                    if (hasVariants && isIphoneCategory) {
+                    if (hasVariants && (isIphoneCategory || isMacbookCategory || isIpadCategory || isWatchCategory)) {
                       const scoped = variants.filter((item) => item.color === color);
                       const fallback =
                         scoped.find(
                           (item) =>
-                            (!selectedMemory || item.memory === selectedMemory) &&
-                            (!selectedSim || item.simType === selectedSim)
+                            (!usesMemory || !selectedMemory || item.memory === selectedMemory) &&
+                            (!showSimSelector || !selectedSim || item.simType === selectedSim) &&
+                            (!usesScreen || !selectedScreen || item.screen === selectedScreen) &&
+                            (!usesRam || !selectedRam || item.ram === selectedRam)
                         ) ??
-                        scoped.find((item) => !selectedMemory || item.memory === selectedMemory) ??
+                        scoped.find((item) => !usesMemory || !selectedMemory || item.memory === selectedMemory) ??
                         scoped[0];
-                      setSelectedMemory(fallback?.memory ?? "");
-                      setSelectedSim(fallback?.simType ?? "");
+                      if (usesMemory) setSelectedMemory(fallback?.memory ?? "");
+                      if (showSimSelector) setSelectedSim(fallback?.simType ?? "");
+                      if (usesScreen) setSelectedScreen(fallback?.screen ?? "");
+                      if (usesRam) setSelectedRam(fallback?.ram ?? "");
                     }
                   }}
                 >
@@ -340,9 +491,44 @@ function ProductCard({
             ) : null}
           </div>
         ) : null}
+        {screenOptions.length > 0 ? (
+          <div className="space-y-1">
+            <p className="text-xs text-zinc-500">{isWatchCategory ? "Размер корпуса" : "Диагональ"}</p>
+            <div className="flex flex-wrap gap-1">
+              {screenOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold transition min-[640px]:px-2 min-[640px]:text-[11px] ${
+                    selectedScreen === option ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedScreen(option);
+                    const scoped = colorScopedVariants.filter((item) => item.screen === option);
+                    const fallback =
+                      scoped.find(
+                        (item) =>
+                          (!usesMemory || !selectedMemory || item.memory === selectedMemory) &&
+                          (!usesRam || !selectedRam || item.ram === selectedRam) &&
+                          (!showSimSelector || !selectedSim || item.simType === selectedSim)
+                      ) ?? scoped[0];
+                    if (fallback) {
+                      if (usesMemory) setSelectedMemory(fallback.memory ?? "");
+                      if (usesRam) setSelectedRam(fallback.ram ?? "");
+                      if (showSimSelector) setSelectedSim(fallback.simType ?? "");
+                    }
+                  }}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
         {memoryOptions.length > 0 ? (
           <div className="space-y-1">
-            <p className="text-xs text-zinc-500">Объем</p>
+            <p className="text-xs text-zinc-500">{isMacbookCategory || isIpadCategory ? "Накопитель" : "Объем"}</p>
             <div className="flex flex-wrap gap-1">
               {memoryOptions.map((option) => (
                 <button
@@ -356,10 +542,52 @@ function ProductCard({
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedMemory(option);
+                    const scoped = colorScopedVariants.filter((item) => item.memory === option);
                     const fallback =
-                      colorScopedVariants.find((item) => item.memory === option && (!selectedSim || item.simType === selectedSim)) ??
-                      colorScopedVariants.find((item) => item.memory === option);
-                    setSelectedSim(fallback?.simType ?? "");
+                      scoped.find(
+                        (item) =>
+                          (!selectedSim || item.simType === selectedSim) &&
+                          (!selectedScreen || item.screen === selectedScreen) &&
+                          (!selectedRam || item.ram === selectedRam)
+                      ) ?? scoped[0];
+                    if (fallback) {
+                      if (showSimSelector) setSelectedSim(fallback.simType ?? "");
+                      if (usesScreen) setSelectedScreen(fallback.screen ?? "");
+                      if (usesRam) setSelectedRam(fallback.ram ?? "");
+                    }
+                  }}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+        {ramOptions.length > 0 ? (
+          <div className="space-y-1">
+            <p className="text-xs text-zinc-500">Оперативная память</p>
+            <div className="flex flex-wrap gap-1">
+              {ramOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold transition min-[640px]:px-2 min-[640px]:text-[11px] ${
+                    selectedRam === option ? "bg-zinc-900 text-white" : "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedRam(option);
+                    const scoped = colorScopedVariants.filter((item) => item.ram === option);
+                    const fallback =
+                      scoped.find(
+                        (item) =>
+                          (!selectedMemory || item.memory === selectedMemory) &&
+                          (!selectedScreen || item.screen === selectedScreen)
+                      ) ?? scoped[0];
+                    if (fallback) {
+                      setSelectedMemory(fallback.memory ?? "");
+                      setSelectedScreen(fallback.screen ?? "");
+                    }
                   }}
                 >
                   {option}
@@ -370,7 +598,7 @@ function ProductCard({
         ) : null}
         {simOptions.length > 0 ? (
           <div className="space-y-1">
-            <p className="text-xs text-zinc-500">SIM</p>
+            <p className="text-xs text-zinc-500">{simLabel}</p>
             <div className="flex flex-wrap gap-1">
               {simOptions.map((option) => (
                 <button
@@ -383,9 +611,16 @@ function ProductCard({
                     e.stopPropagation();
                     setSelectedSim(option);
                     const fallback =
-                      colorScopedVariants.find((item) => item.simType === option && (!selectedMemory || item.memory === selectedMemory)) ??
-                      colorScopedVariants.find((item) => item.simType === option);
-                    setSelectedMemory(fallback?.memory ?? "");
+                      colorScopedVariants.find(
+                        (item) =>
+                          item.simType === option &&
+                          (!usesMemory || !selectedMemory || item.memory === selectedMemory) &&
+                          (!usesScreen || !selectedScreen || item.screen === selectedScreen)
+                      ) ?? colorScopedVariants.find((item) => item.simType === option);
+                    if (fallback) {
+                      if (usesMemory) setSelectedMemory(fallback.memory ?? "");
+                      if (usesScreen) setSelectedScreen(fallback.screen ?? "");
+                    }
                   }}
                 >
                   {option}
@@ -395,7 +630,12 @@ function ProductCard({
           </div>
         ) : null}
         <div className="mt-auto space-y-2">
-          <p className="text-base font-bold text-zinc-900 min-[480px]:text-lg min-[960px]:text-xl">от {toRub(shownPrice)}</p>
+          {stockBadge ? (
+            <p className="text-[11px] font-semibold text-amber-800 min-[640px]:text-xs">{stockBadge}</p>
+          ) : null}
+          <p className="text-base font-bold text-zinc-900 min-[480px]:text-lg min-[960px]:text-xl">
+            {shownPrice > 0 ? `от ${toRub(shownPrice)}` : stockBadge === "Скоро в продаже" ? "Скоро в продаже" : "Цена по запросу"}
+          </p>
           <button
             type="button"
             onClick={(e) => {
@@ -403,7 +643,9 @@ function ProductCard({
               onOrder({
                 color: selectedColor || undefined,
                 memory: selectedMemory || undefined,
-                simType: selectedSim || undefined
+                simType: selectedSim || undefined,
+                screen: selectedScreen || undefined,
+                ram: selectedRam || undefined
               });
             }}
             className="w-full rounded-lg border border-red-100 bg-[#fdecec] py-1.5 text-xs font-semibold text-red-500 transition-all duration-200 hover:-translate-y-0.5 hover:border-zinc-900 hover:bg-zinc-900 hover:text-white hover:shadow-[0_10px_24px_rgba(24,24,27,0.25)] min-[640px]:text-sm"
@@ -412,17 +654,22 @@ function ProductCard({
           </button>
           <button
             type="button"
+            disabled={!canCart}
+            title={!canCart ? "Недоступно для корзины" : undefined}
             onClick={(e) => {
               e.stopPropagation();
+              if (!canCart) return;
               onAddToCart({
                 color: selectedColor || undefined,
                 memory: selectedMemory || undefined,
                 simType: selectedSim || undefined,
+                screen: selectedScreen || undefined,
+                ram: selectedRam || undefined,
                 price: shownPrice,
                 imageUrl: currentImage
               });
             }}
-            className="w-full rounded-lg border border-zinc-200 bg-white py-1.5 text-xs font-semibold text-zinc-800 transition hover:border-zinc-300 hover:bg-zinc-50 min-[640px]:text-sm"
+            className="w-full rounded-lg border border-zinc-200 bg-white py-1.5 text-xs font-semibold text-zinc-800 transition hover:border-zinc-300 hover:bg-zinc-50 min-[640px]:text-sm disabled:cursor-not-allowed disabled:opacity-45"
           >
             В корзину
           </button>
@@ -444,12 +691,16 @@ export default function Storefront() {
   const [selectedProductMemory, setSelectedProductMemory] = useState("");
   const [selectedProductColor, setSelectedProductColor] = useState("");
   const [selectedProductSim, setSelectedProductSim] = useState("");
+  const [selectedProductScreen, setSelectedProductScreen] = useState("");
+  const [selectedProductRam, setSelectedProductRam] = useState("");
   const [reviewSlideIndex, setReviewSlideIndex] = useState(0);
   const [orderSelection, setOrderSelection] = useState<{
     productName?: string;
     color?: string;
     memory?: string;
     simType?: string;
+    screen?: string;
+    ram?: string;
   } | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [storeData, setStoreData] = useState<StoreData>(defaultStoreData);
@@ -583,7 +834,13 @@ export default function Storefront() {
     return visibleProducts.filter((product) => {
       const categoryName = categoriesBySlug[product.categorySlug]?.name ?? "";
       const variantHaystack = (product.variants ?? [])
-        .flatMap((variant) => [variant.color ?? "", variant.memory ?? "", variant.simType ?? ""])
+        .flatMap((variant) => [
+          variant.color ?? "",
+          variant.memory ?? "",
+          variant.simType ?? "",
+          variant.screen ?? "",
+          variant.ram ?? ""
+        ])
         .join(" ");
       const haystack = [product.name, product.color ?? "", product.description ?? "", categoryName, variantHaystack]
         .join(" ")
@@ -615,9 +872,16 @@ export default function Storefront() {
   const addToCart = useCallback(
     (
       product: Product,
-      selection: { color?: string; memory?: string; simType?: string; price: number; imageUrl: string }
+      selection: VariantSelection & { price: number; imageUrl: string }
     ) => {
-      const key = [product.id, selection.color ?? "", selection.memory ?? "", selection.simType ?? ""].join("|");
+      const key = [
+        product.id,
+        selection.color ?? "",
+        selection.memory ?? "",
+        selection.simType ?? "",
+        selection.screen ?? "",
+        selection.ram ?? ""
+      ].join("|");
       setCartItems((prev) => {
         let nextItems: CartItem[];
         const existing = prev.find((item) => item.key === key);
@@ -633,13 +897,14 @@ export default function Storefront() {
               color: selection.color,
               memory: selection.memory,
               simType: selection.simType,
+              screen: selection.screen,
+              ram: selection.ram,
               price: selection.price,
               imageUrl: selection.imageUrl,
               quantity: 1
             }
           ];
         }
-        // Persist immediately so fast navigation to /cart does not lose the update.
         persistCartItems(nextItems);
         return nextItems;
       });
@@ -689,6 +954,8 @@ export default function Storefront() {
     color?: string;
     memory?: string;
     simType?: string;
+    screen?: string;
+    ram?: string;
     customerName?: string;
     telegram?: string;
   }) => {
@@ -897,7 +1164,9 @@ export default function Storefront() {
                 productName: orderSelection?.productName,
                 color: orderSelection?.color,
                 memory: orderSelection?.memory,
-                simType: orderSelection?.simType
+                simType: orderSelection?.simType,
+                screen: orderSelection?.screen,
+                ram: orderSelection?.ram
               });
             }}
           >
@@ -944,8 +1213,17 @@ export default function Storefront() {
 
     if (activeModal === "product" && selectedProduct) {
       const selectedCategory = categoriesBySlug[selectedProduct.categorySlug];
-      const isIphoneCategory = isIphoneLikeSlug(selectedCategory?.slug);
-      const productVariants = selectedProduct.variants ?? [];
+      const productCategorySlug = selectedCategory?.slug ?? selectedProduct.categorySlug;
+      const isIphoneCategory = isIphoneLikeSlug(productCategorySlug);
+      const isMacbookCategory = isMacbookLikeSlug(productCategorySlug);
+      const isIpadCategory = isIpadLikeSlug(productCategorySlug);
+      const isWatchCategory = isWatchLikeSlug(productCategorySlug);
+      const usesMemory = isIphoneCategory || isMacbookCategory || isIpadCategory;
+      const usesScreen = isMacbookCategory || isIpadCategory || isWatchCategory;
+      const usesRam = isMacbookCategory;
+      const showSimSelector = isIphoneCategory || isIpadCategory || isWatchCategory;
+      const simLabelModal = isIphoneCategory ? "тип SIM" : isIpadCategory ? "связь" : isWatchCategory ? "ремешок" : "SIM";
+      const productVariants = effectiveVariantsForProduct(selectedProduct, productCategorySlug);
       const hasVariants = productVariants.length > 0;
       const colorOptions = hasVariants
         ? Array.from(new Set(productVariants.map((item) => item.color).filter((item): item is string => Boolean(item))))
@@ -956,38 +1234,44 @@ export default function Storefront() {
       const colorScopedVariants = hasVariants
         ? productVariants.filter((item) => !colorFilter || item.color === colorFilter)
         : [];
-      const memoryScopedVariants = hasVariants && isIphoneCategory
-        ? colorScopedVariants.filter((item) => !selectedProductSim || item.simType === selectedProductSim)
-        : colorScopedVariants;
-      const simScopedVariants = hasVariants && isIphoneCategory
-        ? colorScopedVariants.filter((item) => !selectedProductMemory || item.memory === selectedProductMemory)
-        : colorScopedVariants;
-      const memoryOptions = hasVariants && isIphoneCategory
-        ? Array.from(new Set(memoryScopedVariants.map((item) => item.memory).filter((item): item is string => Boolean(item))))
+      const matchesExcept = (
+        item: typeof productVariants[number],
+        excludeKey: keyof VariantSelection
+      ) =>
+        (excludeKey === "memory" || !usesMemory || !selectedProductMemory || item.memory === selectedProductMemory) &&
+        (excludeKey === "simType" || !showSimSelector || !selectedProductSim || item.simType === selectedProductSim) &&
+        (excludeKey === "screen" || !usesScreen || !selectedProductScreen || item.screen === selectedProductScreen) &&
+        (excludeKey === "ram" || !usesRam || !selectedProductRam || item.ram === selectedProductRam);
+      const memoryOptions = hasVariants && usesMemory
+        ? Array.from(new Set(colorScopedVariants.filter((item) => matchesExcept(item, "memory")).map((item) => item.memory).filter((item): item is string => Boolean(item))))
         : [];
-      const simOptions = hasVariants && isIphoneCategory
-        ? Array.from(new Set(simScopedVariants.map((item) => item.simType).filter((item): item is string => Boolean(item))))
+      const simOptions = hasVariants && showSimSelector
+        ? Array.from(new Set(colorScopedVariants.filter((item) => matchesExcept(item, "simType")).map((item) => item.simType).filter((item): item is string => Boolean(item))))
+        : [];
+      const screenOptions = hasVariants && usesScreen
+        ? Array.from(new Set(colorScopedVariants.filter((item) => matchesExcept(item, "screen")).map((item) => item.screen).filter((item): item is string => Boolean(item))))
+        : [];
+      const ramOptions = hasVariants && usesRam
+        ? Array.from(new Set(colorScopedVariants.filter((item) => matchesExcept(item, "ram")).map((item) => item.ram).filter((item): item is string => Boolean(item))))
         : [];
 
-      const activeVariant =
-        hasVariants
-          ? isIphoneCategory
-            ? productVariants.find(
-                (item) =>
-                  (!colorFilter || item.color === colorFilter) &&
-                  (!selectedProductMemory || item.memory === selectedProductMemory) &&
-                  (!selectedProductSim || item.simType === selectedProductSim)
-              ) ??
-              productVariants.find(
-                (item) => (!colorFilter || item.color === colorFilter) && (!selectedProductMemory || item.memory === selectedProductMemory)
-              ) ??
-              productVariants.find((item) => (!colorFilter || item.color === colorFilter)) ??
-              productVariants[0]
-            : productVariants.find((item) => (!colorFilter || item.color === colorFilter)) ?? productVariants[0]
-          : null;
+      const activeVariant = hasVariants
+        ? productVariants.find(
+            (item) =>
+              (!colorFilter || item.color === colorFilter) &&
+              (!usesMemory || !selectedProductMemory || item.memory === selectedProductMemory) &&
+              (!showSimSelector || !selectedProductSim || item.simType === selectedProductSim) &&
+              (!usesScreen || !selectedProductScreen || item.screen === selectedProductScreen) &&
+              (!usesRam || !selectedProductRam || item.ram === selectedProductRam)
+          ) ??
+          productVariants.find((item) => !colorFilter || item.color === colorFilter) ??
+          productVariants[0]
+        : null;
 
       const shownModalPrice = activeVariant?.price ?? selectedProduct.basePrice;
       const shownModalImage = activeVariant?.imageUrl ?? selectedProduct.imageUrl;
+      const modalStockBadge = availabilityBadgeText(activeVariant?.availability, activeVariant?.price);
+      const modalCanCart = variantCanAddToCart(activeVariant);
       return (
         <Modal
           title={selectedProduct.name}
@@ -1000,6 +1284,8 @@ export default function Storefront() {
             setSelectedProductMemory("");
             setSelectedProductColor("");
             setSelectedProductSim("");
+            setSelectedProductScreen("");
+            setSelectedProductRam("");
           }}
         >
           <div className="space-y-2 min-[640px]:grid min-[640px]:grid-cols-[minmax(220px,0.95fr)_minmax(260px,1.05fr)] min-[640px]:gap-4 min-[640px]:space-y-0">
@@ -1012,7 +1298,7 @@ export default function Storefront() {
                 {selectedProduct.description ??
                   "Подробное описание для этого товара скоро появится. Вы можете оставить заявку, и менеджер уточнит все характеристики."}
               </p>
-              {isIphoneCategory ? (
+              {isIphoneCategory || isIpadCategory ? (
                 <p className="rounded-xl border border-amber-200/90 bg-amber-50 px-2.5 py-1.5 text-[11px] font-medium leading-snug text-amber-950 min-[640px]:text-xs">
                   Имееться недостаток товара: невозможно установить и использовать RuStore.
                 </p>
@@ -1034,6 +1320,8 @@ export default function Storefront() {
                             setSelectedProductColor(option);
                             setSelectedProductMemory("");
                             setSelectedProductSim("");
+                            setSelectedProductScreen("");
+                            setSelectedProductRam("");
                           }}
                         >
                           {option}
@@ -1042,10 +1330,29 @@ export default function Storefront() {
                     </div>
                   </div>
                 ) : null}
-                {isIphoneCategory ? (
+                {screenOptions.length ? (
+                  <div className="mt-1 space-y-1">
+                    <p className="text-xs text-zinc-500">{isWatchCategory ? "Выберите размер корпуса" : "Выберите диагональ"}</p>
+                    <div className="flex flex-wrap gap-1">
+                      {screenOptions.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold transition min-[640px]:text-xs ${
+                            selectedProductScreen === option ? "bg-zinc-900 text-white" : "bg-white text-zinc-700 hover:bg-zinc-100"
+                          }`}
+                          onClick={() => setSelectedProductScreen(option)}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+                {usesMemory ? (
                   memoryOptions.length ? (
                     <div className="mt-1 space-y-1">
-                      <p className="text-xs text-zinc-500">Выберите объем</p>
+                      <p className="text-xs text-zinc-500">{isMacbookCategory || isIpadCategory ? "Выберите накопитель" : "Выберите объем"}</p>
                       <div className="flex flex-wrap gap-1">
                         {memoryOptions.map((option) => (
                           <button
@@ -1062,12 +1369,31 @@ export default function Storefront() {
                       </div>
                     </div>
                   ) : (
-                    <p className="mt-1">Объем: не указан</p>
+                    <p className="mt-1">{isMacbookCategory || isIpadCategory ? "Накопитель: не указан" : "Объем: не указан"}</p>
                   )
+                ) : null}
+                {ramOptions.length ? (
+                  <div className="mt-1 space-y-1">
+                    <p className="text-xs text-zinc-500">Выберите оперативную память</p>
+                    <div className="flex flex-wrap gap-1">
+                      {ramOptions.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          className={`rounded-md px-1.5 py-0.5 text-[11px] font-semibold transition min-[640px]:text-xs ${
+                            selectedProductRam === option ? "bg-zinc-900 text-white" : "bg-white text-zinc-700 hover:bg-zinc-100"
+                          }`}
+                          onClick={() => setSelectedProductRam(option)}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 ) : null}
                 {simOptions.length ? (
                   <div className="mt-1 space-y-1">
-                    <p className="text-xs text-zinc-500">Выберите тип SIM</p>
+                    <p className="text-xs text-zinc-500">Выберите {simLabelModal}</p>
                     <div className="flex flex-wrap gap-1">
                       {simOptions.map((option) => (
                         <button
@@ -1084,7 +1410,17 @@ export default function Storefront() {
                     </div>
                   </div>
                 ) : null}
-                <p className="mt-1 font-semibold text-zinc-900">Цена: от {toRub(shownModalPrice)}</p>
+                {modalStockBadge ? (
+                  <p className="mt-1 text-[11px] font-semibold text-amber-800 min-[640px]:text-xs">{modalStockBadge}</p>
+                ) : null}
+                <p className="mt-1 font-semibold text-zinc-900">
+                  Цена:{" "}
+                  {shownModalPrice > 0
+                    ? `от ${toRub(shownModalPrice)}`
+                    : modalStockBadge === "Скоро в продаже"
+                      ? "скоро в продаже"
+                      : "по запросу"}
+                </p>
               </div>
               <div className="grid grid-cols-1 gap-2 min-[640px]:grid-cols-2">
                 <button
@@ -1095,7 +1431,9 @@ export default function Storefront() {
                       productName: selectedProduct.name,
                       color: (activeVariant?.color ?? selectedProductColor) || undefined,
                       memory: (activeVariant?.memory ?? selectedProductMemory) || undefined,
-                      simType: (activeVariant?.simType ?? selectedProductSim) || undefined
+                      simType: (activeVariant?.simType ?? selectedProductSim) || undefined,
+                      screen: (activeVariant?.screen ?? selectedProductScreen) || undefined,
+                      ram: (activeVariant?.ram ?? selectedProductRam) || undefined
                     });
                     setSelectedProduct(null);
                     setActiveModal("order");
@@ -1105,16 +1443,21 @@ export default function Storefront() {
                 </button>
                 <button
                   type="button"
-                  className="w-full rounded-xl border border-zinc-200 bg-white py-2 text-sm font-semibold text-zinc-800 transition hover:border-zinc-900 hover:bg-zinc-900 hover:text-white"
-                  onClick={() =>
+                  disabled={!modalCanCart}
+                  title={!modalCanCart ? "Недоступно для корзины" : undefined}
+                  className="w-full rounded-xl border border-zinc-200 bg-white py-2 text-sm font-semibold text-zinc-800 transition hover:border-zinc-900 hover:bg-zinc-900 hover:text-white disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:border-zinc-200 disabled:hover:bg-white disabled:hover:text-zinc-800"
+                  onClick={() => {
+                    if (!modalCanCart) return;
                     addToCart(selectedProduct, {
                       color: (activeVariant?.color ?? selectedProductColor) || undefined,
                       memory: (activeVariant?.memory ?? selectedProductMemory) || undefined,
                       simType: (activeVariant?.simType ?? selectedProductSim) || undefined,
+                      screen: (activeVariant?.screen ?? selectedProductScreen) || undefined,
+                      ram: (activeVariant?.ram ?? selectedProductRam) || undefined,
                       price: shownModalPrice,
                       imageUrl: shownModalImage
-                    })
-                  }
+                    });
+                  }}
                 >
                   В корзину
                 </button>
@@ -1135,6 +1478,8 @@ export default function Storefront() {
     selectedProduct,
     selectedProductColor,
     selectedProductMemory,
+    selectedProductRam,
+    selectedProductScreen,
     selectedProductSim,
     sendingLead
   ]);
@@ -1188,7 +1533,7 @@ export default function Storefront() {
               shouldSplitHeader ? "text-xl min-[1200px]:text-2xl min-[1440px]:text-3xl" : "text-2xl min-[640px]:text-3xl min-[1440px]:text-4xl min-[1920px]:text-5xl"
             }`}
           >
-            <span className="text-red-500">X</span> : STORE
+            <StoreLogoMark />
           </Link>
           <nav
             className={`hidden h-11 items-center gap-1 rounded-full border border-zinc-200 bg-zinc-50 px-1.5 text-sm font-medium text-zinc-700 backdrop-blur-xl transition-all duration-300 min-[960px]:flex min-[1920px]:text-base ${
@@ -1667,7 +2012,7 @@ export default function Storefront() {
                         onClick={() => setReviewSlideIndex(index)}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={photo.imageUrl} alt={photo.title ?? "Фото X:STORE"} className="h-full w-full object-cover" />
+                        <img src={photo.imageUrl} alt={photo.title ?? SLIDER_PHOTO_ALT_FALLBACK} className="h-full w-full object-cover" />
                       </button>
                     ))}
                   </div>
@@ -1733,27 +2078,54 @@ export default function Storefront() {
                         productName: product.name,
                         color: selection.color,
                         memory: selection.memory,
-                        simType: selection.simType
+                        simType: selection.simType,
+                        screen: selection.screen,
+                        ram: selection.ram
                       });
                       setActiveModal("order");
                     }}
                     onAddToCart={(selection) => addToCart(product, selection)}
                     onOpenDetails={(selection) => {
-                      const variants = product.variants ?? [];
-                      const isIphoneCategory = isIphoneLikeSlug(product.categorySlug);
+                      const variants = effectiveVariantsForProduct(product, product.categorySlug);
+                      const slug = product.categorySlug;
+                      const isIphoneCategory = isIphoneLikeSlug(slug);
+                      const isMacbookCategory = isMacbookLikeSlug(slug);
+                      const isIpadCategory = isIpadLikeSlug(slug);
+                      const isWatchCategory = isWatchLikeSlug(slug);
                       if (variants.length) {
                         setSelectedProductColor(selection.color ?? variants[0]?.color ?? "");
                         if (isIphoneCategory) {
                           setSelectedProductMemory(selection.memory ?? variants[0]?.memory ?? "");
                           setSelectedProductSim(selection.simType ?? variants[0]?.simType ?? "");
-                        } else {
-                          setSelectedProductMemory("");
+                          setSelectedProductScreen("");
+                          setSelectedProductRam("");
+                        } else if (isMacbookCategory) {
+                          setSelectedProductMemory(selection.memory ?? variants[0]?.memory ?? "");
+                          setSelectedProductScreen(selection.screen ?? variants[0]?.screen ?? "");
+                          setSelectedProductRam(selection.ram ?? variants[0]?.ram ?? "");
                           setSelectedProductSim("");
+                        } else if (isIpadCategory) {
+                          setSelectedProductMemory(selection.memory ?? variants[0]?.memory ?? "");
+                          setSelectedProductSim(selection.simType ?? variants[0]?.simType ?? "");
+                          setSelectedProductScreen(selection.screen ?? variants[0]?.screen ?? "");
+                          setSelectedProductRam("");
+                        } else if (isWatchCategory) {
+                          setSelectedProductMemory("");
+                          setSelectedProductSim(selection.simType ?? variants[0]?.simType ?? "");
+                          setSelectedProductScreen(selection.screen ?? variants[0]?.screen ?? "");
+                          setSelectedProductRam("");
+                        } else {
+                          setSelectedProductMemory(selection.memory ?? variants[0]?.memory ?? "");
+                          setSelectedProductSim("");
+                          setSelectedProductScreen("");
+                          setSelectedProductRam("");
                         }
                       } else {
                         setSelectedProductColor(selection.color ?? product.color ?? "");
                         setSelectedProductMemory("");
                         setSelectedProductSim("");
+                        setSelectedProductScreen("");
+                        setSelectedProductRam("");
                       }
                       setSelectedProduct(product);
                       setActiveModal("product");
@@ -1775,7 +2147,7 @@ export default function Storefront() {
       <footer className="mt-14 bg-[#111112] text-zinc-300">
         <div className="mx-auto flex w-full max-w-md flex-col items-center px-4 py-10 text-center min-[640px]:max-w-xl min-[960px]:max-w-5xl min-[960px]:py-14">
           <Link href="/" className="mb-8 inline-flex items-center text-2xl font-bold tracking-tight text-white min-[640px]:text-3xl">
-            <span className="text-red-500">X</span> : STORE
+            <StoreLogoMark />
           </Link>
 
           <div className="w-full max-w-lg">
@@ -1877,7 +2249,7 @@ export default function Storefront() {
                 className="text-3xl font-bold tracking-tight text-zinc-950 min-[640px]:text-4xl"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <span className="text-red-500">X</span> : STORE
+                <StoreLogoMark />
               </Link>
               <button
                 type="button"

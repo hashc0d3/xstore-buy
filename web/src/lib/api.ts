@@ -52,8 +52,11 @@ export async function upsertProduct(input: {
     color?: string;
     memory?: string;
     simType?: string;
+    screen?: string;
+    ram?: string;
     price: number;
     imageUrl?: string;
+    availability?: string;
   }>;
   imageUrl?: string;
 }): Promise<void> {
@@ -79,6 +82,8 @@ export async function createLead(input: {
   color?: string;
   memory?: string;
   simType?: string;
+  screen?: string;
+  ram?: string;
   customerName?: string;
   telegram?: string;
   contactMethod?: string;
