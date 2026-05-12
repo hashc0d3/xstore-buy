@@ -22,6 +22,8 @@ async function bootstrap() {
   const storeService = app.get(StoreService);
   await storeService.ensureSeedData();
 
-  await app.listen(process.env.PORT ?? 4000);
+  const port = Number(process.env.PORT ?? 4000);
+  // В Docker нужен IPv4 (0.0.0.0): иначе listen может быть только на ::, а fetch к 127.0.0.1 даст ECONNREFUSED.
+  await app.listen(port, "0.0.0.0");
 }
 bootstrap();
