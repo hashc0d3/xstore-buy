@@ -67,6 +67,8 @@ export class LeadsService {
       dto.color ? `Цвет: ${dto.color}` : "",
       dto.memory ? `Объем памяти: ${dto.memory}` : "",
       dto.simType ? `Тип SIM: ${dto.simType}` : "",
+      dto.screen ? `Диагональ / экран: ${dto.screen}` : "",
+      dto.ram ? `RAM: ${dto.ram}` : "",
       dto.cartItems ? `Товары:\n${dto.cartItems}` : "",
       dto.subtotal ? `Сумма товаров: ${dto.subtotal}` : "",
       dto.deliveryPrice ? `Доставка: ${dto.deliveryPrice}` : "",
