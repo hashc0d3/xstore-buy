@@ -1,14 +1,21 @@
 /**
- * Заливка всего каталога из JSON (как после snifer) в API админки.
+ * Заливка всего каталога из JSON (как после snifer) в API админки,
+ * затем Dyson + «Игровые консоли» через Prisma в ту же SQLite (если API локальный).
  *
  * Запуск из каталога api/:
  *   node scripts/seed-all-catalog.js
  *
- * На проде:
+ * На проде в контейнере (API_URL=127.0.0.1 — Dyson/консоли попадут в БД автоматически):
+ *   docker compose exec api node scripts/seed-all-catalog.js
+ *
+ * С ПК на удалённый API (только JSON-категории; Dyson — отдельно на сервере):
  *   API_URL=https://xstore55.ru/api node scripts/seed-all-catalog.js
+ *   docker compose exec api node scripts/seed-dyson-consoles.js
  *
  * Другой каталог с JSON (без snifer в репозитории):
  *   CATALOG_ROOT=/path/to/output API_URL=... node scripts/seed-all-catalog.js
+ *
+ * Отключить финальный Prisma-шаг: SKIP_DYSON_CONSOLES=1
  */
 const { spawnSync } = require("child_process");
 const fs = require("fs");
@@ -73,4 +80,31 @@ for (const script of steps) {
   }
 }
 
-console.log("\nГотово: все категории залиты.");
+const apiUrlRaw = (env.API_URL || "http://localhost:4000/api").replace(/\/$/, "").trim();
+const isLocalApi =
+  /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/i.test(apiUrlRaw);
+
+if (process.env.SKIP_DYSON_CONSOLES === "1") {
+  console.log("\n[seed-all-catalog] SKIP_DYSON_CONSOLES=1 — шаг Dyson/консолей не запускался.");
+} else if (!isLocalApi) {
+  console.log(
+    "\n[seed-all-catalog] Удалённый API — пропуск Prisma-сида Dyson/консолей.\n" +
+      "  На сервере выполните: docker compose exec api node scripts/seed-dyson-consoles.js"
+  );
+} else {
+  console.log("\n→ Dyson + игровые консоли (Prisma)…");
+  const r2 = spawnSync(
+    process.execPath,
+    [path.join(__dirname, "seed-dyson-consoles.js")],
+    {
+      cwd: apiDir,
+      env: { ...process.env },
+      stdio: "inherit",
+    }
+  );
+  if (r2.status !== 0) {
+    process.exit(r2.status ?? 1);
+  }
+}
+
+console.log("\nГотово: основной каталог залит" + (isLocalApi && process.env.SKIP_DYSON_CONSOLES !== "1" ? " + Dyson и консоли" : "") + ".");
