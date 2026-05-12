@@ -10,6 +10,7 @@ type StoreCategory = {
   id: string;
   slug: string;
   name: string;
+  imageUrl?: string;
   memoryOptions: string[];
 };
 
@@ -59,37 +60,25 @@ export class StoreService {
       // The store must remain available even if the optional gallery table needs manual migration.
     }
 
-    const count = await this.prisma.category.count();
-    if (count === 0) {
-      const categories = [
-        { slug: "iphone", name: "iPhone", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
-        { slug: "iphone-used", name: "iPhone Б/У", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
-        { slug: "macbook", name: "MacBook", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
-        { slug: "apple-watch", name: "Apple Watch", memoryOptions: [] },
-        { slug: "ipad", name: "iPad", memoryOptions: ["128 ГБ", "256 ГБ", "512 ГБ"] },
-        { slug: "airpods", name: "AirPods", memoryOptions: [] },
-        { slug: "custom", name: "Под заказ", memoryOptions: [] }
-      ];
+    const defaultCategories: Array<{ slug: string; name: string; memoryOptions: string[] }> = [
+      { slug: "iphone", name: "iPhone", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
+      { slug: "iphone-used", name: "iPhone Б/У", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
+      { slug: "macbook", name: "MacBook", memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"] },
+      { slug: "apple-watch", name: "Apple Watch", memoryOptions: [] },
+      { slug: "ipad", name: "iPad", memoryOptions: ["128 ГБ", "256 ГБ", "512 ГБ"] },
+      { slug: "airpods", name: "AirPods", memoryOptions: [] },
+      { slug: "custom", name: "Под заказ", memoryOptions: [] }
+    ];
 
-      for (const category of categories) {
-        await this.prisma.category.create({
-          data: {
-            slug: category.slug,
-            name: category.name,
-            memoryOptions: category.memoryOptions.join("|")
-          }
-        });
-      }
-    }
-
-    const iphoneUsed = await this.prisma.category.findUnique({ where: { slug: "iphone-used" } });
-    if (!iphoneUsed) {
-      await this.prisma.category.create({
-        data: {
-          slug: "iphone-used",
-          name: "iPhone Б/У",
-          memoryOptions: ["256 ГБ", "512 ГБ", "1 ТБ"].join("|")
-        }
+    for (const category of defaultCategories) {
+      await this.prisma.category.upsert({
+        where: { slug: category.slug },
+        create: {
+          slug: category.slug,
+          name: category.name,
+          memoryOptions: category.memoryOptions.join("|")
+        },
+        update: {}
       });
     }
 
@@ -166,6 +155,7 @@ export class StoreService {
       data: {
         name,
         slug,
+        imageUrl: dto.imageUrl?.trim() || null,
         memoryOptions: (dto.memoryOptions ?? []).filter(Boolean).join("|")
       }
     });
@@ -210,6 +200,28 @@ export class StoreService {
     await this.prisma.product.delete({ where: { id } });
   }
 
+  /** Slug'и из ensureSeedData — удаление запрещено, чтобы не сломать витрину. */
+  private static readonly protectedCategorySlugs = new Set([
+    "iphone",
+    "iphone-used",
+    "macbook",
+    "apple-watch",
+    "ipad",
+    "airpods",
+    "custom"
+  ]);
+
+  async removeCategory(id: string): Promise<void> {
+    const category = await this.prisma.category.findUnique({ where: { id } });
+    if (!category) {
+      throw new NotFoundException("Категория не найдена");
+    }
+    if (StoreService.protectedCategorySlugs.has(category.slug)) {
+      throw new BadRequestException("Эту категорию нельзя удалить");
+    }
+    await this.prisma.category.delete({ where: { id } });
+  }
+
   async upsertSliderPhotos(dto: UpsertSliderPhotosDto): Promise<StoreSliderPhoto[]> {
     await this.ensureSliderPhotoTable();
 
@@ -236,11 +248,12 @@ export class StoreService {
     return this.getSliderPhotos();
   }
 
-  private toCategory(item: { id: string; slug: string; name: string; memoryOptions: string | null }): StoreCategory {
+  private toCategory(item: { id: string; slug: string; name: string; imageUrl: string | null; memoryOptions: string | null }): StoreCategory {
     return {
       id: item.id,
       slug: item.slug,
       name: item.name,
+      imageUrl: item.imageUrl?.trim() || undefined,
       memoryOptions: item.memoryOptions ? item.memoryOptions.split("|").filter(Boolean) : []
     };
   }

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BrandMark } from "@/components/brand-mark";
 import { CategoryStripSkeleton, ProductGridSkeleton } from "@/components/catalog-skeleton";
 import { createLead, fetchStoreData } from "@/lib/api";
@@ -229,7 +229,13 @@ function CategoryCard({ category, onPodZakaz }: { category: Category; onPodZakaz
     airpods: ["/airpods.png", "/airpods.jpg", "/airpods.webp"],
     custom: ["/zakaz.png", "/custom.png", "/custom.jpg", "/custom.webp"]
   };
-  const candidates = imageCandidatesBySlug[category.slug] ?? [];
+  const slugFallback = imageCandidatesBySlug[category.slug] ?? [];
+  const customCover = category.imageUrl?.trim();
+  const candidates = customCover
+    ? [customCover, ...slugFallback, "/image.png"]
+    : slugFallback.length > 0
+      ? [...slugFallback, "/image.png"]
+      : ["/image.png"];
   const [imageIdx, setImageIdx] = useState(0);
   const imageSrc = candidates[imageIdx];
   const imagePlacementBySlug: Record<string, string> = {
@@ -243,8 +249,8 @@ function CategoryCard({ category, onPodZakaz }: { category: Category; onPodZakaz
   };
   const imagePlacement = imagePlacementBySlug[category.slug] ?? "right-[-4%] top-1/2 h-[90%] -translate-y-1/2";
 
-  const cardClass = `group relative h-[74px] min-w-0 overflow-hidden rounded-xl border border-zinc-200 p-1.5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md min-[480px]:h-[88px] min-[640px]:h-[108px] min-[960px]:h-[132px] min-[960px]:rounded-2xl min-[960px]:p-3 ${
-    isDark ? "bg-zinc-900" : "bg-[#f6f6f7]"
+  const cardClass = `group relative h-[74px] w-[9rem] shrink-0 snap-start overflow-hidden rounded-xl border border-zinc-200 p-1.5 shadow-sm transition duration-200 will-change-transform hover:-translate-y-1 hover:border-zinc-300 hover:shadow-md min-[480px]:h-[88px] min-[480px]:w-[10.25rem] min-[640px]:h-[108px] min-[640px]:w-[11.75rem] min-[960px]:h-[132px] min-[960px]:w-[13.25rem] min-[960px]:rounded-2xl min-[960px]:p-3 ${
+    isDark ? "bg-zinc-900 hover:border-zinc-600 hover:shadow-[0_14px_32px_-6px_rgba(0,0,0,0.5)]" : "bg-[#f6f6f7]"
   }`;
 
   const inner = (
@@ -270,7 +276,11 @@ function CategoryCard({ category, onPodZakaz }: { category: Category; onPodZakaz
           {!isDark ? <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-black/[0.02]" /> : null}
         </>
       ) : null}
-      <h3 className={`absolute bottom-1.5 left-1.5 max-w-[82%] text-[11px] font-bold leading-none min-[480px]:text-xs min-[640px]:text-sm min-[900px]:text-base min-[960px]:bottom-3 min-[960px]:left-3 min-[1440px]:text-xl ${isDark ? "text-white" : "text-zinc-800"}`}>
+      <h3
+        className={`absolute bottom-1.5 left-1.5 max-w-[82%] text-[11px] font-bold leading-none min-[480px]:text-xs min-[640px]:text-sm min-[900px]:text-base min-[960px]:bottom-3 min-[960px]:left-3 min-[1440px]:text-xl ${
+          isDark ? "text-white" : "text-zinc-800"
+        }`}
+      >
         {category.name}
       </h3>
     </>
@@ -747,6 +757,9 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
   const [cartHydrated, setCartHydrated] = useState(false);
   const [sendingLead, setSendingLead] = useState(false);
   const [leadNotice, setLeadNotice] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const categoryStripRef = useRef<HTMLDivElement>(null);
+  const [categoryStripOverflow, setCategoryStripOverflow] = useState(false);
+  const [categoryStripEdges, setCategoryStripEdges] = useState({ canLeft: false, canRight: false });
 
   useEffect(() => {
     try {
@@ -868,6 +881,80 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
       return d !== 0 ? d : a.slug.localeCompare(b.slug);
     });
   }, [storeData.categories]);
+
+  const updateCategoryStripEdges = useCallback(() => {
+    const el = categoryStripRef.current;
+    if (!el) return;
+    const { scrollWidth, clientWidth } = el;
+    const max = Math.max(0, scrollWidth - clientWidth);
+    if (max <= 2) {
+      setCategoryStripOverflow(false);
+      setCategoryStripEdges({ canLeft: false, canRight: false });
+      return;
+    }
+    setCategoryStripOverflow(true);
+
+    const rect = el.getBoundingClientRect();
+    const c = getComputedStyle(el);
+    const padL = parseFloat(c.paddingLeft) || 0;
+    const padR = parseFloat(c.paddingRight) || 0;
+    const bL = parseFloat(c.borderLeftWidth) || 0;
+    const bR = parseFloat(c.borderRightWidth) || 0;
+    const viewL = rect.left + bL;
+    const viewR = rect.right - bR;
+    const tol = 3;
+
+    const first = el.firstElementChild as HTMLElement | null;
+    const last = el.lastElementChild as HTMLElement | null;
+    let canLeft = false;
+    let canRight = false;
+    if (first) {
+      canLeft = first.getBoundingClientRect().left < viewL + padL - tol;
+    }
+    if (last) {
+      canRight = last.getBoundingClientRect().right > viewR - padR + tol;
+    }
+
+    setCategoryStripEdges({ canLeft, canRight });
+  }, []);
+
+  const scrollCategoryStrip = useCallback((dir: "left" | "right") => {
+    const el = categoryStripRef.current;
+    if (!el) return;
+    const first = el.firstElementChild as HTMLElement | undefined;
+    const gapStr = getComputedStyle(el).gap;
+    let gap = 0;
+    if (gapStr && gapStr !== "normal") {
+      const token = gapStr.trim().split(/\s+/)[0] ?? "";
+      const parsed = parseFloat(token);
+      if (Number.isFinite(parsed)) gap = parsed;
+    }
+    const cardStep = first && first.offsetWidth > 0 ? first.offsetWidth + gap : 0;
+    const step = cardStep > 0 ? cardStep : Math.max(220, Math.round(el.clientWidth * 0.72));
+    el.scrollBy({ left: dir === "left" ? -step : step, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    if (!storeFetched) return;
+    const el = categoryStripRef.current;
+    if (!el) return;
+    updateCategoryStripEdges();
+    const onScroll = () => updateCategoryStripEdges();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    el.addEventListener("scrollend", onScroll);
+    window.addEventListener("resize", onScroll, { passive: true });
+    const RO = typeof ResizeObserver !== "undefined" ? ResizeObserver : null;
+    const ro = RO ? new RO(onScroll) : null;
+    ro?.observe(el);
+    const t = window.setTimeout(onScroll, 0);
+    return () => {
+      window.clearTimeout(t);
+      el.removeEventListener("scroll", onScroll);
+      el.removeEventListener("scrollend", onScroll);
+      window.removeEventListener("resize", onScroll);
+      ro?.disconnect();
+    };
+  }, [storeFetched, displayCategories.length, updateCategoryStripEdges]);
 
   const filteredProducts = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -2113,19 +2200,44 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
         )}
 
         <section
-          className={`${
-            isHomePage ? "rounded-2xl border border-white/60 liquid-glass p-2 min-[640px]:p-3" : ""
-          } grid grid-cols-4 gap-1.5 min-[480px]:gap-2 min-[640px]:gap-2.5 min-[900px]:grid-cols-7 min-[960px]:gap-3 min-[1440px]:gap-4`}
+          className={
+            isHomePage ? "relative rounded-2xl border border-white/60 liquid-glass p-2 min-[640px]:p-3" : "relative"
+          }
         >
-          {storeFetched
-            ? displayCategories.map((category) => (
-                <CategoryCard
-                  key={category.id}
-                  category={category}
-                  onPodZakaz={category.slug === "custom" ? () => setActiveModal("preorder") : undefined}
-                />
-              ))
-            : <CategoryStripSkeleton />}
+          {categoryStripOverflow && categoryStripEdges.canLeft ? (
+            <button
+              type="button"
+              aria-label="Прокрутить категории назад"
+              onClick={() => scrollCategoryStrip("left")}
+              className="absolute left-1 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-zinc-300/90 bg-white/95 text-lg font-semibold leading-none text-zinc-800 shadow-md backdrop-blur-sm transition-all duration-300 ease-out hover:border-red-400 hover:bg-red-50 hover:text-red-600 hover:shadow-[0_10px_28px_-6px_rgba(239,68,68,0.38)] min-[640px]:left-2 min-[640px]:h-10 min-[640px]:w-10"
+            >
+              ‹
+            </button>
+          ) : null}
+          {categoryStripOverflow && categoryStripEdges.canRight ? (
+            <button
+              type="button"
+              aria-label="Прокрутить категории вперёд"
+              onClick={() => scrollCategoryStrip("right")}
+              className="absolute right-1 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-zinc-300/90 bg-white/95 text-lg font-semibold leading-none text-zinc-800 shadow-md backdrop-blur-sm transition-all duration-300 ease-out hover:border-red-400 hover:bg-red-50 hover:text-red-600 hover:shadow-[0_10px_28px_-6px_rgba(239,68,68,0.38)] min-[640px]:right-2 min-[640px]:h-10 min-[640px]:w-10"
+            >
+              ›
+            </button>
+          ) : null}
+          <div
+            ref={categoryStripRef}
+            className={`flex flex-nowrap gap-1.5 overflow-x-auto overscroll-x-contain scroll-smooth py-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory min-[480px]:gap-2 min-[640px]:gap-2.5 min-[960px]:gap-3 ${categoryStripEdges.canLeft ? "pl-10 min-[640px]:pl-12" : isHomePage ? "pl-1 min-[640px]:pl-2" : "pl-0"} ${categoryStripEdges.canRight ? "pr-10 min-[640px]:pr-12" : isHomePage ? "pr-1 min-[640px]:pr-2" : "pr-0"}`}
+          >
+            {storeFetched
+              ? displayCategories.map((category) => (
+                  <CategoryCard
+                    key={category.id}
+                    category={category}
+                    onPodZakaz={category.slug === "custom" ? () => setActiveModal("preorder") : undefined}
+                  />
+                ))
+              : <CategoryStripSkeleton />}
+          </div>
         </section>
 
         {isHomePage ? (

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChangeEvent, DragEvent, FormEvent, useEffect, useMemo, useState } from "react";
-import { createCategory, deleteProduct, fetchStoreData, fileToDataUrl, upsertProduct } from "@/lib/api";
+import { createCategory, deleteCategory, deleteProduct, fetchStoreData, fileToDataUrl, upsertProduct } from "@/lib/api";
 import { Product, ProductVariant, StoreData, defaultStoreData, toRub } from "@/lib/store";
 
 function createSlug(value: string): string {
@@ -24,11 +24,25 @@ function isMacbookLikeCategory(slug: string): boolean {
   return MACBOOK_LIKE_SLUGS.has(slug);
 }
 
+/** Совпадает с защищёнными slug в API (ensureSeedData). */
+const PROTECTED_CATEGORY_SLUGS = new Set([
+  "iphone",
+  "iphone-used",
+  "macbook",
+  "apple-watch",
+  "ipad",
+  "airpods",
+  "custom"
+]);
+
 export default function AdminPage() {
   const [data, setData] = useState<StoreData>(defaultStoreData);
   const [categoryName, setCategoryName] = useState("");
+  const [categoryImageUrl, setCategoryImageUrl] = useState("");
+  const [categoryImageFileLabel, setCategoryImageFileLabel] = useState("");
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [productFormError, setProductFormError] = useState("");
+  const [categoryActionError, setCategoryActionError] = useState("");
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [productCategory, setProductCategory] = useState(defaultStoreData.categories[0]?.slug ?? "");
@@ -64,7 +78,10 @@ export default function AdminPage() {
   const syncStoreData = async () => {
     const remote = await fetchStoreData();
     setData(remote);
-    setProductCategory((prev) => prev || remote.categories[0]?.slug || "");
+    setProductCategory((prev) => {
+      if (prev && remote.categories.some((c) => c.slug === prev)) return prev;
+      return remote.categories[0]?.slug ?? "";
+    });
   };
 
   useEffect(() => {
@@ -72,7 +89,10 @@ export default function AdminPage() {
     void fetchStoreData().then((remoteStore) => {
       if (!isMounted) return;
       setData(remoteStore);
-      setProductCategory((prev) => prev || remoteStore.categories[0]?.slug || "");
+      setProductCategory((prev) => {
+        if (prev && remoteStore.categories.some((c) => c.slug === prev)) return prev;
+        return remoteStore.categories[0]?.slug ?? "";
+      });
     });
     return () => {
       isMounted = false;
@@ -105,12 +125,18 @@ export default function AdminPage() {
     const name = categoryName.trim();
     if (!name) return;
 
+    setCategoryActionError("");
     const slug = createSlug(name);
     if (!slug) return;
     if (categories.some((item) => item.slug === slug)) return;
 
-    void createCategory({ name }).then(syncStoreData);
+    void createCategory({
+      name,
+      imageUrl: categoryImageUrl.trim() || undefined
+    }).then(syncStoreData);
     setCategoryName("");
+    setCategoryImageUrl("");
+    setCategoryImageFileLabel("");
     setProductCategory((prev) => prev || slug);
   };
 
@@ -527,6 +553,17 @@ export default function AdminPage() {
       });
   };
 
+  const removeCategory = (id: string, name: string, slug: string) => {
+    if (PROTECTED_CATEGORY_SLUGS.has(slug)) return;
+    if (!window.confirm(`Удалить категорию «${name}» и все товары в ней? Это действие необратимо.`)) return;
+    setCategoryActionError("");
+    void deleteCategory(id)
+      .then(syncStoreData)
+      .catch(() => {
+        setCategoryActionError("Не удалось удалить категорию. Проверьте API или права.");
+      });
+  };
+
   return (
     <div className="min-h-screen bg-zinc-100 px-6 py-8 text-zinc-900">
       <div className="mx-auto max-w-6xl">
@@ -554,13 +591,47 @@ export default function AdminPage() {
             <form onSubmit={onCategorySubmit} className="space-y-3">
               <input
                 className="field"
-                placeholder="Название категории (например, iPhone)"
+                placeholder="Название категории (например, Dyson)"
                 value={categoryName}
                 onChange={(e) => setCategoryName(e.target.value)}
               />
+              <input
+                className="field"
+                placeholder="Картинка категории — URL (https://… или /file.png)"
+                value={categoryImageUrl.startsWith("data:") ? "" : categoryImageUrl}
+                onChange={(e) => {
+                  setCategoryImageUrl(e.target.value);
+                  setCategoryImageFileLabel("");
+                }}
+              />
+              <label className="block cursor-pointer rounded-xl border border-dashed border-zinc-300 bg-zinc-50 px-3 py-3 text-sm text-zinc-600 transition hover:border-zinc-400">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    try {
+                      const dataUrl = await fileToDataUrl(file);
+                      setCategoryImageUrl(dataUrl);
+                      setCategoryImageFileLabel(file.name);
+                    } catch {
+                      // ignore
+                    }
+                    e.target.value = "";
+                  }}
+                />
+                Или загрузить файл: {categoryImageFileLabel || "нажмите для выбора"}
+              </label>
+              {categoryImageUrl.startsWith("data:") ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={categoryImageUrl} alt="" className="h-20 w-20 rounded-lg border border-zinc-200 object-cover" />
+              ) : null}
               <button type="submit" className="btn-primary">
                 Сохранить категорию
               </button>
+              {categoryActionError ? <p className="text-sm font-medium text-red-600">{categoryActionError}</p> : null}
             </form>
           </section>
 
@@ -968,7 +1039,18 @@ export default function AdminPage() {
           <div className="space-y-6">
             {productsByCategory.map(({ category, items }) => (
               <div key={category.id}>
-                <h3 className="mb-2 text-lg font-semibold">{category.name}</h3>
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="text-lg font-semibold">{category.name}</h3>
+                  {!PROTECTED_CATEGORY_SLUGS.has(category.slug) ? (
+                    <button
+                      type="button"
+                      className="shrink-0 rounded-lg border border-red-200 bg-red-50 px-3 py-1 text-sm font-medium text-red-700 transition hover:bg-red-100"
+                      onClick={() => removeCategory(category.id, category.name, category.slug)}
+                    >
+                      Удалить категорию
+                    </button>
+                  ) : null}
+                </div>
                 {items.length ? (
                   <div className="grid gap-3">
                     {items.map((item) => (

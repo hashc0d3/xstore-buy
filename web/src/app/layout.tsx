@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CookieConsent } from "@/components/cookie-consent";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/lib/brand";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SOTIK77",
-  description: "Магазин техники SOTIK77 — sotik77.ru",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION
 };
 
 export default function RootLayout({

@@ -16,6 +16,7 @@ model Category {
   id              String    @id @default(cuid())
   slug            String    @unique
   name            String
+  imageUrl        String?
   memoryOptions   String?
   products        Product[]
   createdAt       DateTime  @default(now())

@@ -5,7 +5,7 @@ cd /app
 npx prisma migrate deploy
 
 if [ "${AUTO_SEED_CATALOG:-1}" = "1" ]; then
-  echo "[entrypoint] AUTO_SEED_CATALOG=1 — при пустой БД заливаю JSON из /app/catalog"
+  echo "[entrypoint] AUTO_SEED_CATALOG=1 — при пустой БД заливаю JSON из /app/catalog (сниффер)"
   node dist/src/main &
   srv=$!
   n=0

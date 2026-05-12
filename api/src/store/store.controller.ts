@@ -44,4 +44,10 @@ export class StoreController {
     await this.storeService.removeProduct(id);
     return { ok: true };
   }
+
+  @Delete("categories/:id")
+  async removeCategory(@Param("id") id: string) {
+    await this.storeService.removeCategory(id);
+    return { ok: true };
+  }
 }

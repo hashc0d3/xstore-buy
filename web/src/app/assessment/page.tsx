@@ -4,14 +4,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { createLead, fetchBuybackConfig } from "@/lib/api";
-import { BuybackConfig, defaultStoreData } from "@/lib/store";
-
-const fallbackBuybackConfig: BuybackConfig = defaultStoreData.buybackConfig ?? {
-  models: [],
-  memories: [],
-  simTypes: [],
-  conditions: []
-};
+import type { BuybackConfig } from "@/lib/store";
 
 function formatPhone(value: string): string {
   const digits = value.replace(/\D/g, "");
@@ -31,7 +24,7 @@ function formatPhone(value: string): string {
 }
 
 export default function AssessmentPage() {
-  const [config, setConfig] = useState<BuybackConfig>(fallbackBuybackConfig);
+  const [config, setConfig] = useState<BuybackConfig | null>(null);
   const [model, setModel] = useState("");
   const [memory, setMemory] = useState("");
   const [simType, setSimType] = useState("");
@@ -49,6 +42,31 @@ export default function AssessmentPage() {
       setConfig(next);
     });
   }, []);
+
+  if (!config) {
+    return (
+      <div className="min-h-screen bg-[#f4f4f6] text-zinc-900">
+        <SiteHeader />
+        <main className="mx-auto w-full max-w-[1920px] px-4 py-6 min-[640px]:px-6 min-[640px]:py-8 min-[960px]:px-8 min-[960px]:py-10 min-[1440px]:px-12 min-[1920px]:px-16">
+          <div className="mb-4 flex items-center justify-between min-[640px]:mb-5">
+            <div className="h-3 w-40 animate-pulse rounded bg-zinc-300/80" />
+            <div className="h-4 w-24 animate-pulse rounded bg-zinc-300/70" />
+          </div>
+          <section className="overflow-hidden rounded-3xl border border-white/60 liquid-glass p-4 min-[960px]:p-6">
+            <div className="grid gap-6 min-[960px]:grid-cols-[0.92fr_1.08fr]">
+              <div className="min-h-[240px] animate-pulse rounded-3xl bg-zinc-200/70 min-[960px]:min-h-[620px]" />
+              <div className="space-y-4 min-[960px]:pt-2">
+                {Array.from({ length: 6 }, (_, i) => (
+                  <div key={i} className="h-14 animate-pulse rounded-xl bg-zinc-200/65" />
+                ))}
+              </div>
+            </div>
+          </section>
+        </main>
+        <SiteFooter />
+      </div>
+    );
+  }
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();

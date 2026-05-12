@@ -1,5 +1,7 @@
 # Локальная копия для https://github.com/hashc0d3/xstore-buy — см. DEPLOY-SOURCE.md
 # На сервере: cd /opt/xstore-buy && git pull origin main && docker compose up -d --build
+# Рядом может стоять /opt/xstore (xstore55.ru) — задайте уникальный COMPOSE_PROJECT_NAME.
+
 name: ${COMPOSE_PROJECT_NAME:-sotik77}
 
 services:

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { createLead } from "@/lib/api";
+import { CART_STORAGE_KEY } from "@/lib/brand";
 import { toRub } from "@/lib/store";
 
 type CartItem = {
@@ -20,7 +21,6 @@ type CartItem = {
   quantity: number;
 };
 
-const CART_STORAGE_KEY = "xstore-cart-v1";
 const DELIVERY_PRICE = 2000;
 
 function persistCartItems(items: CartItem[]) {
