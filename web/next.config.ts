@@ -9,7 +9,8 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "www.glushakov-official.ru"
+        hostname: "www.glushakov-official.ru",
+        pathname: "/**"
       }
     ]
   },
