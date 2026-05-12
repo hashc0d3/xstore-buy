@@ -29,6 +29,7 @@ type StoreProduct = {
     ram?: string;
     price: number;
     imageUrl?: string;
+    availability?: string;
   }>;
   imageUrl: string;
 };
@@ -367,6 +368,7 @@ export class StoreService {
       ram?: string;
       price: number;
       imageUrl?: string;
+      availability?: string;
     }>
   ) {
     const normalized: Array<{
@@ -377,11 +379,13 @@ export class StoreService {
       ram?: string;
       price: number;
       imageUrl?: string;
+      availability?: string;
     }> = [];
     if (!input?.length) return normalized;
     for (const item of input) {
       const price = Number(item.price);
       if (!Number.isFinite(price)) continue;
+      const av = item.availability?.trim().toLowerCase();
       normalized.push({
         color: item.color?.trim() || undefined,
         memory: item.memory?.trim() || undefined,
@@ -389,7 +393,9 @@ export class StoreService {
         screen: item.screen?.trim() || undefined,
         ram: item.ram?.trim() || undefined,
         price,
-        imageUrl: item.imageUrl?.trim() || undefined
+        imageUrl: item.imageUrl?.trim() || undefined,
+        availability:
+          av && ["in_stock", "coming_soon", "out_of_stock", "unknown"].includes(av) ? av : undefined
       });
     }
     return normalized;
@@ -405,6 +411,7 @@ export class StoreService {
       ram?: string;
       price: number;
       imageUrl?: string;
+      availability?: string;
     }>
   ): Prisma.JsonValue | null {
     const normalizedVariants = this.normalizeVariants(variants);
@@ -425,6 +432,7 @@ export class StoreService {
       ram?: string;
       price: number;
       imageUrl?: string;
+      availability?: string;
     }>;
   } {
     if (!input || typeof input !== "object" || Array.isArray(input)) {
@@ -449,6 +457,7 @@ export class StoreService {
       ram?: string;
       price: number;
       imageUrl?: string;
+      availability?: string;
     }> = [];
     if (Array.isArray(rawObject.variants)) {
       for (const item of rawObject.variants) {
@@ -456,6 +465,9 @@ export class StoreService {
         const candidate = item as Record<string, unknown>;
         const parsedPrice = Number(candidate.price);
         if (!Number.isFinite(parsedPrice)) continue;
+        const avRaw = candidate.availability;
+        const av =
+          typeof avRaw === "string" ? avRaw.trim().toLowerCase() : undefined;
         variants.push({
           color: typeof candidate.color === "string" ? candidate.color.trim() || undefined : undefined,
           memory: typeof candidate.memory === "string" ? candidate.memory.trim() || undefined : undefined,
@@ -463,7 +475,9 @@ export class StoreService {
           screen: typeof candidate.screen === "string" ? candidate.screen.trim() || undefined : undefined,
           ram: typeof candidate.ram === "string" ? candidate.ram.trim() || undefined : undefined,
           price: parsedPrice,
-          imageUrl: typeof candidate.imageUrl === "string" ? candidate.imageUrl.trim() || undefined : undefined
+          imageUrl: typeof candidate.imageUrl === "string" ? candidate.imageUrl.trim() || undefined : undefined,
+          availability:
+            av && ["in_stock", "coming_soon", "out_of_stock", "unknown"].includes(av) ? av : undefined
         });
       }
     }

@@ -37,6 +37,14 @@ export class CreateLeadDto {
 
   @IsOptional()
   @IsString()
+  screen?: string;
+
+  @IsOptional()
+  @IsString()
+  ram?: string;
+
+  @IsOptional()
+  @IsString()
   customerName?: string;
 
   @IsOptional()
