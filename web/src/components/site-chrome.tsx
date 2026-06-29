@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BrandMark } from "@/components/brand-mark";
-import { CART_STORAGE_KEY, IS_SOTIK_BRAND, VK_HREF } from "@/lib/brand";
+import { CART_STORAGE_KEY, IS_SOTIK_BRAND, STORE_ADDRESS, VK_HREF } from "@/lib/brand";
 
 type StoredCartItem = {
   quantity?: number;
@@ -91,7 +91,7 @@ export function SiteHeader() {
               <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
                 <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
               </svg>
-              Омск, ул. Гагарина 3
+              {STORE_ADDRESS}
             </span>
             <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 ring-1 ring-inset ring-emerald-200">
               <span className="relative flex h-2 w-2">
@@ -264,7 +264,7 @@ export function SiteHeader() {
               <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
                 <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
               </svg>
-              Омск, ул. Гагарина 3
+              {STORE_ADDRESS}
             </span>
             <span className="inline-flex items-center gap-2 text-emerald-700">
               <span className="relative flex h-2 w-2">
@@ -359,7 +359,7 @@ export function SiteFooter() {
 
         <div className="mt-4 flex w-full max-w-lg items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-sm text-zinc-300">
           <span aria-hidden="true">⌖</span>
-          Омск, ул. Гагарина 3
+          {STORE_ADDRESS}
         </div>
 
         <p className="mt-10 text-sm text-zinc-500">© 2026 Все права защищены.</p>

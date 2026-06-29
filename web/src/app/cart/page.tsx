@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { createLead } from "@/lib/api";
-import { CART_STORAGE_KEY } from "@/lib/brand";
+import { CART_STORAGE_KEY, STORE_ADDRESS } from "@/lib/brand";
 import { toRub } from "@/lib/store";
 
 type CartItem = {
@@ -307,7 +307,7 @@ export default function CartPage() {
               </>
             ) : (
               <div className="rounded-xl border border-zinc-300 bg-white p-3 text-sm text-zinc-600">
-                Самовывоз: Омск, ул. Гагарина 3
+                Самовывоз: {STORE_ADDRESS}
               </div>
             )}
 

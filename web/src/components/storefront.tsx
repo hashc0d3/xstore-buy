@@ -18,6 +18,7 @@ import {
   SOTIK_PHONE_DISPLAY,
   SOTIK_PHONE_HREF,
   SOTIK_TELEGRAM_HREF,
+  STORE_ADDRESS,
   VK_HREF
 } from "@/lib/brand";
 import { Category, Product, ProductVariant, StoreData, defaultStoreData, toRub } from "@/lib/store";
@@ -1741,7 +1742,7 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
                   <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
                     <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
                   </svg>
-                  Омск, ул. Гагарина 3
+                  {STORE_ADDRESS}
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-emerald-700 ring-1 ring-inset ring-emerald-200">
                   <span className="relative flex h-2 w-2">
@@ -2017,7 +2018,7 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
                 <h2 className="text-2xl font-semibold text-zinc-900 min-[640px]:text-3xl">Доставка и оплата</h2>
                 <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-600 min-[640px]:text-base">
                   Оформите заявку на сайте или по телефону. Менеджер подтвердит наличие, согласует итоговую стоимость,
-                  способы доставки по Омску и в другие регионы, а также удобный формат оплаты.
+                  способы доставки по Москве и в другие регионы, а также удобный формат оплаты.
                 </p>
               </article>
               <article id="return" className="rounded-3xl border border-white/70 liquid-glass p-5 min-[640px]:p-7">
@@ -2335,7 +2336,7 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-transparent" />
                 <div className="relative z-10">
                   <p className="mb-10 inline-flex rounded-xl border border-red-300/40 bg-black/30 px-3 py-1 text-xs font-semibold text-red-300">
-                    Омск, ул. Гагарина 3
+                    {STORE_ADDRESS}
                   </p>
                   <h4 className="text-xl font-semibold min-[640px]:text-2xl">Самовывоз и доставка</h4>
                   <p className="mt-2 max-w-sm text-sm text-zinc-300 min-[640px]:text-base">
@@ -2712,7 +2713,7 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
           <div className="mt-4 flex w-full max-w-lg flex-col items-center justify-center gap-1 rounded-xl border border-white/10 px-4 py-3 text-sm text-zinc-300">
             <span className="inline-flex items-center gap-2">
               <span aria-hidden="true">⌖</span>
-              {IS_SOTIK_BRAND ? SOTIK_HEADER_ADDRESS : "Омск, ул. Гагарина 3"}
+              {STORE_ADDRESS}
             </span>
             {IS_SOTIK_BRAND ? (
               <span className="text-zinc-400">{SOTIK_HOURS_DETAIL}</span>
@@ -2985,7 +2986,7 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
                     <svg viewBox="0 0 20 20" aria-hidden="true" fill="currentColor" className="h-3.5 w-3.5">
                       <path d="M10 2a6 6 0 0 0-6 6c0 4.6 5.3 9.7 5.5 9.9a.7.7 0 0 0 1 0c.2-.2 5.5-5.3 5.5-9.9a6 6 0 0 0-6-6Zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4Z" />
                     </svg>
-                    Омск, ул. Гагарина 3
+                    {STORE_ADDRESS}
                   </span>
                   <span className="inline-flex items-center gap-2 text-emerald-700">
                     <span className="relative flex h-2 w-2">
