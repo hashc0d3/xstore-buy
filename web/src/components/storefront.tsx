@@ -21,6 +21,7 @@ import {
   STORE_ADDRESS,
   VK_HREF
 } from "@/lib/brand";
+import { isCompleteRuPhone } from "@/lib/phone";
 import { Category, Product, ProductVariant, StoreData, defaultStoreData, toRub } from "@/lib/store";
 
 const IPHONE_LIKE_SLUGS = new Set(["iphone", "iphone-used"]);
@@ -1105,7 +1106,10 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
     customerName?: string;
     telegram?: string;
   }) => {
-    if (!payload.phone.trim()) return;
+    if (!isCompleteRuPhone(payload.phone)) {
+      setLeadNotice({ type: "error", message: "Укажите полный номер телефона: +7 (999) 123-45-67" });
+      return;
+    }
     try {
       setSendingLead(true);
       await createLead(payload);
@@ -1300,7 +1304,7 @@ export default function Storefront({ initialStoreData }: StorefrontProps) {
               const phone = (form.elements.namedItem("phone") as HTMLInputElement | null)?.value ?? "";
               const telegram = (form.elements.namedItem("telegram") as HTMLInputElement | null)?.value ?? "";
               const targetDevice = (form.elements.namedItem("targetDevice") as HTMLInputElement | null)?.value ?? "";
-              if (!customerName.trim() || !phone.trim() || !targetDevice.trim()) return;
+              if (!customerName.trim() || !isCompleteRuPhone(phone) || !targetDevice.trim()) return;
               void submitLead({
                 type: "order",
                 phone,
